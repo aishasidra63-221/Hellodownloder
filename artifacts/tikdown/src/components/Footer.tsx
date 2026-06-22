@@ -15,7 +15,7 @@ export default function Footer() {
               <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
                 <Download className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
               </div>
-              <span className="font-bold text-foreground">Tik<span className="text-primary">Down</span></span>
+              <span className="font-bold text-foreground">LUL<span className="text-primary"> Downloader</span></span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
               The fastest free TikTok downloader. No watermark. No login. No limits.
