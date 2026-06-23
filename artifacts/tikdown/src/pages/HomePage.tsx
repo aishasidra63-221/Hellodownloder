@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
-import { fetchVideoInfo, downloadVideo, VideoInfo, DownloadFormat } from "@/lib/api";
+import { fetchVideoInfo, downloadVideo, downloadPhoto, VideoInfo, DownloadFormat } from "@/lib/api";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
   Video, Music, Film, Copy, Search, Download, CheckCircle2,
   AlertCircle, Clock, User, Eye, Heart, Loader2, X, ChevronRight,
-  Shield, Zap, Lock, Smartphone, ExternalLink
+  Zap, Lock, Smartphone
 } from "lucide-react";
 
 type Step = "idle" | "loading-info" | "info-ready" | "downloading" | "error";
@@ -102,6 +102,17 @@ export default function HomePage() {
 
   const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); };
 
+  const [photoDownloading, setPhotoDownloading] = useState<number | null>(null);
+
+  const handlePhotoDownload = async (imgUrl: string, index: number) => {
+    setPhotoDownloading(index);
+    try {
+      await downloadPhoto(imgUrl, index);
+    } finally {
+      setPhotoDownloading(null);
+    }
+  };
+
   const isPhoto = info?.is_photo && (info.images?.length ?? 0) > 0;
 
   return (
@@ -195,42 +206,51 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* ── Photo post: show images directly from CDN ── */}
+          {/* ── Photo post: CDN direct — no server load ── */}
           {isPhoto ? (
             <div className="p-5 space-y-3">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 📸 Photo Post — {info.images!.length} image{info.images!.length > 1 ? "s" : ""}
               </p>
-              <div className={`grid gap-2 ${info.images!.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
+
+              {/* Download All button */}
+              {info.images!.length > 1 && (
+                <button
+                  onClick={() => info.images!.forEach((u, i) => setTimeout(() => handlePhotoDownload(u, i), i * 400))}
+                  disabled={photoDownloading !== null}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-primary text-primary text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-all disabled:opacity-50"
+                >
+                  <Download className="w-4 h-4" />
+                  Save All {info.images!.length} Photos (CDN Direct)
+                </button>
+              )}
+
+              <div className={`grid gap-3 ${info.images!.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
                 {info.images!.map((imgUrl, i) => (
-                  <a
-                    key={i}
-                    href={imgUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    download
-                    className="group relative block rounded-xl overflow-hidden border border-border bg-secondary aspect-[9/16]"
-                  >
-                    <img
-                      src={imgUrl}
-                      alt={`Photo ${i + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-200 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-2">
-                        <ExternalLink className="w-4 h-4 text-black" />
+                  <div key={i} className="rounded-xl overflow-hidden border border-border bg-secondary flex flex-col">
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <img
+                        src={imgUrl}
+                        alt={`Photo ${i + 1}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-2 right-2 bg-black/60 text-white text-xs rounded-md px-1.5 py-0.5">
+                        {i + 1}/{info.images!.length}
                       </div>
                     </div>
-                    <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs rounded-md px-1.5 py-0.5">
-                      {i + 1}/{info.images!.length}
-                    </div>
-                  </a>
+                    <button
+                      onClick={() => handlePhotoDownload(imgUrl, i)}
+                      disabled={photoDownloading !== null}
+                      className="flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-all disabled:opacity-50"
+                    >
+                      {photoDownloading === i
+                        ? <><Loader2 className="w-3 h-3 animate-spin" /> Saving…</>
+                        : <><Download className="w-3 h-3" /> Save Photo</>}
+                    </button>
+                  </div>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground text-center">
-                Tap any photo to open · Long-press to save on mobile
-              </p>
             </div>
 
           ) : (

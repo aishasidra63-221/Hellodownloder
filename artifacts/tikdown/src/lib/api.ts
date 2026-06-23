@@ -59,6 +59,32 @@ async function getSessionToken(): Promise<string> {
   }
 }
 
+// ─── CDN-direct download ──────────────────────────────────────────────────────
+// Server never streams the file — only provides the CDN URL.
+// Browser fetches the file directly from TikTok CDN.
+
+async function _cdnDownload(cdnUrl: string, filename: string): Promise<void> {
+  // Try blob download (zero server bandwidth — pure CDN direct)
+  try {
+    const res = await fetch(cdnUrl, { mode: "cors" });
+    if (!res.ok) throw new Error("fetch failed");
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+    return;
+  } catch {
+    // CORS blocked by CDN — open CDN URL directly in new tab
+    // User can long-press / right-click → Save
+    window.open(cdnUrl, "_blank", "noopener,noreferrer");
+  }
+}
+
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 export async function fetchVideoInfo(
@@ -85,6 +111,7 @@ export async function downloadVideo(
 ): Promise<void> {
   const token = await getSessionToken();
 
+  // Server call: returns CDN URL only — no file streaming, zero server bandwidth
   const res = await fetch(`${API_BASE}/api/download`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -116,18 +143,14 @@ export async function downloadVideo(
     downloaded_at: Math.floor(Date.now() / 1000),
   });
 
-  _triggerDownload(cdnUrl, filename);
+  // Download directly from CDN — server never touches the file bytes
+  await _cdnDownload(cdnUrl, filename);
 }
 
-function _triggerDownload(cdnUrl: string, filename: string) {
-  const a = document.createElement("a");
-  a.href = cdnUrl;
-  a.target = "_blank";
-  a.rel = "noopener noreferrer";
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+// Photo CDN-direct download — no server call at all, pure CDN
+export async function downloadPhoto(cdnUrl: string, index: number): Promise<void> {
+  const filename = `luldown_photo_${index + 1}.jpg`;
+  await _cdnDownload(cdnUrl, filename);
 }
 
 // ─── History (localStorage) ───────────────────────────────────────────────────
