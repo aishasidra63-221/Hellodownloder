@@ -1,45 +1,69 @@
-# [Project name]
+# Luldown — TikTok Downloader
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+TikTok video/audio downloader that gives users direct CDN links (no server bandwidth used).
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/tikdown run dev` — React frontend (port 5000)
+- `cd artifacts/tiktok-api && PORT=8000 python main.py` — Python API (local dev fallback)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+
+## Workflows (Replit)
+
+- **Start application** — React frontend on port 5000 (webview)
+- **TikTok API** — Python FastAPI on port 8000 (console, local dev only)
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React 19 + Vite + Tailwind CSS 4 + Radix UI
+- Backend: Cloudflare Worker (`cloudflare-worker/worker.js`) — production
+- Backend (dev): Python FastAPI (`artifacts/tiktok-api/`) — local dev proxy
+- DB: PostgreSQL + Drizzle ORM (schema currently empty — history is localStorage)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/tikdown/` — React frontend
+- `artifacts/tikdown/src/lib/api.ts` — all API calls (source of truth)
+- `artifacts/tikdown/vite.config.ts` — Vite config, proxy, env vars
+- `cloudflare-worker/worker.js` — Cloudflare Worker (production backend)
+- `cloudflare-worker/wrangler.toml` — Worker deployment config
+- `artifacts/tiktok-api/` — Python FastAPI (local dev only)
+- `lib/db/` — Drizzle schema
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- **Cloudflare Worker as backend** — No server needed in production. Cloudflare's global IPs replace the proxy pool. Rate limiting is CF built-in.
+- **tikwm.com API** — third-party TikTok extraction API. Worker calls it with 3 Chrome headers (UA + Referer + Language). No 4-layer bypass needed.
+- **CDN-direct downloads** — Server returns CDN URL only, browser fetches file directly from TikTok CDN. Zero server bandwidth.
+- **History in localStorage** — Fully private, no server storage needed.
+- **`WORKER_URL` env var** — Set this to your deployed worker URL. If empty, dev proxy (`/tikapi` → Python on 8000) is used automatically.
+
+## Deploying the Cloudflare Worker
+
+```bash
+cd cloudflare-worker
+npx wrangler login
+npx wrangler deploy
+# Copy the *.workers.dev URL, set it as WORKER_URL env var in Replit Secrets
+```
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Paste any TikTok URL → fetch video info (title, author, thumbnail, stats)
+- Download as MP4 1080p, MP4 720p (no watermark), or MP3 192kbps
+- Photo posts: download individual images or all at once
+- Download history saved locally (last 10, auto-FIFO)
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Cloudflare Worker preferred over Python server for production backend
+- No proxy pool, no 4-layer bypass, no random delays — Cloudflare handles it
+- Keep things simple: 3 fake Chrome headers (UA + Referer + Language) only
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- `WORKER_URL` must be set in Replit Secrets after deploying the worker, otherwise dev uses Python API on port 8000
+- Python API uses in-memory cache (no Redis) and 0 healthy proxies — fine for local dev, not for production
+- Worker rate limit: 20 req/60s per IP (configured in `wrangler.toml`)

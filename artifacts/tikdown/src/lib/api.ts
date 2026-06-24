@@ -1,4 +1,9 @@
-const API_BASE = "/tikapi";
+// If WORKER_URL is set at build time, use the Cloudflare Worker directly.
+// Otherwise fall back to the local Python API proxy (for dev).
+declare const __WORKER_URL__: string;
+const WORKER_URL = typeof __WORKER_URL__ !== "undefined" ? __WORKER_URL__ : "";
+const API_BASE = WORKER_URL || "/tikapi";
+
 const HISTORY_KEY = "luldown_history";
 const MAX_HISTORY = 10;
 
@@ -25,7 +30,8 @@ export interface HistoryItem {
 
 export type DownloadFormat = "mp4_720" | "mp4_1080" | "mp3";
 
-// ─── Local history helpers ────────────────────────────────────────────────────
+// ─── Local history (localStorage) ────────────────────────────────────────────
+// History is stored client-side — no server needed, fully private.
 
 function _loadHistory(): HistoryItem[] {
   try {
@@ -46,25 +52,11 @@ function _addHistoryEntry(entry: HistoryItem) {
   _saveHistory(items);
 }
 
-// ─── Session token ────────────────────────────────────────────────────────────
-
-async function getSessionToken(): Promise<string> {
-  try {
-    const res = await fetch(`${API_BASE}/api/token`);
-    if (!res.ok) return "";
-    const data = await res.json();
-    return data.token || "";
-  } catch {
-    return "";
-  }
-}
-
 // ─── CDN-direct download ──────────────────────────────────────────────────────
-// Server never streams the file — only provides the CDN URL.
-// Browser fetches the file directly from TikTok CDN.
+// Worker returns CDN URL only — server never streams file bytes.
+// Browser fetches directly from TikTok CDN.
 
 async function _cdnDownload(cdnUrl: string, filename: string): Promise<void> {
-  // Try blob download (zero server bandwidth — pure CDN direct)
   try {
     const res = await fetch(cdnUrl, { mode: "cors" });
     if (!res.ok) throw new Error("fetch failed");
@@ -77,10 +69,8 @@ async function _cdnDownload(cdnUrl: string, filename: string): Promise<void> {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
-    return;
   } catch {
-    // CORS blocked by CDN — open CDN URL directly in new tab
-    // User can long-press / right-click → Save
+    // CORS blocked by CDN — open in new tab, user can long-press → Save
     window.open(cdnUrl, "_blank", "noopener,noreferrer");
   }
 }
@@ -97,8 +87,8 @@ export async function fetchVideoInfo(
     body: JSON.stringify({ url, recaptcha_token: recaptchaToken ?? null }),
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: "Failed to fetch info" }));
-    throw new Error(err.detail || "Failed to fetch video info");
+    const errData = await res.json().catch(() => ({ detail: "Failed to fetch info" }));
+    throw new Error(errData.detail || "Failed to fetch video info");
   }
   return res.json();
 }
@@ -109,23 +99,15 @@ export async function downloadVideo(
   videoMeta?: { title?: string; author?: string; thumbnail?: string },
   recaptchaToken?: string,
 ): Promise<void> {
-  const token = await getSessionToken();
-
-  // Server call: returns CDN URL only — no file streaming, zero server bandwidth
   const res = await fetch(`${API_BASE}/api/download`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      url,
-      format,
-      session_token: token,
-      recaptcha_token: recaptchaToken ?? null,
-    }),
+    body: JSON.stringify({ url, format, recaptcha_token: recaptchaToken ?? null }),
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: "Download failed" }));
-    throw new Error(err.detail || "Download failed");
+    const errData = await res.json().catch(() => ({ detail: "Download failed" }));
+    throw new Error(errData.detail || "Download failed");
   }
 
   const data = await res.json();
@@ -136,14 +118,13 @@ export async function downloadVideo(
 
   _addHistoryEntry({
     url,
-    title: data.title || videoMeta?.title || "TikTok Video",
-    author: data.author || videoMeta?.author || "Unknown",
-    thumbnail: videoMeta?.thumbnail || "",
+    title:         data.title || videoMeta?.title || "TikTok Video",
+    author:        data.author || videoMeta?.author || "Unknown",
+    thumbnail:     videoMeta?.thumbnail || "",
     format,
     downloaded_at: Math.floor(Date.now() / 1000),
   });
 
-  // Download directly from CDN — server never touches the file bytes
   await _cdnDownload(cdnUrl, filename);
 }
 

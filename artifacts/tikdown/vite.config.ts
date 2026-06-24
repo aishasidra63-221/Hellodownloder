@@ -13,6 +13,7 @@ export default defineConfig({
   base: basePath,
   define: {
     __RECAPTCHA_SITE_KEY__: JSON.stringify(process.env.RECAPTCHA_SITE_KEY ?? ""),
+    __WORKER_URL__: JSON.stringify(process.env.WORKER_URL ?? ""),
   },
   plugins: [
     react(),
