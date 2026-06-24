@@ -1,26 +1,54 @@
 /**
- * Luldown — TikTok Downloader Cloudflare Worker
+ * Luldown — TikTok Downloader Cloudflare Worker (v4.0)
  *
- * Smart fingerprinting:
- *   - Cloudflare tells us the visitor's country (cf.country)
- *   - We pick a browser + language that matches that country
- *   - No proxy pool — Cloudflare's global IPs handle geo-routing
- *   - Rate limiting — Cloudflare built-in (wrangler.toml)
+ * ssstik-style two-API architecture — NO third parties:
+ *   Phase 1 — TikTok Public oembed API  →  title, author, thumbnail
+ *   Phase 2 — TikTok Mobile API (aweme/v1/feed)  →  CDN video URL (no watermark)
+ *
+ * IP diversity:
+ *   Cloudflare's 300+ global PoPs provide automatic IP rotation per request.
+ *   cf.country picks matching web browser + Android device fingerprints.
  */
 
-const TIKWM_API = "https://www.tikwm.com/api/";
-
 const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin":  "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// ── Country fingerprint database ───────────────────────────────────────────────
-// Each country has multiple browser profiles (Chrome desktop, Chrome mobile,
-// Firefox, Safari, Samsung Browser, Edge) to randomize and avoid patterns.
-// Language headers always match the country — never mix US language with Brazil IP.
+// ── TikTok Mobile API hosts ──────────────────────────────────────────────────
+// Multiple hosts — picked randomly per request for distribution
+const MOBILE_API_HOSTS = [
+  "api22-normal-c-useast2a.tiktokv.com",
+  "api16-normal-c-useast1a.tiktokv.com",
+  "api19-normal-c-useast1a.tiktokv.com",
+  "api21-normal-c-alisg.tiktokv.com",
+  "api26-normal-c-useast2a.tiktokv.com",
+];
 
+// ── Android device profiles for mobile API fingerprinting ───────────────────
+// Randomized per request — mimics real TikTok Android app traffic
+const ANDROID_DEVICES = [
+  { model: "Pixel 6",           build: "SD1A.210817.015.A4",  android: "12", dpi: "411" },
+  { model: "Pixel 7",           build: "TD1A.220804.009.A2",  android: "13", dpi: "411" },
+  { model: "Pixel 8",           build: "UP1A.231005.007",     android: "14", dpi: "428" },
+  { model: "Pixel 7a",          build: "UP1A.231005.007",     android: "14", dpi: "429" },
+  { model: "SM-S921B",          build: "UP1A.231005.007",     android: "14", dpi: "393" },
+  { model: "SM-S918B",          build: "UP1A.231005.007",     android: "14", dpi: "393" },
+  { model: "SM-A546E",          build: "TP1A.220624.014",     android: "13", dpi: "397" },
+  { model: "SM-A135F",          build: "TP1A.220624.014",     android: "13", dpi: "401" },
+  { model: "Redmi Note 12",     build: "TKQ1.220829.002",     android: "13", dpi: "395" },
+  { model: "Redmi Note 12 Pro", build: "TKQ1.220829.002",     android: "13", dpi: "395" },
+  { model: "POCO X5 Pro",       build: "TKQ1.220829.002",     android: "13", dpi: "395" },
+  { model: "vivo V29e",         build: "TP1A.220624.014",     android: "13", dpi: "393" },
+  { model: "OPPO A77 5G",       build: "TP1A.220624.014",     android: "13", dpi: "401" },
+  { model: "Infinix X6739",     build: "TP1A.220624.014",     android: "13", dpi: "395" },
+  { model: "motorola moto g84",  build: "T2SNS33.73-11-15",   android: "13", dpi: "400" },
+];
+
+// ── Country fingerprint database ─────────────────────────────────────────────
+// Each country has multiple browser profiles to randomize web requests.
+// Language headers always match the country.
 const FINGERPRINTS = {
   US: [
     { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",                                            lang: "en-US,en;q=0.9" },
@@ -86,7 +114,6 @@ const FINGERPRINTS = {
     { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",                                            lang: "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7" },
     { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",                                                                            lang: "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.5" },
     { ua: "Mozilla/5.0 (Linux; Android 13; motorola moto g84 5G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",                         lang: "pt-BR,pt;q=0.9,en-US;q=0.8" },
-    { ua: "Mozilla/5.0 (Linux; Android 14; Redmi 12C) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/24.0 Chrome/121.0.0.0 Mobile Safari/537.36",               lang: "pt-BR,pt;q=0.9,en;q=0.8" },
     { ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",                    lang: "pt-BR,pt;q=0.9,en-US;q=0.8" },
   ],
   MX: [
@@ -219,7 +246,6 @@ const FINGERPRINTS = {
     { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",                                                                            lang: "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.5" },
     { ua: "Mozilla/5.0 (Linux; Android 14; SM-A235F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.82 Mobile Safari/537.36",                                 lang: "tr-TR,tr;q=0.9,en;q=0.8" },
     { ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",                                          lang: "tr-TR,tr;q=0.9,en;q=0.8" },
-    { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/111.0.0.0",                             lang: "tr-TR,tr;q=0.9,en-US;q=0.8" },
   ],
   SA: [
     { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",                                            lang: "ar-SA,ar;q=0.9,en-US;q=0.8,en;q=0.7" },
@@ -251,62 +277,168 @@ const FINGERPRINTS = {
   ],
 };
 
-// Fallback for unknown countries — generic English desktop
 const FALLBACK = [
   { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",   lang: "en-US,en;q=0.9" },
   { ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15", lang: "en-US,en;q=0.9" },
   { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",                                   lang: "en-US,en;q=0.9" },
 ];
 
-// ── Fingerprint picker ─────────────────────────────────────────────────────────
+// ── Pickers ──────────────────────────────────────────────────────────────────
 
 function getFingerprint(countryCode) {
   const profiles = FINGERPRINTS[countryCode] || FALLBACK;
   return profiles[Math.floor(Math.random() * profiles.length)];
 }
 
-// ── tikwm helpers ──────────────────────────────────────────────────────────────
+function getRandomDevice() {
+  return ANDROID_DEVICES[Math.floor(Math.random() * ANDROID_DEVICES.length)];
+}
 
-async function callTikwm(tiktokUrl, countryCode) {
-  const { ua, lang } = getFingerprint(countryCode);
+function getRandomHost() {
+  return MOBILE_API_HOSTS[Math.floor(Math.random() * MOBILE_API_HOSTS.length)];
+}
 
-  const form = new FormData();
-  form.append("url", tiktokUrl);
-  form.append("hd", "1");
+function randomDeviceId() {
+  return Math.floor(1e17 + Math.random() * 9e17).toString();
+}
 
-  const res = await fetch(TIKWM_API, {
-    method: "POST",
+// ── Phase 1: Public oembed API — metadata ────────────────────────────────────
+// TikTok's official public endpoint. No auth, no signing required.
+// Returns: title, author_name, thumbnail_url
+
+async function fetchOembed(tiktokUrl, webFingerprint) {
+  const endpoint = `https://www.tiktok.com/oembed?url=${encodeURIComponent(tiktokUrl)}`;
+  const res = await fetch(endpoint, {
     headers: {
-      "User-Agent":      ua,
+      "User-Agent":      webFingerprint.ua,
+      "Accept":          "application/json",
+      "Accept-Language": webFingerprint.lang,
       "Referer":         "https://www.tiktok.com/",
-      "Accept-Language": lang,
     },
-    body: form,
   });
-
-  if (!res.ok) throw new Error(`tikwm HTTP ${res.status}`);
+  if (!res.ok) throw new Error(`oembed HTTP ${res.status}`);
   return res.json();
 }
 
-function parseTikwm(data) {
-  const author = data.author || {};
-  const images = data.images || [];
+// ── Phase 2: TikTok Mobile API — CDN URLs ────────────────────────────────────
+// Mimics TikTok's Android app. aweme/v1/feed returns full video metadata
+// including multiple CDN URLs. play_addr URLs don't have the watermark
+// baked into the file (watermark is added client-side by the app).
+
+async function fetchMobileAPI(videoId, device) {
+  const host    = getRandomHost();
+  const devId   = randomDeviceId();
+  const version = "300904";
+  const appVer  = "30.9.4";
+
+  const params = new URLSearchParams({
+    aweme_id:              videoId,
+    version_code:          version,
+    version_name:          appVer,
+    app_name:              "musical_ly",
+    app_version:           appVer,
+    channel:               "App",
+    device_id:             devId,
+    os_version:            device.android,
+    device_platform:       "android",
+    device_type:           device.model,
+    resolution:            `${device.dpi}*${device.dpi}`,
+    dpi:                   device.dpi,
+    app_type:              "normal",
+    manifest_version_code: "2022600030",
+    ts:                    Math.floor(Date.now() / 1000).toString(),
+  });
+
+  const ua = `com.ss.android.ugc.trill/${version} (Linux; U; Android ${device.android}; en_US; ${device.model}; Build/${device.build}; Cronet/TTNetVersion:c5b2a578 3d6d7cd7 MultiProcessNotSupport)`;
+
+  const url = `https://${host}/aweme/v1/feed/?${params}`;
+
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent":   ua,
+      "Accept":       "application/json",
+      "sdk-version":  "2",
+      "X-SS-DP":      "1233",
+    },
+  });
+
+  if (!res.ok) throw new Error(`Mobile API HTTP ${res.status} from ${host}`);
+  const data = await res.json();
+
+  if (!data.aweme_list || data.aweme_list.length === 0) {
+    throw new Error("Video not found or private");
+  }
+
+  return data.aweme_list[0];
+}
+
+// ── Resolve short URLs (vm.tiktok.com, vt.tiktok.com) ───────────────────────
+async function resolveUrl(url) {
+  if (url.includes("/video/")) return url;
+  const res = await fetch(url, { redirect: "follow" });
+  return res.url;
+}
+
+// ── Extract video ID from TikTok URL ────────────────────────────────────────
+async function extractVideoId(rawUrl) {
+  let url = rawUrl.trim();
+
+  const directMatch = url.match(/\/video\/(\d+)/);
+  if (directMatch) return directMatch[1];
+
+  const resolved = await resolveUrl(url);
+  const resolvedMatch = resolved.match(/\/video\/(\d+)/);
+  if (resolvedMatch) return resolvedMatch[1];
+
+  throw new Error("Could not extract video ID from URL");
+}
+
+// ── Parse aweme response into our format ─────────────────────────────────────
+function parseMobileAPI(aweme) {
+  const video  = aweme.video  || {};
+  const music  = aweme.music  || {};
+  const author = aweme.author || {};
+  const stats  = aweme.statistics || {};
+  const imgPost = aweme.image_post_info || null;
+
+  const images = imgPost
+    ? (imgPost.images || []).map(img => {
+        const urls = img.display_image?.url_list || img.owner_watermark_image?.url_list || [];
+        return urls[0] || "";
+      }).filter(Boolean)
+    : [];
+
+  const isPhoto = images.length > 0;
+
+  const bitRates = (video.bit_rate || [])
+    .filter(b => b.play_addr?.url_list?.length > 0)
+    .sort((a, b) => (b.bit_rate || 0) - (a.bit_rate || 0));
+
+  const hdUrl  = bitRates[0]?.play_addr?.url_list?.[0] || video.play_addr?.url_list?.[0] || "";
+  const sdUrl  = bitRates[1]?.play_addr?.url_list?.[0] || video.play_addr?.url_list?.[0] || hdUrl;
+  const audioUrl = music.play_url?.url_list?.[0] || "";
+
+  const thumbnail = video.cover?.url_list?.[0]
+    || video.origin_cover?.url_list?.[0]
+    || aweme.video?.animated_cover?.url_list?.[0]
+    || "";
+
   return {
-    title:      data.title || "TikTok Video",
-    author:     typeof author === "object" ? (author.nickname || "") : String(author),
-    duration:   data.duration || 0,
-    thumbnail:  data.cover || data.origin_cover || "",
-    view_count: data.play_count || 0,
-    like_count: data.digg_count || 0,
-    is_photo:   images.length > 0,
+    title:      aweme.desc || "TikTok Video",
+    author:     author.nickname || author.unique_id || "",
+    duration:   Math.floor((aweme.duration || video.duration || 0) / 1000),
+    thumbnail,
+    view_count: stats.play_count  || 0,
+    like_count: stats.digg_count  || 0,
+    is_photo:   isPhoto,
     images,
-    _play_nowm: data.play   || "",
-    _hd_play:   data.hdplay || data.play || "",
-    _music:     data.music  || "",
+    _hd_url:    hdUrl,
+    _sd_url:    sdUrl,
+    _audio_url: audioUrl,
   };
 }
 
-// ── Response helpers ───────────────────────────────────────────────────────────
+// ── Response helpers ──────────────────────────────────────────────────────────
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -324,32 +456,34 @@ function validateTikTokUrl(raw) {
   return u.includes("tiktok.com") ? u : null;
 }
 
-// ── Main handler ───────────────────────────────────────────────────────────────
+// ── Main handler ──────────────────────────────────────────────────────────────
 
 export default {
   async fetch(request, env) {
     const { pathname } = new URL(request.url);
-    const method = request.method;
-
-    // Country from Cloudflare — used to pick matching browser + language
+    const method  = request.method;
     const country = (request.cf && request.cf.country) || "US";
 
-    // CORS preflight
     if (method === "OPTIONS") {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
 
     // GET /health
     if (pathname === "/health" && method === "GET") {
-      return json({ status: "ok", version: "3.1.0", engine: "cloudflare-worker", country });
+      return json({
+        status:  "ok",
+        version: "4.0.0",
+        engine:  "tiktok-direct",
+        country,
+      });
     }
 
-    // GET /api/token — compatibility stub (rate limiting is CF built-in now)
+    // GET /api/token — compatibility stub
     if (pathname === "/api/token" && method === "GET") {
       return json({ token: "", ttl_seconds: 300 });
     }
 
-    // POST /api/info
+    // POST /api/info — Phase 1 + Phase 2 combined for metadata
     if (pathname === "/api/info" && method === "POST") {
       let body;
       try { body = await request.json(); } catch { return err("Invalid JSON", 400); }
@@ -357,18 +491,35 @@ export default {
       const tiktokUrl = validateTikTokUrl(body.url);
       if (!tiktokUrl) return err("Invalid TikTok URL. Please copy the link from TikTok app.", 400);
 
-      let tikwmRes;
+      let videoId;
       try {
-        tikwmRes = await callTikwm(tiktokUrl, country);
+        videoId = await extractVideoId(tiktokUrl);
       } catch (e) {
-        return err(`Download service unreachable: ${e.message}`);
+        return err(`Could not resolve video ID: ${e.message}`);
       }
 
-      if (tikwmRes.code !== 0 || !tikwmRes.data) {
-        return err(tikwmRes.msg || "Could not fetch video info");
+      const device = getRandomDevice();
+
+      let aweme;
+      try {
+        aweme = await fetchMobileAPI(videoId, device);
+      } catch (e) {
+        return err(`Failed to fetch video info: ${e.message}`);
       }
 
-      const p = parseTikwm(tikwmRes.data);
+      const p = parseMobileAPI(aweme);
+
+      // Enrich thumbnail via oembed if mobile API didn't return one
+      if (!p.thumbnail) {
+        try {
+          const fp     = getFingerprint(country);
+          const oembed = await fetchOembed(tiktokUrl, fp);
+          p.thumbnail  = oembed.thumbnail_url || "";
+          if (!p.title || p.title === "TikTok Video") p.title = oembed.title || p.title;
+          if (!p.author) p.author = oembed.author_name || "";
+        } catch (_) {}
+      }
+
       return json({
         success:    true,
         title:      p.title,
@@ -382,7 +533,7 @@ export default {
       });
     }
 
-    // POST /api/download
+    // POST /api/download — returns CDN URL, zero server bandwidth
     if (pathname === "/api/download" && method === "POST") {
       let body;
       try { body = await request.json(); } catch { return err("Invalid JSON", 400); }
@@ -395,29 +546,34 @@ export default {
         return err(`Unknown format: ${format}`, 400);
       }
 
-      let tikwmRes;
+      let videoId;
       try {
-        tikwmRes = await callTikwm(tiktokUrl, country);
+        videoId = await extractVideoId(tiktokUrl);
       } catch (e) {
-        return err(`Download service unreachable: ${e.message}`);
+        return err(`Could not resolve video ID: ${e.message}`);
       }
 
-      if (tikwmRes.code !== 0 || !tikwmRes.data) {
-        return err(tikwmRes.msg || "Could not fetch video");
+      const device = getRandomDevice();
+
+      let aweme;
+      try {
+        aweme = await fetchMobileAPI(videoId, device);
+      } catch (e) {
+        return err(`Failed to fetch video: ${e.message}`);
       }
 
-      const p = parseTikwm(tikwmRes.data);
+      const p = parseMobileAPI(aweme);
 
       let cdnUrl = "", filename = "luldown", ext = "mp4", mediaType = "video/mp4";
 
-      if (format === "mp4_720") {
-        cdnUrl   = p._play_nowm || p._hd_play;
-        filename = "luldown_720p";
-      } else if (format === "mp4_1080") {
-        cdnUrl   = p._hd_play || p._play_nowm;
+      if (format === "mp4_1080") {
+        cdnUrl   = p._hd_url;
         filename = "luldown_1080p";
+      } else if (format === "mp4_720") {
+        cdnUrl   = p._sd_url;
+        filename = "luldown_720p";
       } else if (format === "mp3") {
-        cdnUrl    = p._music;
+        cdnUrl    = p._audio_url;
         filename  = "luldown_audio";
         ext       = "mp3";
         mediaType = "audio/mpeg";

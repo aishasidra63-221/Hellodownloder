@@ -1,176 +1,278 @@
 """
-TikTok downloader — tikwm.com API with 4-layer bypass:
-  Layer 1: Rotating proxy (country-tagged)
-  Layer 2: Country-matched User-Agent
-  Layer 3: Country-matched Accept-Language
-  Layer 4: Rotating Referer
-Random delay 0.5–2.5 s before each request.
-Bad proxies auto-evicted on failure.
+TikTok downloader — Direct TikTok Mobile API (aweme/v1/feed)
+ssstik-style: no third parties, no proxy pool needed.
 
-Formats:
-  mp4_720  — no-watermark standard quality
-  mp4_1080 — no-watermark HD (hdplay)
-  mp3      — audio 192kbps
+Phase 1: TikTok public oembed API  → title, author, thumbnail (metadata)
+Phase 2: TikTok mobile API (aweme) → CDN video URL (no watermark baked in)
+
+play_addr URLs from the mobile API are watermark-free when fetched server-side
+because the TikTok app overlays the watermark client-side during playback.
 """
 import asyncio
 import logging
+import random
 import re
+import time
 from typing import Optional
 
 import httpx
 
-from bypass import get_bypass_headers, random_delay
-from proxy_pool import get_random_proxy, remove_proxy
-
 logger = logging.getLogger(__name__)
-
-_ANSI_RE = re.compile(r"\x1b\[[0-9;]*[a-zA-Z]|\[[0-9;]*m")
-
-TIKWM_API = "https://www.tikwm.com/api/"
-
-MAX_RETRIES = 3   # tries: proxy1 → proxy2 → no-proxy fallback
 
 
 class DownloadError(Exception):
     pass
 
 
-def strip_ansi(text: str) -> str:
-    return _ANSI_RE.sub("", text).strip()
+# ── TikTok Mobile API hosts ───────────────────────────────────────────────────
+MOBILE_API_HOSTS = [
+    "api22-normal-c-useast2a.tiktokv.com",
+    "api16-normal-c-useast1a.tiktokv.com",
+    "api19-normal-c-useast1a.tiktokv.com",
+    "api21-normal-c-alisg.tiktokv.com",
+    "api26-normal-c-useast2a.tiktokv.com",
+]
+
+# ── Android device profiles ───────────────────────────────────────────────────
+ANDROID_DEVICES = [
+    {"model": "Pixel 6",            "build": "SD1A.210817.015.A4",  "android": "12", "dpi": "411"},
+    {"model": "Pixel 7",            "build": "TD1A.220804.009.A2",  "android": "13", "dpi": "411"},
+    {"model": "Pixel 8",            "build": "UP1A.231005.007",     "android": "14", "dpi": "428"},
+    {"model": "Pixel 7a",           "build": "UP1A.231005.007",     "android": "14", "dpi": "429"},
+    {"model": "SM-S921B",           "build": "UP1A.231005.007",     "android": "14", "dpi": "393"},
+    {"model": "SM-S918B",           "build": "UP1A.231005.007",     "android": "14", "dpi": "393"},
+    {"model": "SM-A546E",           "build": "TP1A.220624.014",     "android": "13", "dpi": "397"},
+    {"model": "SM-A135F",           "build": "TP1A.220624.014",     "android": "13", "dpi": "401"},
+    {"model": "Redmi Note 12",      "build": "TKQ1.220829.002",     "android": "13", "dpi": "395"},
+    {"model": "Redmi Note 12 Pro",  "build": "TKQ1.220829.002",     "android": "13", "dpi": "395"},
+    {"model": "POCO X5 Pro",        "build": "TKQ1.220829.002",     "android": "13", "dpi": "395"},
+    {"model": "vivo V29e",          "build": "TP1A.220624.014",     "android": "13", "dpi": "393"},
+    {"model": "OPPO A77 5G",        "build": "TP1A.220624.014",     "android": "13", "dpi": "401"},
+    {"model": "motorola moto g84",  "build": "T2SNS33.73-11-15",    "android": "13", "dpi": "400"},
+]
 
 
-def _parse_tikwm(data: dict) -> dict:
-    author = data.get("author", {})
-    images = data.get("images", []) or []
-    return {
-        "success":     True,
-        "title":       data.get("title", "TikTok Video"),
-        "author":      author.get("nickname", "") if isinstance(author, dict) else str(author),
-        "duration":    data.get("duration", 0),
-        "thumbnail":   data.get("cover", "") or data.get("origin_cover", ""),
-        "view_count":  data.get("play_count", 0),
-        "like_count":  data.get("digg_count", 0),
-        "is_photo":    len(images) > 0,
-        "_images":     images,
-        "_play_nowm":  data.get("play", ""),
-        "_play_wm":    data.get("wmplay", ""),
-        "_music":      data.get("music", ""),
-        "_hd_play":    data.get("hdplay", "") or data.get("play", ""),
-    }
+def _random_device() -> dict:
+    return random.choice(ANDROID_DEVICES)
 
 
-async def _do_request(proxy_url: Optional[str], country: Optional[str], url: str) -> dict:
-    """One attempt at fetching from tikwm using given proxy + bypass headers."""
-    headers = get_bypass_headers(country)
+def _random_host() -> str:
+    return random.choice(MOBILE_API_HOSTS)
 
-    proxy_map = (
-        {"http://": proxy_url, "https://": proxy_url}
-        if proxy_url else None
+
+def _random_device_id() -> str:
+    return str(random.randint(10**17, 10**18 - 1))
+
+
+def _build_mobile_ua(device: dict, version: str = "300904") -> str:
+    return (
+        f"com.ss.android.ugc.trill/{version} "
+        f"(Linux; U; Android {device['android']}; en_US; {device['model']}; "
+        f"Build/{device['build']}; Cronet/TTNetVersion:c5b2a578 3d6d7cd7 MultiProcessNotSupport)"
     )
 
+
+# ── Phase 1: oembed for metadata ──────────────────────────────────────────────
+
+async def _fetch_oembed(tiktok_url: str) -> dict:
+    endpoint = f"https://www.tiktok.com/oembed?url={tiktok_url}"
     async with httpx.AsyncClient(
-        proxies=proxy_map,
-        timeout=httpx.Timeout(25.0, connect=8.0),
+        timeout=httpx.Timeout(15.0, connect=8.0),
         follow_redirects=True,
-        headers=headers,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+            "Accept": "application/json",
+            "Referer": "https://www.tiktok.com/",
+        },
         http2=True,
     ) as client:
-        resp = await client.post(
-            TIKWM_API,
-            data={"url": url, "hd": "1"},
-        )
+        resp = await client.get(endpoint)
         resp.raise_for_status()
         return resp.json()
 
 
-async def _tikwm_fetch(url: str) -> dict:
-    """
-    Fetch video data from tikwm.com with proxy rotation + 4-layer bypass.
-    Tries up to MAX_RETRIES times; last attempt is always direct (no proxy).
-    """
-    last_error: Optional[Exception] = None
+# ── Short URL resolution ──────────────────────────────────────────────────────
 
-    for attempt in range(MAX_RETRIES):
-        is_last = attempt == MAX_RETRIES - 1
-        proxy_url: Optional[str] = None
-        country: Optional[str] = None
+async def _resolve_url(url: str) -> str:
+    if "/video/" in url:
+        return url
+    async with httpx.AsyncClient(
+        timeout=httpx.Timeout(15.0, connect=8.0),
+        follow_redirects=True,
+    ) as client:
+        resp = await client.get(url)
+        return str(resp.url)
 
-        if not is_last:
-            picked = get_random_proxy()
-            if picked:
-                proxy_url, country = picked
 
-        await random_delay()
+def _extract_video_id_from_url(url: str) -> Optional[str]:
+    match = re.search(r"/video/(\d+)", url)
+    return match.group(1) if match else None
 
-        try:
-            body = await _do_request(proxy_url, country, url)
-        except Exception as e:
-            last_error = e
-            if proxy_url:
-                remove_proxy(proxy_url)
-                logger.warning(f"Proxy {proxy_url} failed ({e}), removed. Attempt {attempt+1}/{MAX_RETRIES}")
-            else:
-                logger.warning(f"Direct request failed: {e}")
-            continue
 
-        if body.get("code") != 0 or not body.get("data"):
-            msg = body.get("msg", "Unknown error from download service")
-            if proxy_url:
-                logger.info(f"tikwm error via proxy {proxy_url}: {msg}")
-            raise DownloadError(f"Could not fetch video: {msg}")
+async def _get_video_id(tiktok_url: str) -> str:
+    vid = _extract_video_id_from_url(tiktok_url)
+    if vid:
+        return vid
+    resolved = await _resolve_url(tiktok_url)
+    vid = _extract_video_id_from_url(resolved)
+    if vid:
+        return vid
+    raise DownloadError("Could not extract video ID from URL")
 
-        if proxy_url:
-            logger.info(f"tikwm success via proxy [{country}] {proxy_url}")
-        else:
-            logger.info("tikwm success via direct request")
 
-        return body["data"]
+# ── Phase 2: TikTok Mobile API ────────────────────────────────────────────────
 
-    raise DownloadError(
-        f"Download service unreachable after {MAX_RETRIES} attempts. "
-        f"Last error: {last_error}"
+async def _fetch_mobile_api(video_id: str) -> dict:
+    device  = _random_device()
+    host    = _random_host()
+    version = "300904"
+    app_ver = "30.9.4"
+    dev_id  = _random_device_id()
+
+    params = {
+        "aweme_id":              video_id,
+        "version_code":          version,
+        "version_name":          app_ver,
+        "app_name":              "musical_ly",
+        "app_version":           app_ver,
+        "channel":               "App",
+        "device_id":             dev_id,
+        "os_version":            device["android"],
+        "device_platform":       "android",
+        "device_type":           device["model"],
+        "resolution":            f"{device['dpi']}*{device['dpi']}",
+        "dpi":                   device["dpi"],
+        "app_type":              "normal",
+        "manifest_version_code": "2022600030",
+        "ts":                    str(int(time.time())),
+    }
+
+    ua = _build_mobile_ua(device, version)
+    url = f"https://{host}/aweme/v1/feed/"
+
+    async with httpx.AsyncClient(
+        timeout=httpx.Timeout(20.0, connect=8.0),
+        follow_redirects=True,
+        http2=True,
+        headers={
+            "User-Agent":  ua,
+            "Accept":      "application/json",
+            "sdk-version": "2",
+            "X-SS-DP":     "1233",
+        },
+    ) as client:
+        resp = await client.get(url, params=params)
+        resp.raise_for_status()
+        data = resp.json()
+
+    aweme_list = data.get("aweme_list", [])
+    if not aweme_list:
+        raise DownloadError("Video not found or private")
+
+    return aweme_list[0]
+
+
+# ── Parse aweme response ──────────────────────────────────────────────────────
+
+def _parse_aweme(aweme: dict) -> dict:
+    video   = aweme.get("video", {})
+    music   = aweme.get("music", {})
+    author  = aweme.get("author", {})
+    stats   = aweme.get("statistics", {})
+    img_post = aweme.get("image_post_info")
+
+    images: list[str] = []
+    if img_post:
+        for img in img_post.get("images", []):
+            urls = (
+                img.get("display_image", {}).get("url_list", [])
+                or img.get("owner_watermark_image", {}).get("url_list", [])
+            )
+            if urls:
+                images.append(urls[0])
+
+    is_photo = len(images) > 0
+
+    bit_rates = sorted(
+        [b for b in video.get("bit_rate", []) if b.get("play_addr", {}).get("url_list")],
+        key=lambda b: b.get("bit_rate", 0),
+        reverse=True,
     )
 
+    hd_url    = (bit_rates[0]["play_addr"]["url_list"][0] if bit_rates
+                 else (video.get("play_addr", {}).get("url_list", [""])[0]))
+    sd_url    = (bit_rates[1]["play_addr"]["url_list"][0] if len(bit_rates) > 1
+                 else video.get("play_addr", {}).get("url_list", [""])[0] or hd_url)
+    audio_url = music.get("play_url", {}).get("url_list", [""])[0]
+
+    thumbnail = (
+        video.get("cover", {}).get("url_list", [""])[0]
+        or video.get("origin_cover", {}).get("url_list", [""])[0]
+        or ""
+    )
+
+    return {
+        "success":    True,
+        "title":      aweme.get("desc", "TikTok Video"),
+        "author":     author.get("nickname") or author.get("unique_id", ""),
+        "duration":   int((aweme.get("duration") or video.get("duration") or 0) / 1000),
+        "thumbnail":  thumbnail,
+        "view_count": stats.get("play_count", 0),
+        "like_count": stats.get("digg_count", 0),
+        "is_photo":   is_photo,
+        "images":     images,
+        "_hd_url":    hd_url,
+        "_sd_url":    sd_url,
+        "_audio_url": audio_url,
+    }
+
+
+# ── Public interface ──────────────────────────────────────────────────────────
 
 async def get_video_info(url: str) -> dict:
-    data = await _tikwm_fetch(url)
-    result = _parse_tikwm(data)
-    # Expose images for photo posts (CDN URLs — frontend displays directly)
-    result["images"] = result.pop("_images", [])
-    # Strip internal-only keys
+    video_id = await _get_video_id(url)
+    aweme    = await _fetch_mobile_api(video_id)
+    result   = _parse_aweme(aweme)
+
+    if not result["thumbnail"]:
+        try:
+            oembed = await _fetch_oembed(url)
+            result["thumbnail"] = oembed.get("thumbnail_url", "")
+            if not result["title"] or result["title"] == "TikTok Video":
+                result["title"] = oembed.get("title", result["title"])
+            if not result["author"]:
+                result["author"] = oembed.get("author_name", "")
+        except Exception:
+            pass
+
     for k in list(result):
         if k.startswith("_"):
             result.pop(k, None)
+
     return result
 
 
 async def get_cdn_url(url: str, format_type: str) -> dict:
-    data = await _tikwm_fetch(url)
-    parsed = _parse_tikwm(data)
+    video_id = await _get_video_id(url)
+    aweme    = await _fetch_mobile_api(video_id)
+    parsed   = _parse_aweme(aweme)
 
-    cdn_url: str = ""
-    filename: str = "luldown"
-    media_type: str = "video/mp4"
-    ext: str = "mp4"
+    cdn_url    = ""
+    filename   = "luldown"
+    media_type = "video/mp4"
+    ext        = "mp4"
 
-    if format_type == "mp4_720":
-        cdn_url = parsed["_play_nowm"] or parsed["_hd_play"]
-        filename = "luldown_720p"
-        ext = "mp4"
-        media_type = "video/mp4"
-
-    elif format_type == "mp4_1080":
-        cdn_url = parsed["_hd_play"] or parsed["_play_nowm"]
+    if format_type == "mp4_1080":
+        cdn_url  = parsed["_hd_url"]
         filename = "luldown_1080p"
-        ext = "mp4"
-        media_type = "video/mp4"
-
+    elif format_type == "mp4_720":
+        cdn_url  = parsed["_sd_url"]
+        filename = "luldown_720p"
     elif format_type == "mp3":
-        cdn_url = parsed["_music"]
-        filename = "luldown_audio"
-        ext = "mp3"
+        cdn_url    = parsed["_audio_url"]
+        filename   = "luldown_audio"
+        ext        = "mp3"
         media_type = "audio/mpeg"
-
     else:
         raise DownloadError(f"Unknown format: {format_type}")
 
@@ -191,7 +293,11 @@ async def get_cdn_url(url: str, format_type: str) -> dict:
 
 
 async def stream_download(cdn_url: str) -> httpx.AsyncByteStream:
-    headers = get_bypass_headers()
-    client = httpx.AsyncClient(headers=headers, follow_redirects=True)
+    device = _random_device()
+    ua     = _build_mobile_ua(device)
+    client = httpx.AsyncClient(
+        headers={"User-Agent": ua},
+        follow_redirects=True,
+    )
     req = client.build_request("GET", cdn_url)
     return await client.send(req, stream=True)
