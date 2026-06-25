@@ -283,10 +283,20 @@ const FALLBACK = [
   { ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",                                   lang: "en-US,en;q=0.9" },
 ];
 
+// ── Countries where TikTok is banned / restricted ────────────────────────────
+// These countries get a neutral US/SG fingerprint so TikTok doesn't block them
+const TIKTOK_BANNED = new Set(["IN", "BD", "AF", "IR", "SB"]);
+
+// If banned country — pick randomly from US or SG so it looks like a neutral user
+const NEUTRAL_COUNTRIES = ["US", "SG", "GB", "AU"];
+
 // ── Pickers ──────────────────────────────────────────────────────────────────
 
 function getFingerprint(countryCode) {
-  const profiles = FINGERPRINTS[countryCode] || FALLBACK;
+  const effectiveCountry = TIKTOK_BANNED.has(countryCode)
+    ? NEUTRAL_COUNTRIES[Math.floor(Math.random() * NEUTRAL_COUNTRIES.length)]
+    : countryCode;
+  const profiles = FINGERPRINTS[effectiveCountry] || FALLBACK;
   return profiles[Math.floor(Math.random() * profiles.length)];
 }
 
