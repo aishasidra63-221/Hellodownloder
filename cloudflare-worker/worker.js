@@ -1,9 +1,10 @@
 /**
- * Luldown — TikTok Downloader Cloudflare Worker (v5.0)
+ * Luldown — TikTok Downloader Cloudflare Worker (v5.1)
  *
  * Direct TikTok HTML scraping — no third-party APIs, no mobile API.
  *   Step 1: Resolve video ID from any URL (full, short, vm., vt.)
  *   Step 2: Fetch tiktok.com/@_/video/{id} with rotating browser headers
+ *           + dynamic Accept-Language matched to Cloudflare datacenter country
  *   Step 3: Parse __UNIVERSAL_DATA_FOR_REHYDRATION__ or SIGI_STATE JSON
  *   Step 4: Return CDN URLs — browser downloads directly from TikTok CDN
  */
@@ -14,23 +15,129 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// ── Rotating User-Agents ─────────────────────────────────────────────────────
+// ── Countries where TikTok is government-banned ──────────────────────────────
+// If CF routes our worker from one of these colos, we force en-US lang anyway
+// (can't change outbound IP, but at least language won't reveal the region)
+const TIKTOK_BANNED_COUNTRIES = new Set(["IN", "AF", "IR"]);
+
+// ── Accept-Language per Cloudflare datacenter country ────────────────────────
+// TikTok uses language header to decide which CDN region & content variant to serve
+const COUNTRY_LANGUAGE = {
+  US: "en-US,en;q=0.9",
+  CA: "en-CA,en;q=0.9,fr-CA;q=0.8",
+  GB: "en-GB,en;q=0.9",
+  AU: "en-AU,en;q=0.9",
+  NZ: "en-NZ,en;q=0.9",
+  IE: "en-IE,en;q=0.9",
+  SG: "en-SG,en;q=0.9,zh-Hans;q=0.8",
+  PH: "en-PH,en;q=0.9,fil;q=0.8",
+  MY: "en-MY,en;q=0.9,ms;q=0.8",
+  ZA: "en-ZA,en;q=0.9",
+  NG: "en-NG,en;q=0.9",
+  GH: "en-GH,en;q=0.9",
+  KE: "en-KE,en;q=0.9,sw;q=0.8",
+  PK: "ur-PK,ur;q=0.9,en;q=0.8",
+  DE: "de-DE,de;q=0.9,en;q=0.8",
+  AT: "de-AT,de;q=0.9,en;q=0.8",
+  CH: "de-CH,de;q=0.9,fr;q=0.8,en;q=0.7",
+  FR: "fr-FR,fr;q=0.9,en;q=0.8",
+  BE: "fr-BE,fr;q=0.9,nl;q=0.8,en;q=0.7",
+  NL: "nl-NL,nl;q=0.9,en;q=0.8",
+  ES: "es-ES,es;q=0.9,en;q=0.8",
+  MX: "es-MX,es;q=0.9,en;q=0.8",
+  AR: "es-AR,es;q=0.9,en;q=0.8",
+  CO: "es-CO,es;q=0.9,en;q=0.8",
+  CL: "es-CL,es;q=0.9,en;q=0.8",
+  PE: "es-PE,es;q=0.9,en;q=0.8",
+  BR: "pt-BR,pt;q=0.9,en;q=0.8",
+  PT: "pt-PT,pt;q=0.9,en;q=0.8",
+  IT: "it-IT,it;q=0.9,en;q=0.8",
+  PL: "pl-PL,pl;q=0.9,en;q=0.8",
+  RO: "ro-RO,ro;q=0.9,en;q=0.8",
+  SE: "sv-SE,sv;q=0.9,en;q=0.8",
+  NO: "nb-NO,nb;q=0.9,en;q=0.8",
+  DK: "da-DK,da;q=0.9,en;q=0.8",
+  FI: "fi-FI,fi;q=0.9,en;q=0.8",
+  JP: "ja-JP,ja;q=0.9,en;q=0.8",
+  KR: "ko-KR,ko;q=0.9,en;q=0.8",
+  TH: "th-TH,th;q=0.9,en;q=0.8",
+  VN: "vi-VN,vi;q=0.9,en;q=0.8",
+  ID: "id-ID,id;q=0.9,en;q=0.8",
+  TR: "tr-TR,tr;q=0.9,en;q=0.8",
+  SA: "ar-SA,ar;q=0.9,en;q=0.8",
+  AE: "ar-AE,ar;q=0.9,en;q=0.8",
+  EG: "ar-EG,ar;q=0.9,en;q=0.8",
+  UA: "uk-UA,uk;q=0.9,ru;q=0.8,en;q=0.7",
+  CZ: "cs-CZ,cs;q=0.9,en;q=0.8",
+  HU: "hu-HU,hu;q=0.9,en;q=0.8",
+  GR: "el-GR,el;q=0.9,en;q=0.8",
+  IL: "he-IL,he;q=0.9,en;q=0.8",
+};
+
+function getLanguage(cfCountry) {
+  // Banned countries → force US English so TikTok doesn't serve restricted content
+  if (!cfCountry || TIKTOK_BANNED_COUNTRIES.has(cfCountry)) return "en-US,en;q=0.9";
+  return COUNTRY_LANGUAGE[cfCountry] || "en-US,en;q=0.9";
+}
+
+// ── 45 Rotating User-Agents (Chrome · Firefox · Safari · Edge · Opera) ───────
 const USER_AGENTS = [
+  // Chrome — Windows 10 / 11
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.5; rv:127.0) Gecko/20100101 Firefox/127.0",
-  "Mozilla/5.0 (X11; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0",
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
   "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+  // Chrome — macOS
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  // Chrome — Linux
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+  // Firefox — Windows
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0",
+  // Firefox — macOS
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.5; rv:128.0) Gecko/20100101 Firefox/128.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.5; rv:127.0) Gecko/20100101 Firefox/127.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 13.6; rv:126.0) Gecko/20100101 Firefox/126.0",
+  // Firefox — Linux
+  "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+  "Mozilla/5.0 (X11; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0",
+  "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0",
+  // Safari — macOS
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15",
+  // Edge — Windows
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0",
+  // Opera — Windows
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/111.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 OPR/110.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 OPR/109.0.0.0",
+  // Brave — Windows (looks like Chrome to servers)
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+  // Vivaldi — Windows
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
 ];
 
 function randomUA() {
@@ -86,12 +193,13 @@ const BROWSER_HEADERS = {
   "Sec-Fetch-Site":  "same-origin",
 };
 
-async function fetchTikTokPage(videoId) {
+async function fetchTikTokPage(videoId, lang) {
   const url = `https://www.tiktok.com/@_/video/${videoId}`;
   const res = await fetch(url, {
     headers: {
-      "User-Agent": randomUA(),
+      "User-Agent":      randomUA(),
       ...BROWSER_HEADERS,
+      "Accept-Language": lang || "en-US,en;q=0.9",
     },
   });
 
@@ -275,9 +383,9 @@ function parsePageData(parsed, videoId) {
 
 // ── Step 4: Full pipeline ─────────────────────────────────────────────────────
 
-async function getVideoData(tiktokUrl) {
+async function getVideoData(tiktokUrl, lang) {
   const videoId = await resolveVideoId(tiktokUrl);
-  const html    = await fetchTikTokPage(videoId);
+  const html    = await fetchTikTokPage(videoId, lang);
   const parsed  = extractJsonFromHtml(html);
 
   if (!parsed) {
@@ -318,9 +426,21 @@ export default {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
 
+    // Cloudflare datacenter country → dynamic Accept-Language for TikTok requests
+    const cfCountry = request.cf?.country || null;
+    const lang      = getLanguage(cfCountry);
+
     // GET /health
     if (pathname === "/health" && method === "GET") {
-      return json({ status: "ok", version: "5.0.0", engine: "tiktok-html-direct" });
+      return json({
+        status:   "ok",
+        version:  "5.1.0",
+        engine:   "tiktok-html-direct",
+        cf_colo:  request.cf?.colo   || "?",
+        cf_country: cfCountry        || "?",
+        lang_used:  lang,
+        ua_pool:  USER_AGENTS.length,
+      });
     }
 
     // GET /api/token — compatibility stub
@@ -338,7 +458,7 @@ export default {
 
       let p;
       try {
-        p = await getVideoData(tiktokUrl);
+        p = await getVideoData(tiktokUrl, lang);
       } catch (e) {
         return err(e.message);
       }
@@ -378,7 +498,7 @@ export default {
 
       let p;
       try {
-        p = await getVideoData(tiktokUrl);
+        p = await getVideoData(tiktokUrl, lang);
       } catch (e) {
         return err(e.message);
       }
