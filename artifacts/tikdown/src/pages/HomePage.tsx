@@ -3,10 +3,10 @@ import DownloaderBox from "@/components/DownloaderBox";
 import { Copy, Search, Download, CheckCircle2, ChevronRight, Zap, Lock, Smartphone } from "lucide-react";
 
 const FEATURES = [
-  { Icon: CheckCircle2, label: "No Watermark",   desc: "Clean videos",      color: "text-blue-400"   },
-  { Icon: Zap,          label: "Lightning Fast",  desc: "Instant download",  color: "text-yellow-400" },
-  { Icon: Lock,         label: "100% Private",    desc: "No data stored",    color: "text-green-400"  },
-  { Icon: Smartphone,   label: "Mobile Ready",    desc: "Works everywhere",  color: "text-purple-400" },
+  { Icon: CheckCircle2, label: "No Watermark",   desc: "Clean videos",      color: "text-green-500"  },
+  { Icon: Zap,          label: "Lightning Fast",  desc: "Instant download",  color: "text-yellow-500" },
+  { Icon: Lock,         label: "100% Private",    desc: "No data stored",    color: "text-blue-500"   },
+  { Icon: Smartphone,   label: "Mobile Ready",    desc: "Works everywhere",  color: "text-purple-500" },
 ];
 
 const STEPS = [
@@ -37,6 +37,14 @@ const HOME_JSONLD = {
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "description": "Download TikTok videos without watermark in HD quality. Free, fast, no login required.",
     },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Is Luldown free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free. No subscription, no hidden fees." } },
+        { "@type": "Question", "name": "Does Luldown remove the watermark?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Luldown downloads the original clean video without any TikTok watermark or logo." } },
+        { "@type": "Question", "name": "What formats does Luldown support?", "acceptedAnswer": { "@type": "Answer", "text": "MP4 1080p HD, MP4 720p, MP3 192kbps audio, and TikTok photo slideshows." } },
+      ],
+    },
   ],
 };
 
@@ -48,65 +56,49 @@ export default function HomePage() {
   });
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10 space-y-10">
+    <div className="max-w-3xl mx-auto px-4 py-12 space-y-10">
 
-      {/* ── Hero ─────────────────────────────────────────────────── */}
-      <header className="space-y-4">
-        <div className="inline-flex items-center gap-2 bg-secondary border border-border text-muted-foreground text-xs font-semibold px-3 py-1.5 rounded-full">
-          <Zap className="w-3.5 h-3.5 text-primary" />
-          FREE • FAST • NO LOGIN REQUIRED
+      <header className="text-center space-y-4">
+        <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary text-xs font-semibold px-3 py-1.5 rounded-full">
+          <Zap className="w-3.5 h-3.5" />
+          Fast · Free · No Login Required
         </div>
-
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-snug">
-          Download TikTok Videos<br />
-          <span className="text-primary">Without Watermark</span>
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+          Luldown<br />
+          <span className="text-primary">TikTok Videos Free</span>
         </h1>
-
-        <p className="text-muted-foreground text-sm sm:text-base max-w-lg">
-          The fastest, most reliable TikTok video downloader. No watermarks, no registration, completely free.
+        <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
+          The easiest way to save TikTok videos and music — free forever, no account needed.
         </p>
       </header>
 
-      {/* ── Downloader ───────────────────────────────────────────── */}
       <DownloaderBox />
 
-      {/* ── How It Works — connected steps ───────────────────────── */}
-      <div className="space-y-3">
-        <h2 className="text-xl font-bold text-foreground">How It Works</h2>
-        <p className="text-muted-foreground text-sm mb-4">Three simple steps to get your favorite content.</p>
-
-        <div className="relative">
-          {/* vertical blue connector line */}
-          <div className="absolute left-5 top-8 bottom-8 w-0.5 bg-primary/40 z-0" />
-
-          <div className="space-y-0">
-            {STEPS.map(({ Icon, title, desc }, i) => (
-              <div key={title} className="relative flex items-start gap-4 py-3 z-10">
-                {/* step icon with dark circle bg */}
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center relative">
-                    <Icon className="w-4 h-4 text-primary" />
-                    {/* step number badge */}
-                    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center leading-none">
-                      {i + 1}
-                    </div>
-                  </div>
-                </div>
-                <div className="pt-1.5">
-                  <div className="font-semibold text-sm text-foreground">{title}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{desc}</div>
+      <div className="space-y-2">
+        <h2 className="text-2xl font-bold text-foreground text-center">How It Works</h2>
+        <p className="text-muted-foreground text-sm text-center mb-6">Three simple steps to download your favorite TikTok content.</p>
+        <div className="space-y-4">
+          {STEPS.map(({ Icon, title, desc }, i) => (
+            <div key={title} className="bg-card border border-border rounded-2xl p-5 flex items-center gap-5">
+              <div className="flex-shrink-0 w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center relative">
+                <Icon className="w-7 h-7 text-primary" />
+                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
+                  {i + 1}
                 </div>
               </div>
-            ))}
-          </div>
+              <div>
+                <div className="font-bold text-base text-foreground">{title}</div>
+                <div className="text-sm text-muted-foreground mt-0.5">{desc}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* ── Feature chips ─────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {FEATURES.map(({ Icon, label, desc, color }) => (
-          <div key={label} className="bg-card border border-border rounded-xl p-4 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+          <div key={label} className="bg-card border border-border rounded-xl p-4 flex flex-col items-start gap-2">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
               <Icon className={`w-4 h-4 ${color}`} />
             </div>
             <div>
@@ -117,12 +109,9 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* ── SEO text ─────────────────────────────────────────────── */}
-      <article className="space-y-5 text-sm text-muted-foreground border-t border-border pt-8">
+      <article className="space-y-6 text-sm text-muted-foreground border-t border-border pt-8">
         <div>
-          <h2 className="text-lg font-bold text-foreground mb-2">
-            Why Choose <span className="text-primary">Luldown?</span>
-          </h2>
+          <h2 className="text-xl font-bold text-foreground mb-2">Luldown — Best TikTok Downloader Without Watermark</h2>
           <p className="leading-relaxed">
             Luldown is the fastest and most reliable TikTok video downloader in 2026. Paste any TikTok URL
             and instantly download in 1080p or 720p MP4 without watermark, or extract 192kbps MP3 audio —
@@ -131,20 +120,30 @@ export default function HomePage() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4">
-          {[
-            { title: "Download 1080p Without Watermark", body: "Save TikTok videos in full HD 1080p quality with no watermark or logo overlay. Perfect for repurposing content or saving memories." },
-            { title: "Download 720p Without Watermark",  body: "Get standard HD 720p quality videos, smaller file size with clean output — great for mobile storage." },
-            { title: "Extract MP3 Audio",                body: "Download TikTok sounds and music as high-quality 192kbps MP3 files — great for ringtones, podcasts, and music discovery." },
-            { title: "Works on All Devices",             body: "Fully responsive — use Luldown on iPhone, Android, tablet, or desktop. No app download required." },
-          ].map(({ title, body }) => (
-            <div key={title}>
-              <h3 className="font-semibold text-sm text-foreground mb-1 flex items-center gap-1.5">
-                <ChevronRight className="w-4 h-4 text-primary flex-shrink-0" />
-                {title}
-              </h3>
-              <p className="leading-relaxed">{body}</p>
-            </div>
-          ))}
+          <div>
+            <h3 className="font-semibold text-base text-foreground mb-2 flex items-center gap-2">
+              <ChevronRight className="w-4 h-4 text-primary" /> Download 1080p Without Watermark
+            </h3>
+            <p>Save TikTok videos in full HD 1080p quality with no watermark or logo overlay. Perfect for repurposing content or saving memories.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-base text-foreground mb-2 flex items-center gap-2">
+              <ChevronRight className="w-4 h-4 text-primary" /> Download 720p Without Watermark
+            </h3>
+            <p>Get standard HD 720p quality videos, smaller file size with clean output — great for mobile storage.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-base text-foreground mb-2 flex items-center gap-2">
+              <ChevronRight className="w-4 h-4 text-primary" /> Extract MP3 Audio
+            </h3>
+            <p>Download TikTok sounds and music as high-quality 192kbps MP3 files — great for ringtones, podcasts, and music discovery.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-base text-foreground mb-2 flex items-center gap-2">
+              <ChevronRight className="w-4 h-4 text-primary" /> Works on All Devices
+            </h3>
+            <p>Fully responsive — use Luldown on iPhone, Android, tablet, or desktop. No app download required.</p>
+          </div>
         </div>
       </article>
     </div>
