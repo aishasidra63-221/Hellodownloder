@@ -14,17 +14,39 @@ export default function Navbar() {
     { href: "/settings", label: "Settings", Icon: Settings },
   ];
 
+  const isDark = theme === "dark";
+
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
+    <nav
+      className="sticky top-0 z-50 border-b"
+      style={isDark ? {
+        borderColor: "rgba(168,85,247,0.15)",
+        background: "rgba(7,5,15,0.80)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
+      } : {
+        borderColor: undefined,
+      }}
+      {...(!isDark && { className: "sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md" })}
+    >
       <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
           <div className="flex items-center gap-2 cursor-pointer select-none">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={isDark ? {
+                background: "linear-gradient(135deg, hsl(262 83% 68%), hsl(197 100% 55%))",
+                boxShadow: "0 0 16px rgba(168,85,247,0.5)",
+              } : { background: "hsl(262 83% 60%)" }}
+            >
               <Download className="w-4 h-4 text-white" strokeWidth={2.5} />
             </div>
             <span className="text-xl font-bold tracking-tight">
-              Lul<span className="text-primary">down</span>
+              Lul
+              <span style={isDark ? { color: "hsl(197 100% 55%)" } : { color: "hsl(262 83% 60%)" }}>
+                down
+              </span>
             </span>
           </div>
         </Link>
@@ -49,11 +71,15 @@ export default function Navbar() {
           {/* Theme toggle */}
           <button
             onClick={toggle}
-            className="w-9 h-9 rounded-lg flex items-center justify-center bg-secondary hover:bg-secondary/70 transition-colors"
+            className="w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
+            style={isDark ? {
+              background: "rgba(168,85,247,0.12)",
+              border: "1px solid rgba(168,85,247,0.2)",
+            } : { background: "hsl(var(--secondary))" }}
             aria-label="Toggle theme"
           >
-            {theme === "dark"
-              ? <Sun className="w-4 h-4 text-foreground" />
+            {isDark
+              ? <Sun className="w-4 h-4 text-yellow-300" />
               : <Moon className="w-4 h-4 text-foreground" />}
           </button>
 
@@ -69,7 +95,13 @@ export default function Navbar() {
 
       {/* Mobile dropdown */}
       {mobileOpen && (
-        <div className="sm:hidden border-t border-border bg-card px-4 py-3 space-y-1">
+        <div
+          className="sm:hidden border-t px-4 py-3 space-y-1"
+          style={isDark ? {
+            borderColor: "rgba(168,85,247,0.15)",
+            background: "rgba(7,5,15,0.95)",
+          } : undefined}
+        >
           {navLinks.map(({ href, label, Icon }) => (
             <Link key={href} href={href}>
               <div
