@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
-/* Hide reCAPTCHA badge — link shown in footer per Google policy */
 .grecaptcha-badge { visibility: hidden !important; }
 
 @custom-variant dark (&:is(.dark *));
@@ -32,22 +31,22 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ── Light mode ─────────────────────────────────────────────────────────────── */
+/* ── Light mode ─────────────────────────────────────────────────────────── */
 :root {
   --background: 225 20% 97%;
   --foreground: 225 15% 8%;
   --border: 225 15% 87%;
   --input: 225 15% 87%;
-  --ring: 231 85% 62%;
+  --ring: 231 91% 63%;
   --card: 0 0% 100%;
   --card-foreground: 225 15% 8%;
-  --primary: 231 85% 62%;
+  --primary: 231 91% 63%;
   --primary-foreground: 0 0% 100%;
   --secondary: 225 15% 93%;
   --secondary-foreground: 225 15% 20%;
   --muted: 225 15% 93%;
   --muted-foreground: 225 10% 45%;
-  --accent: 187 90% 50%;
+  --accent: 231 91% 63%;
   --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
@@ -55,23 +54,23 @@
   --radius: 0.75rem;
 }
 
-/* ── Dark mode — deep navy + indigo-blue + TikTok cyan ──────────────────────── */
+/* ── Dark mode — reference site exact palette ─────────────────────────── */
 .dark {
-  --background: 229 28% 5%;
-  --foreground: 210 20% 95%;
-  --border: 229 20% 14%;
-  --input: 229 20% 12%;
-  --ring: 231 85% 62%;
-  --card: 229 25% 7%;
-  --card-foreground: 210 20% 95%;
-  --primary: 231 85% 62%;
+  --background: 231 26% 7%;
+  --foreground: 220 20% 95%;
+  --border: 229 22% 15%;
+  --input: 229 22% 11%;
+  --ring: 231 91% 63%;
+  --card: 229 22% 10%;
+  --card-foreground: 220 20% 95%;
+  --primary: 231 91% 63%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 229 22% 12%;
-  --secondary-foreground: 210 15% 88%;
-  --muted: 229 20% 12%;
-  --muted-foreground: 210 10% 58%;
-  --accent: 187 90% 50%;
-  --accent-foreground: 220 40% 4%;
+  --secondary: 229 20% 14%;
+  --secondary-foreground: 220 15% 88%;
+  --muted: 229 20% 14%;
+  --muted-foreground: 229 12% 58%;
+  --accent: 231 91% 63%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 }
@@ -81,45 +80,21 @@
   body { @apply font-sans antialiased bg-background text-foreground; }
 }
 
-/* ── Background orbs (dark mode only) ──────────────────────────────────────── */
-/* Blue-indigo orb — matches logo primary */
-.dark .bg-orb-blue {
-  background: radial-gradient(circle, hsl(231 85% 62%), transparent 70%);
-}
-/* TikTok cyan orb */
-.dark .bg-orb-cyan {
-  background: radial-gradient(circle, hsl(187 90% 50%), transparent 70%);
-}
-
-/* ── Glass card ─────────────────────────────────────────────────────────────── */
 .glass-card {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* ── Download button ─────────────────────────────────────────────────────────── */
-.download-btn {
-  transition: all 0.2s ease;
-}
+.download-btn { transition: all 0.2s ease; }
 .download-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(75, 108, 247, 0.4);
 }
-.download-btn:active {
-  transform: translateY(0);
-}
+.download-btn:active { transform: translateY(0); }
 
-/* ── TikTok gradient ─────────────────────────────────────────────────────────── */
-.tiktok-gradient {
-  background: linear-gradient(135deg, #4B6CF7 0%, #0d0f1a 50%, #25F4EE 100%);
-}
-
-/* ── Pulse ring ──────────────────────────────────────────────────────────────── */
 @keyframes pulse-ring {
-  0%   { box-shadow: 0 0 0 0  rgba(75, 108, 247, 0.4); }
+  0%   { box-shadow: 0 0 0 0   rgba(75, 108, 247, 0.4); }
   70%  { box-shadow: 0 0 0 10px rgba(75, 108, 247, 0); }
-  100% { box-shadow: 0 0 0 0  rgba(75, 108, 247, 0); }
+  100% { box-shadow: 0 0 0 0   rgba(75, 108, 247, 0); }
 }
-.loading-pulse {
-  animation: pulse-ring 1.5s infinite;
-}
+.loading-pulse { animation: pulse-ring 1.5s infinite; }
