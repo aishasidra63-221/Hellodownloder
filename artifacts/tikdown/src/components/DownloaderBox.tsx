@@ -205,7 +205,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                     className="absolute inset-0 w-full h-full object-cover"
                     style={{ filter: "blur(5px) brightness(0.6) saturate(1.2)", transform: "scale(1.05)" }}
                   />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%)" }} />
                 </>
               )}
 
@@ -229,10 +228,10 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                   </div>
                   <div className="flex-1 min-w-0">
                     {info.author && (
-                      <p className="font-black text-sm" style={{ color: "#00e5e5" }}>{info.author}</p>
+                      <p className="font-black text-sm" style={{ color: "#00e5e5", textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>{info.author}</p>
                     )}
                     {cleanTitle && (
-                      <p className="text-xs leading-snug line-clamp-3 mt-1" style={{ color: "rgba(230,235,255,0.85)" }}>
+                      <p className="text-xs leading-snug line-clamp-3 mt-1" style={{ color: "rgba(255,255,255,0.95)", textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
                         {cleanTitle}
                       </p>
                     )}
