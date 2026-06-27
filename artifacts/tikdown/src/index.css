@@ -123,7 +123,7 @@ html:not([class]) .hero-badge {
   color: #00e5e5;
 }
 html.dark .hero-title,
-html:not([class]) .hero-title { color: #ffffff; }
+html:not([class]) .hero-title { color: #ffffff; font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
 html.dark .hero-subtitle,
 html:not([class]) .hero-subtitle { color: rgba(200,210,230,0.6); }
 
@@ -256,7 +256,7 @@ html:not(.dark) .hero-badge {
   border: 1px solid rgba(0,180,180,0.4);
   color: #007878;
 }
-html:not(.dark) .hero-title { color: #1a1a2e; }
+html:not(.dark) .hero-title { color: #1a1a2e; font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
 html:not(.dark) .hero-subtitle { color: rgba(50,50,80,0.55); }
 
 html:not(.dark) .downloader-input-wrap {
