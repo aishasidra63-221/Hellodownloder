@@ -130,8 +130,8 @@ html:not([class]) .hero-subtitle { color: rgba(200,210,230,0.6); }
 html.dark .downloader-input-wrap,
 html:not([class]) .downloader-input-wrap {
   background: #131620;
-  border: 2px solid rgba(255,255,255,0.65);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.38);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
 }
 html.dark .downloader-input-wrap input,
 html:not([class]) .downloader-input-wrap input { color: #f0f0f8; }
@@ -261,8 +261,8 @@ html:not(.dark) .hero-subtitle { color: rgba(50,50,80,0.55); }
 
 html:not(.dark) .downloader-input-wrap {
   background: #ffffff;
-  border: 2px solid #6b7280;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1.5px solid #9ca3af;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 html:not(.dark) .downloader-input-wrap input { color: #1a1a2e; }
 html:not(.dark) .downloader-input-wrap input::placeholder { color: #9ca3af; }
