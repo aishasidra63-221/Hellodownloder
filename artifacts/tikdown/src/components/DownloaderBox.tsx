@@ -195,7 +195,14 @@ export default function DownloaderBox({ highlightFormat }: Props) {
 
         {/* Input row */}
         <div className="p-4">
-          <div className={`flex items-center gap-2 rounded-xl border ${inputBorder} bg-background transition-all duration-200 px-4`}>
+          <div className={`flex items-center gap-2 rounded-xl border-2 transition-all duration-200 px-4
+            bg-black/20 dark:bg-white/[0.06]
+            ${urlError
+              ? "border-red-500"
+              : hasUrl && isValid
+              ? "border-emerald-500"
+              : "border-white/20 dark:border-white/15 focus-within:border-primary"
+            }`}>
             {/* Link icon */}
             <LinkIcon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
 
@@ -206,7 +213,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
               onChange={(e) => handleChange(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleFetch()}
               placeholder="https://www.tiktok.com/@user/video/..."
-              className="flex-1 py-3.5 bg-transparent text-foreground placeholder:text-muted-foreground/50 focus:outline-none text-sm min-w-0"
+              className="flex-1 py-3.5 bg-transparent text-foreground placeholder:text-white/30 focus:outline-none text-sm min-w-0"
             />
 
             {/* Valid check / clear */}
@@ -222,7 +229,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             {!hasUrl && (
               <button
                 onClick={handlePaste}
-                className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex-shrink-0 bg-primary/8 hover:bg-primary/15 px-2.5 py-1 rounded-lg"
+                className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex-shrink-0 px-2.5 py-1 rounded-lg border border-primary/40 hover:border-primary"
               >
                 <Copy className="w-3 h-3" />
                 Paste
