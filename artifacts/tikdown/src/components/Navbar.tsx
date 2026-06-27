@@ -21,16 +21,36 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/">
-          <div className="flex items-center gap-2.5 cursor-pointer select-none">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
-              style={{
-                background: "linear-gradient(135deg, #00c8c8 0%, #e91e8c 100%)",
-                boxShadow: "0 2px 12px rgba(0,200,200,0.35), 0 2px 12px rgba(233,30,140,0.2)",
-              }}>
-              <Download className="w-4 h-4 text-white" strokeWidth={2.5} />
+          <div className="flex items-center gap-2.5 cursor-pointer select-none group">
+            {/* Logo mark */}
+            <div className="relative w-9 h-9 flex-shrink-0">
+              {/* Outer glow ring */}
+              <div className="absolute inset-0 rounded-xl opacity-60 group-hover:opacity-90 transition-opacity duration-200"
+                style={{
+                  background: "linear-gradient(135deg, #00e5e5, #e91e8c)",
+                  filter: "blur(6px)",
+                  transform: "scale(1.15)",
+                }} />
+              {/* Main square */}
+              <div className="relative w-9 h-9 rounded-xl flex items-center justify-center"
+                style={{
+                  background: "linear-gradient(135deg, #00c8c8 0%, #a855f7 50%, #e91e8c 100%)",
+                  boxShadow: "0 2px 10px rgba(0,200,200,0.3), 0 2px 10px rgba(233,30,140,0.2)",
+                }}>
+                {/* Arrow down shape */}
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 2.5V11.5M9 11.5L5.5 8M9 11.5L12.5 8" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M3 14.5H15" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+                </svg>
+              </div>
             </div>
-            <span className="logo-text text-xl font-black tracking-tight" style={{ color: isLight ? "#1a1a2e" : "#ffffff" }}>
-              LulDown
+            {/* Wordmark */}
+            <span className="text-xl font-black tracking-tight" style={{ color: isLight ? "#1a1a2e" : "#ffffff" }}>
+              Lul<span style={{
+                background: "linear-gradient(90deg, #00e5e5, #e91e8c)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>Down</span>
             </span>
           </div>
         </Link>
