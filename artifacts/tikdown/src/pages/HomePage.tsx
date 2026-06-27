@@ -24,8 +24,7 @@ const FEATURES = [
 const STEPS = [
   { num: "1", label: "Copy link from\nTikTok",   Icon: ClipboardCopy,  color: "#e91e8c" },
   { num: "2", label: "Paste the link\nabove",    Icon: ClipboardPaste, color: "#00e5e5" },
-  { num: "3", label: "Choose quality\n(1080p / MP3)", Icon: MonitorPlay,    color: "#f59e0b" },
-  { num: "4", label: "Click download\nand enjoy",Icon: Download,       color: "#a855f7" },
+  { num: "3", label: "Click download\nand enjoy",Icon: Download,       color: "#a855f7" },
 ];
 
 const SEO_ITEMS = [
@@ -89,45 +88,26 @@ export default function HomePage() {
             {/* Downloader */}
             <DownloaderBox />
 
-          </div>
-
-          {/* ── MIDDLE column: How it works — desktop only ── */}
-          <div className="hidden lg:flex flex-col gap-6 w-80 xl:w-96 pt-4 flex-shrink-0">
-            <div className="rounded-2xl p-6 how-it-works-card h-full">
-              <h2 className="text-lg font-black mb-6 how-it-works-title">How it works?</h2>
-              <div className="flex flex-col">
-                {STEPS.map(({ num, label, Icon, color }, i) => (
-                  <div key={num} className="flex items-start gap-4">
-                    <div className="flex flex-col items-center flex-shrink-0">
-                      <div
-                        className="relative w-14 h-14 rounded-full flex items-center justify-center"
-                        style={{ background: `${color}18`, border: `2px solid ${color}45` }}
-                      >
-                        <Icon className="w-6 h-6" style={{ color }} strokeWidth={1.8} />
-                        <div
-                          className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full text-xs font-black text-white flex items-center justify-center"
-                          style={{ background: color }}
-                        >
-                          {num}
-                        </div>
-                      </div>
-                      {i < STEPS.length - 1 && (
-                        <div className="w-0.5 h-10 mt-1" style={{ background: `${color}35` }} />
-                      )}
-                    </div>
-                    <div className="pt-3">
-                      <p className="text-sm font-semibold step-label leading-snug" style={{ whiteSpace: "pre-line" }}>
-                        {label}
-                      </p>
-                    </div>
+            {/* Feature icons — show below downloader on mobile, hide on desktop (shown in right column) */}
+            <div className="grid grid-cols-4 gap-2.5 lg:hidden">
+              {FEATURES.map(({ label, Icon, color }) => (
+                <div key={label} className="feature-icon-card">
+                  <div
+                    className="w-11 h-11 rounded-full flex items-center justify-center mb-1"
+                    style={{ background: `${color}18`, border: `1.5px solid ${color}35` }}
+                  >
+                    <Icon className="w-5 h-5" style={{ color }} strokeWidth={1.8} />
                   </div>
-                ))}
-              </div>
+                  <span className="text-[10px] font-semibold leading-tight text-center feature-label">
+                    {label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* ── RIGHT column: Feature cards + SEO — desktop only ── */}
-          <div className="hidden lg:flex flex-col gap-6 w-56 xl:w-64 pt-4 flex-shrink-0">
+          {/* ── RIGHT column: only visible on desktop ── */}
+          <div className="hidden lg:flex flex-col gap-6 w-80 xl:w-96 pt-4 flex-shrink-0">
 
             {/* Feature icon cards — 2×2 grid */}
             <div className="grid grid-cols-2 gap-3">
@@ -138,14 +118,45 @@ export default function HomePage() {
                   style={{ background: `${color}08`, border: `1px solid ${color}20` }}
                 >
                   <div
-                    className="w-11 h-11 rounded-full flex items-center justify-center"
+                    className="w-12 h-12 rounded-full flex items-center justify-center"
                     style={{ background: `${color}18`, border: `1.5px solid ${color}40` }}
                   >
-                    <Icon className="w-5 h-5" style={{ color }} strokeWidth={1.8} />
+                    <Icon className="w-6 h-6" style={{ color }} strokeWidth={1.8} />
                   </div>
                   <span className="text-xs font-bold text-center feature-label">{label}</span>
                 </div>
               ))}
+            </div>
+
+            {/* How it works — vertical on desktop */}
+            <div className="rounded-2xl p-5 how-it-works-card">
+              <h2 className="text-base font-black mb-5 how-it-works-title">How it works?</h2>
+              <div className="flex flex-col gap-4">
+                {STEPS.map(({ num, label, Icon, color }, i) => (
+                  <div key={num}>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="relative w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ background: `${color}18`, border: `2px solid ${color}45` }}
+                      >
+                        <Icon className="w-5 h-5" style={{ color }} strokeWidth={1.8} />
+                        <div
+                          className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[10px] font-black text-white flex items-center justify-center"
+                          style={{ background: color }}
+                        >
+                          {num}
+                        </div>
+                      </div>
+                      <p className="text-sm font-medium step-label" style={{ whiteSpace: "pre-line" }}>
+                        {label}
+                      </p>
+                    </div>
+                    {i < STEPS.length - 1 && (
+                      <div className="ml-6 mt-1 text-sm step-arrow opacity-30">↓</div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* SEO mini-cards */}
@@ -163,54 +174,35 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── How it works — mobile only, centered ── */}
-        <div className="mt-6 lg:hidden">
-          <h2 className="text-lg font-black text-center mb-4 how-it-works-title">How it works?</h2>
-          <div className="flex flex-col gap-3 max-w-sm mx-auto">
-            {STEPS.map(({ num, label, Icon, color }) => (
-              <div
-                key={num}
-                className="relative flex items-center gap-4 p-4 rounded-2xl how-it-works-card"
-                style={{ border: `1.5px solid ${color}25` }}
-              >
-                {/* Step number badge */}
-                <div
-                  className="absolute top-3 right-3 w-5 h-5 rounded-full text-[10px] font-black text-white flex items-center justify-center"
-                  style={{ background: color }}
-                >
-                  {num}
+        {/* ── How it works — mobile only (below downloader) ── */}
+        <div className="mt-6 rounded-2xl p-6 how-it-works-card lg:hidden">
+          <h2 className="text-lg font-black text-center mb-6 how-it-works-title">How it works?</h2>
+          <div className="flex items-start justify-between gap-1">
+            {STEPS.map(({ num, label, Icon, color }, i) => (
+              <div key={num} className="flex items-start gap-1 flex-1">
+                <div className="flex flex-col items-center gap-2.5 flex-1">
+                  <div
+                    className="relative w-14 h-14 rounded-full flex items-center justify-center"
+                    style={{ background: `${color}18`, border: `2px solid ${color}45` }}
+                  >
+                    <Icon className="w-6 h-6" style={{ color }} strokeWidth={1.8} />
+                    <div
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[10px] font-black text-white flex items-center justify-center"
+                      style={{ background: color }}
+                    >
+                      {num}
+                    </div>
+                  </div>
+                  <p className="text-xs text-center leading-snug font-medium step-label" style={{ whiteSpace: "pre-line" }}>
+                    {label}
+                  </p>
                 </div>
-                {/* Icon */}
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: `${color}18`, border: `2px solid ${color}40` }}
-                >
-                  <Icon className="w-6 h-6" style={{ color }} strokeWidth={1.8} />
-                </div>
-                {/* Label */}
-                <p className="text-sm font-semibold step-label leading-snug" style={{ whiteSpace: "pre-line" }}>
-                  {label}
-                </p>
+                {i < STEPS.length - 1 && (
+                  <div className="flex-shrink-0 mt-5 text-sm font-bold step-arrow">→</div>
+                )}
               </div>
             ))}
           </div>
-        </div>
-
-        {/* ── Feature cards — mobile only, below How it works ── */}
-        <div className="grid grid-cols-4 gap-2.5 mt-4 max-w-sm mx-auto lg:hidden">
-          {FEATURES.map(({ label, Icon, color }) => (
-            <div key={label} className="feature-icon-card">
-              <div
-                className="w-11 h-11 rounded-full flex items-center justify-center mb-1"
-                style={{ background: `${color}18`, border: `1.5px solid ${color}35` }}
-              >
-                <Icon className="w-5 h-5" style={{ color }} strokeWidth={1.8} />
-              </div>
-              <span className="text-[10px] font-semibold leading-tight text-center feature-label">
-                {label}
-              </span>
-            </div>
-          ))}
         </div>
 
         {/* ── SEO text — mobile only ── */}
