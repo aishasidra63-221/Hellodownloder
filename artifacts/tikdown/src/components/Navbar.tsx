@@ -9,22 +9,22 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
-    { href: "/", label: "Home", Icon: Home },
-    { href: "/history", label: "History", Icon: Clock },
-    { href: "/settings", label: "Settings", Icon: Settings },
+    { href: "/",        label: "Home",     Icon: Home     },
+    { href: "/history", label: "History",  Icon: Clock    },
+    { href: "/settings",label: "Settings", Icon: Settings },
   ];
 
   return (
-    <nav className="navbar-glass sticky top-0 z-50 backdrop-blur-xl">
+    <nav className="navbar-glass sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Logo */}
         <Link href="/">
           <div className="flex items-center gap-2.5 cursor-pointer select-none group">
-            <div className="w-8 h-8 rounded-xl gradient-btn flex items-center justify-center">
-              <Download className="w-4 h-4 text-white" strokeWidth={2.5} />
+            <div className="w-9 h-9 rounded-xl gradient-btn flex items-center justify-center shadow-lg">
+              <Download className="w-4.5 h-4.5 text-white" strokeWidth={2.5} />
             </div>
-            <span className="text-xl font-bold tracking-tight">
+            <span className="text-xl font-black tracking-tight text-white">
               Lul<span className="gradient-text">down</span>
             </span>
           </div>
@@ -34,10 +34,10 @@ export default function Navbar() {
         <div className="hidden sm:flex items-center gap-1">
           {navLinks.map(({ href, label, Icon }) => (
             <Link key={href} href={href}>
-              <div className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all duration-150 ${
+              <div className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all duration-150 ${
                 location === href
-                  ? "bg-primary/15 text-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  ? "bg-[rgba(255,45,120,0.15)] text-[#ff6aaa] border border-[rgba(255,45,120,0.25)]"
+                  : "text-white/50 hover:text-white hover:bg-white/6 border border-transparent"
               }`}>
                 <Icon className="w-4 h-4" />
                 {label}
@@ -54,14 +54,14 @@ export default function Navbar() {
             aria-label="Toggle theme"
           >
             {theme === "dark"
-              ? <Sun className="w-4 h-4 text-muted-foreground" />
-              : <Moon className="w-4 h-4 text-muted-foreground" />}
+              ? <Sun  className="w-4 h-4 text-white/50" />
+              : <Moon className="w-4 h-4 text-white/50" />}
           </button>
 
-          {/* Mobile menu */}
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="sm:hidden w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/8"
+            className="sm:hidden w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/8 text-white/60"
           >
             {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -70,15 +70,15 @@ export default function Navbar() {
 
       {/* Mobile dropdown */}
       {mobileOpen && (
-        <div className="sm:hidden border-t border-border/50 px-4 py-3 space-y-1 bg-background/95 backdrop-blur-xl">
+        <div className="sm:hidden border-t border-[rgba(255,45,120,0.12)] px-4 py-3 space-y-1 bg-[rgba(8,6,20,0.96)] backdrop-blur-xl">
           {navLinks.map(({ href, label, Icon }) => (
             <Link key={href} href={href}>
               <div
                 onClick={() => setMobileOpen(false)}
                 className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium cursor-pointer transition-all ${
                   location === href
-                    ? "bg-primary/15 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                    ? "bg-[rgba(255,45,120,0.15)] text-[#ff6aaa]"
+                    : "text-white/50 hover:text-white hover:bg-white/6"
                 }`}
               >
                 <Icon className="w-4 h-4" />
