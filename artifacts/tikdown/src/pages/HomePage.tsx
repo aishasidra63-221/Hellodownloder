@@ -163,10 +163,10 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── How it works — mobile only, 2×2 separate column cards ── */}
+        {/* ── How it works — mobile only, centered ── */}
         <div className="mt-6 lg:hidden">
           <h2 className="text-lg font-black text-center mb-4 how-it-works-title">How it works?</h2>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 max-w-sm mx-auto">
             {STEPS.map(({ num, label, Icon, color }) => (
               <div
                 key={num}
@@ -197,7 +197,7 @@ export default function HomePage() {
         </div>
 
         {/* ── Feature cards — mobile only, below How it works ── */}
-        <div className="grid grid-cols-4 gap-2.5 mt-4 lg:hidden">
+        <div className="grid grid-cols-4 gap-2.5 mt-4 max-w-sm mx-auto lg:hidden">
           {FEATURES.map(({ label, Icon, color }) => (
             <div key={label} className="feature-icon-card">
               <div
