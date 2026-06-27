@@ -74,7 +74,7 @@ function App() {
     <ThemeContext.Provider value={{ theme, toggle }}>
       <QueryClientProvider client={queryClient}>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <div className="min-h-screen flex flex-col bg-background text-foreground">
+          <div className="min-h-screen flex flex-col text-foreground">
             <Navbar />
             <main className="flex-1">
               <Router />
