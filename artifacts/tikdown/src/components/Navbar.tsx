@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useTheme } from "@/App";
-import { Download, Menu, X, Home, Clock, Settings, Sun, Moon } from "lucide-react";
+import { Download, Menu, X, Home, Clock, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -9,9 +9,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
-    { href: "/",         label: "Home",     Icon: Home     },
-    { href: "/history",  label: "History",  Icon: Clock    },
-    { href: "/settings", label: "Settings", Icon: Settings },
+    { href: "/",        label: "Home",    Icon: Home  },
+    { href: "/history", label: "History", Icon: Clock },
   ];
 
   const isLight = theme === "light";
