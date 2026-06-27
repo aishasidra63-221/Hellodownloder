@@ -296,13 +296,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                       key={format}
                       onClick={() => handleDownload(format)}
                       disabled={!!activeDownload || isDemo}
-                      className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-[0.99] disabled:opacity-50"
-                      style={{
-                        background: `rgba(0,229,229,0.18)`,
-                        color: "#00e5e5",
-                        border: "1.5px solid rgba(0,229,229,0.45)",
-                        boxShadow: `0 2px 10px rgba(0,229,229,0.12)`,
-                      }}
+                      className="gradient-btn w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm disabled:opacity-50"
                     >
                       {/* Left: icon + label */}
                       <div className="flex items-center gap-2.5">
