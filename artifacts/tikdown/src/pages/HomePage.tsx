@@ -137,21 +137,6 @@ export default function HomePage() {
             Save any TikTok video or music — <span className="text-[#ff6aaa] font-semibold">forever free.</span>
           </p>
 
-          {/* Format pills */}
-          <div className="flex flex-wrap justify-center gap-2 pt-1">
-            {FORMATS.map(({ Icon, label, color }) => (
-              <div key={label}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
-                style={{
-                  background: `${color}14`,
-                  borderColor: `${color}35`,
-                  color: color,
-                }}>
-                <Icon className="w-3 h-3" />
-                {label}
-              </div>
-            ))}
-          </div>
         </header>
 
         {/* ── Downloader ── */}
