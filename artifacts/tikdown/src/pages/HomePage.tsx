@@ -74,14 +74,14 @@ export default function HomePage() {
                   fontFamily: "'Poppins', sans-serif",
                 }}
               >
-                <span style={{ color: "#00e5e5" }}>TikTok</span> Video Download
+                <span style={{ color: "#00e5e5" }}>TikTok</span> Video Downloader
                 <br />
-                <span style={{ fontSize: "90%" }}>Without Watermark</span>
+                <span style={{ fontSize: "90%" }}>No Watermark</span>
               </h1>
 
               {/* Subtitle */}
               <p className="hero-subtitle text-sm lg:text-base font-medium mb-2" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                Download any TikTok video for free — no watermark, no login, no limits.
+                Download TikTok videos without watermark in HD quality. Free, fast, unlimited downloads. No login required. Works All Device.
               </p>
             </div>
 
