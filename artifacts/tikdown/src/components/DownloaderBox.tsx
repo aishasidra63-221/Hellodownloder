@@ -16,9 +16,9 @@ interface FormatOption {
 
 const FORMAT_OPTIONS: FormatOption[] = [
   { format: "mp4_1080", label: "HD 1080p — No Watermark",  sublabel: "Best Quality · Full HD",  Icon: Video, color: "#00e5e5" },
-  { format: "mp4_720",  label: "720p — No Watermark",       sublabel: "Standard HD · Smaller",   Icon: Film,  color: "#a855f7" },
-  { format: "mp3",      label: "MP3 Download — 192kbps",    sublabel: "Audio Only · High Quality",Icon: Music, color: "#e91e8c" },
-  { format: "thumbnail",label: "Thumbnail Download",        sublabel: "Cover Image · JPG",        Icon: Image, color: "#f59e0b" },
+  { format: "mp4_720",  label: "720p — No Watermark",       sublabel: "Standard HD · Smaller",   Icon: Film,  color: "#00e5e5" },
+  { format: "mp3",      label: "MP3 Download — 192kbps",    sublabel: "Audio Only · High Quality",Icon: Music, color: "#00e5e5" },
+  { format: "thumbnail",label: "Thumbnail Download",        sublabel: "Cover Image · JPG",        Icon: Image, color: "#00e5e5" },
 ];
 
 const DEMO_DATA: VideoInfo = {
@@ -296,24 +296,25 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                       key={format}
                       onClick={() => handleDownload(format)}
                       disabled={!!activeDownload || isDemo}
-                      className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-2xl font-black text-sm transition-all active:scale-[0.99] disabled:opacity-50"
+                      className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-[0.99] disabled:opacity-50"
                       style={{
-                        background: color,
-                        color: "#ffffff",
-                        boxShadow: `0 4px 18px ${color}55`,
+                        background: `rgba(0,229,229,0.18)`,
+                        color: "#00e5e5",
+                        border: "1.5px solid rgba(0,229,229,0.45)",
+                        boxShadow: `0 2px 10px rgba(0,229,229,0.12)`,
                       }}
                     >
                       {/* Left: icon + label */}
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2.5">
                         {isActive
-                          ? <Loader2 className="w-5 h-5 animate-spin" />
-                          : <Icon className="w-5 h-5" />}
-                        <span className="text-base">
+                          ? <Loader2 className="w-4 h-4 animate-spin" />
+                          : <Icon className="w-4 h-4" />}
+                        <span>
                           {isActive ? "Downloading…" : label}
                         </span>
                       </div>
                       {/* Right: download icon */}
-                      <Download className="w-5 h-5 flex-shrink-0" />
+                      <Download className="w-4 h-4 flex-shrink-0" />
                     </button>
                   );
                 })}
