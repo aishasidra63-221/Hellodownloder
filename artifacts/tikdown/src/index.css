@@ -130,7 +130,8 @@ html:not([class]) .hero-subtitle { color: rgba(200,210,230,0.6); }
 html.dark .downloader-input-wrap,
 html:not([class]) .downloader-input-wrap {
   background: #131620;
-  border: 1.5px solid rgba(255,255,255,0.09);
+  border: 2px solid rgba(255,255,255,0.38);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
 }
 html.dark .downloader-input-wrap input,
 html:not([class]) .downloader-input-wrap input { color: #f0f0f8; }

@@ -144,19 +144,19 @@ export default function DownloaderBox({ highlightFormat }: Props) {
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleFetch()}
           placeholder="Paste TikTok link here..."
-          className="flex-1 bg-transparent pl-4 pr-2 py-4 text-sm outline-none"
+          className="flex-1 bg-transparent pl-5 pr-2 py-5 text-base outline-none"
         />
         {url ? (
-          <button onClick={reset} className="px-4 py-4 opacity-40 hover:opacity-80 transition-opacity">
-            <X className="w-4 h-4" />
+          <button onClick={reset} className="px-5 py-5 opacity-40 hover:opacity-80 transition-opacity">
+            <X className="w-5 h-5" />
           </button>
         ) : (
           <button
             onClick={handlePaste}
-            className="flex items-center gap-1.5 mx-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all"
+            className="flex items-center gap-1.5 mx-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all"
             style={{ background: "rgba(0,229,229,0.12)", color: "#00e5e5", border: "1px solid rgba(0,229,229,0.28)" }}
           >
-            <Copy className="w-3.5 h-3.5" />
+            <Copy className="w-4 h-4" />
             Paste
           </button>
         )}
