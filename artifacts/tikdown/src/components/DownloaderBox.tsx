@@ -203,9 +203,9 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                     alt=""
                     aria-hidden
                     className="absolute inset-0 w-full h-full object-cover"
-                    style={{ filter: "blur(6px) brightness(0.45) saturate(1.3)", transform: "scale(1.05)" }}
+                    style={{ filter: "blur(5px) brightness(0.6) saturate(1.2)", transform: "scale(1.05)" }}
                   />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(8,10,18,0.45) 0%, rgba(8,10,18,0.82) 100%)" }} />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%)" }} />
                 </>
               )}
 
