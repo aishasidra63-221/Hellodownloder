@@ -166,11 +166,11 @@ export default function HomePage() {
         {/* ── How it works — mobile only, 2×2 separate column cards ── */}
         <div className="mt-6 lg:hidden">
           <h2 className="text-lg font-black text-center mb-4 how-it-works-title">How it works?</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-3">
             {STEPS.map(({ num, label, Icon, color }) => (
               <div
                 key={num}
-                className="relative flex flex-col items-center gap-3 p-5 rounded-2xl how-it-works-card"
+                className="relative flex items-center gap-4 p-4 rounded-2xl how-it-works-card"
                 style={{ border: `1.5px solid ${color}25` }}
               >
                 {/* Step number badge */}
@@ -182,13 +182,13 @@ export default function HomePage() {
                 </div>
                 {/* Icon */}
                 <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center"
+                  className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{ background: `${color}18`, border: `2px solid ${color}40` }}
                 >
-                  <Icon className="w-7 h-7" style={{ color }} strokeWidth={1.8} />
+                  <Icon className="w-6 h-6" style={{ color }} strokeWidth={1.8} />
                 </div>
                 {/* Label */}
-                <p className="text-xs font-bold step-label text-center leading-snug" style={{ whiteSpace: "pre-line" }}>
+                <p className="text-sm font-semibold step-label leading-snug" style={{ whiteSpace: "pre-line" }}>
                   {label}
                 </p>
               </div>
