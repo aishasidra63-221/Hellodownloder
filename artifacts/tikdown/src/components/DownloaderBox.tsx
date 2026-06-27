@@ -139,7 +139,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
           <button
             onClick={reset}
             className="flex items-center gap-2 mr-3 px-4 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap shrink-0 active:scale-95"
-            style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)", border: "2px solid rgba(255,255,255,0.18)" }}
+            style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", border: "2px solid rgba(255,255,255,0.45)" }}
           >
             <X className="w-4 h-4" />
             <span>Clear</span>
