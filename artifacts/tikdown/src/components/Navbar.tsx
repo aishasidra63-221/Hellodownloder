@@ -15,8 +15,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/50 backdrop-blur-xl"
-      style={{ background: "rgba(7,8,18,0.82)" }}>
+    <nav className="navbar-glass sticky top-0 z-50 backdrop-blur-xl">
       <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Logo */}
@@ -71,8 +70,7 @@ export default function Navbar() {
 
       {/* Mobile dropdown */}
       {mobileOpen && (
-        <div className="sm:hidden border-t border-border/50 px-4 py-3 space-y-1"
-          style={{ background: "rgba(7,8,18,0.95)" }}>
+        <div className="sm:hidden border-t border-border/50 px-4 py-3 space-y-1 bg-background/95 backdrop-blur-xl">
           {navLinks.map(({ href, label, Icon }) => (
             <Link key={href} href={href}>
               <div

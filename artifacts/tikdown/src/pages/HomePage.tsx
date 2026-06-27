@@ -3,10 +3,50 @@ import DownloaderBox from "@/components/DownloaderBox";
 import { Copy, Search, Download, CheckCircle2, ChevronRight, Zap, Lock, Smartphone } from "lucide-react";
 
 const FEATURES = [
-  { Icon: CheckCircle2, label: "No Watermark",   desc: "Clean original video",  gradient: "from-emerald-500/20 to-emerald-500/5", icon_color: "text-emerald-400"  },
-  { Icon: Zap,          label: "Lightning Fast",  desc: "Instant results",       gradient: "from-amber-500/20 to-amber-500/5",   icon_color: "text-amber-400" },
-  { Icon: Lock,         label: "100% Private",    desc: "Nothing stored",        gradient: "from-violet-500/20 to-violet-500/5", icon_color: "text-violet-400"   },
-  { Icon: Smartphone,   label: "All Devices",     desc: "iPhone, Android, PC",   gradient: "from-cyan-500/20 to-cyan-500/5",     icon_color: "text-cyan-400" },
+  {
+    Icon: CheckCircle2,
+    label: "No Watermark",
+    desc: "Get the original clean video — no TikTok logo, no username overlay.",
+    stat: "100%",
+    statLabel: "Clean",
+    iconBg: "bg-emerald-50 dark:bg-emerald-950/40",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
+    statColor: "text-emerald-600 dark:text-emerald-400",
+    accent: "border-l-emerald-400",
+  },
+  {
+    Icon: Zap,
+    label: "Lightning Fast",
+    desc: "Video info loads in under 2 seconds. Download starts immediately.",
+    stat: "<2s",
+    statLabel: "Response",
+    iconBg: "bg-amber-50 dark:bg-amber-950/40",
+    iconColor: "text-amber-600 dark:text-amber-400",
+    statColor: "text-amber-600 dark:text-amber-400",
+    accent: "border-l-amber-400",
+  },
+  {
+    Icon: Lock,
+    label: "100% Private",
+    desc: "Nothing is stored on any server. Your downloads stay on your device.",
+    stat: "0",
+    statLabel: "Data Stored",
+    iconBg: "bg-violet-50 dark:bg-violet-950/40",
+    iconColor: "text-violet-600 dark:text-violet-400",
+    statColor: "text-violet-600 dark:text-violet-400",
+    accent: "border-l-violet-400",
+  },
+  {
+    Icon: Smartphone,
+    label: "All Devices",
+    desc: "Works on iPhone, Android, Windows, Mac — any browser, no app needed.",
+    stat: "Any",
+    statLabel: "Device",
+    iconBg: "bg-sky-50 dark:bg-sky-950/40",
+    iconColor: "text-sky-600 dark:text-sky-400",
+    statColor: "text-sky-600 dark:text-sky-400",
+    accent: "border-l-sky-400",
+  },
 ];
 
 const STEPS = [
@@ -69,7 +109,7 @@ export default function HomePage() {
 
         {/* Hero */}
         <header className="text-center space-y-6">
-          <div className="inline-flex items-center gap-2 badge-shimmer border border-primary/25 text-primary text-xs font-semibold px-4 py-1.5 rounded-full">
+          <div className="inline-flex items-center gap-2 hero-badge text-xs font-semibold px-4 py-1.5 rounded-full">
             <Zap className="w-3.5 h-3.5" />
             Fast · Free · No Login Required
           </div>
@@ -117,16 +157,25 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Feature pills */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {FEATURES.map(({ Icon, label, desc, gradient, icon_color }) => (
-            <div key={label} className={`glass-card rounded-xl p-4 flex flex-col items-start gap-3 card-hover bg-gradient-to-br ${gradient}`}>
-              <div className="w-9 h-9 rounded-xl bg-black/30 border border-white/8 flex items-center justify-center">
-                <Icon className={`w-4.5 h-4.5 ${icon_color}`} />
+        {/* Feature cards — professional stat style */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {FEATURES.map(({ Icon, label, desc, stat, statLabel, iconBg, iconColor, statColor, accent }) => (
+            <div key={label} className={`stat-card rounded-2xl p-5 flex gap-4 border-l-4 ${accent}`}>
+              {/* Icon */}
+              <div className={`flex-shrink-0 w-11 h-11 rounded-xl ${iconBg} flex items-center justify-center`}>
+                <Icon className={`w-5 h-5 ${iconColor}`} />
               </div>
-              <div>
-                <div className="font-semibold text-sm text-foreground">{label}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{desc}</div>
+
+              {/* Text */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="font-bold text-sm text-foreground">{label}</span>
+                  <div className="text-right flex-shrink-0">
+                    <div className={`text-base font-black leading-none ${statColor}`}>{stat}</div>
+                    <div className="text-[10px] text-muted-foreground leading-none mt-0.5">{statLabel}</div>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
               </div>
             </div>
           ))}
