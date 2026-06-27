@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { fetchVideoInfo, downloadVideo, downloadPhoto, VideoInfo, DownloadFormat } from "@/lib/api";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
-  Video, Music, Film, Copy, Download, Image,
+  Video, Music, Film, Clipboard, Download, Image,
   AlertCircle, Loader2, X, FlaskConical,
 } from "lucide-react";
 
@@ -150,7 +150,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             className="flex items-center gap-2 mr-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all whitespace-nowrap shrink-0 active:scale-95"
             style={{ background: "#0d9488", color: "#ffffff", border: "2px solid #14b8a6" }}
           >
-            <Copy className="w-4 h-4" />
+            <Clipboard className="w-4 h-4" />
             <span>Paste</span>
           </button>
         )}
