@@ -148,39 +148,25 @@ export default function DownloaderBox({ highlightFormat }: Props) {
           className="min-w-0 flex-1 bg-transparent pl-5 pr-2 py-5 text-base outline-none"
         />
         {url ? (
-          /* Clear button — visible on all screen sizes */
           <button
             onClick={reset}
-            className="flex items-center gap-1.5 mr-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0"
+            className="flex items-center gap-1.5 mr-2 px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0"
             style={{ background: "rgba(233,30,140,0.12)", color: "#e91e8c", border: "1px solid rgba(233,30,140,0.28)" }}
           >
             <X className="w-3.5 h-3.5" />
-            Clear
+            <span>Clear</span>
           </button>
         ) : (
-          /* Paste button — hidden on mobile (shown separately below), visible on sm+ */
           <button
             onClick={handlePaste}
-            className="hidden sm:flex items-center gap-1.5 mr-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0"
+            className="flex items-center gap-1.5 mr-2 px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0"
             style={{ background: "rgba(0,229,229,0.12)", color: "#00e5e5", border: "1px solid rgba(0,229,229,0.28)" }}
           >
             <Copy className="w-3.5 h-3.5" />
-            Paste
+            <span>Paste</span>
           </button>
         )}
       </div>
-
-      {/* ── Paste button — mobile only, full width row ── */}
-      {!url && (
-        <button
-          onClick={handlePaste}
-          className="sm:hidden w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all"
-          style={{ background: "rgba(0,229,229,0.12)", color: "#00e5e5", border: "1px solid rgba(0,229,229,0.28)" }}
-        >
-          <Copy className="w-4 h-4" />
-          Paste TikTok Link
-        </button>
-      )}
 
       {/* ── Download Now — full width ── */}
       <button
