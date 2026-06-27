@@ -15,10 +15,10 @@ interface FormatOption {
 }
 
 const FORMAT_OPTIONS: FormatOption[] = [
-  { format: "mp4_1080", label: "Without Watermark HD",  sublabel: "1080p · Best Quality",    Icon: Video, color: "#00e5e5" },
-  { format: "mp4_720",  label: "Without Watermark",      sublabel: "720p · Standard HD",      Icon: Film,  color: "#a855f7" },
-  { format: "mp3",      label: "Download MP3",           sublabel: "192 kbps · Audio Only",   Icon: Music, color: "#e91e8c" },
-  { format: "thumbnail",label: "Download Thumbnail",     sublabel: "Cover Image · JPG",       Icon: Image, color: "#f59e0b" },
+  { format: "mp4_1080", label: "HD 1080p — No Watermark",  sublabel: "Best Quality · Full HD",  Icon: Video, color: "#00e5e5" },
+  { format: "mp4_720",  label: "720p — No Watermark",       sublabel: "Standard HD · Smaller",   Icon: Film,  color: "#a855f7" },
+  { format: "mp3",      label: "MP3 Download — 192kbps",    sublabel: "Audio Only · High Quality",Icon: Music, color: "#e91e8c" },
+  { format: "thumbnail",label: "Thumbnail Download",        sublabel: "Cover Image · JPG",        Icon: Image, color: "#f59e0b" },
 ];
 
 const DEMO_DATA: VideoInfo = {
@@ -202,6 +202,9 @@ export default function DownloaderBox({ highlightFormat }: Props) {
       {step === "info-ready" && info && (
         <div className="result-card rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-300">
 
+          {/* Top gradient line */}
+          <div className="h-0.5 w-full" style={{ background: "linear-gradient(90deg, #00e5e5, #a855f7, #e91e8c)" }} />
+
           {/* Demo badge */}
           {isDemo && (
             <div className="flex items-center justify-center gap-1.5 py-2 text-[10px] font-black uppercase tracking-widest"
@@ -211,50 +214,48 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             </div>
           )}
 
-          {/* Thumbnail */}
-          {info.thumbnail ? (
-            <div className="relative h-44 sm:h-52 overflow-hidden">
-              <img src={info.thumbnail} alt={info.title} className="w-full h-full object-cover opacity-80" />
-              <div className="absolute inset-0"
-                style={{ background: "linear-gradient(to top, rgba(8,10,18,0.95) 0%, rgba(8,10,18,0.35) 55%, transparent 100%)" }} />
-              <div className="absolute top-0 left-0 right-0 h-0.5"
-                style={{ background: "linear-gradient(90deg, #00e5e5, #e91e8c)" }} />
-
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <p className="text-white font-bold text-sm line-clamp-2 mb-2">{info.title}</p>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full"
-                    style={{ background: "rgba(0,229,229,0.15)", color: "#00e5e5", border: "1px solid rgba(0,229,229,0.25)" }}>
-                    <User className="w-3 h-3" /> {info.author}
-                  </span>
-                  {info.duration > 0 && (
-                    <span className="flex items-center gap-1 text-xs" style={{ color: "rgba(200,215,235,0.6)" }}>
-                      <Clock className="w-3 h-3" /> {fmtDuration(info.duration)}
-                    </span>
-                  )}
-                  {!!info.view_count && (
-                    <span className="flex items-center gap-1 text-xs" style={{ color: "rgba(200,215,235,0.6)" }}>
-                      <Eye className="w-3 h-3" /> {fmtNum(info.view_count)}
-                    </span>
-                  )}
-                  {!!info.like_count && (
-                    <span className="flex items-center gap-1 text-xs" style={{ color: "#e91e8c" }}>
-                      <Heart className="w-3 h-3 fill-current" /> {fmtNum(info.like_count)}
-                    </span>
-                  )}
-                </div>
-              </div>
+          {/* ── Creator info row ── */}
+          <div className="flex items-center gap-3 px-4 pt-4 pb-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+            {/* Avatar circle */}
+            <div className="w-11 h-11 rounded-full flex-shrink-0 flex items-center justify-center font-black text-base text-white"
+              style={{ background: "linear-gradient(135deg, #00c8c8, #e91e8c)" }}>
+              {info.author ? info.author.replace("@","").charAt(0).toUpperCase() : "T"}
             </div>
-          ) : (
-            <div className="p-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-              <p className="font-bold text-white">{info.title || "TikTok Video"}</p>
-              <p className="text-sm mt-1" style={{ color: "rgba(200,215,235,0.5)" }}>{info.author}</p>
+            <div className="flex-1 min-w-0">
+              {info.author && (
+                <p className="font-black text-sm truncate" style={{ color: "#00e5e5" }}>{info.author}</p>
+              )}
+              {info.title && (
+                <p className="text-xs leading-snug line-clamp-2 mt-0.5" style={{ color: "rgba(200,215,235,0.7)" }}>
+                  {info.title}
+                </p>
+              )}
+            </div>
+            {/* Stats */}
+            <div className="flex flex-col items-end gap-1 flex-shrink-0 text-[10px]" style={{ color: "rgba(200,215,235,0.45)" }}>
+              {!!info.like_count && (
+                <span className="flex items-center gap-1"><Heart className="w-3 h-3 fill-current" style={{ color: "#e91e8c" }} />{fmtNum(info.like_count)}</span>
+              )}
+              {!!info.view_count && (
+                <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{fmtNum(info.view_count)}</span>
+              )}
+              {info.duration > 0 && (
+                <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{fmtDuration(info.duration)}</span>
+              )}
+            </div>
+          </div>
+
+          {/* ── Thumbnail strip (if available) ── */}
+          {info.thumbnail && (
+            <div className="relative h-36 overflow-hidden">
+              <img src={info.thumbnail} alt={info.title} className="w-full h-full object-cover opacity-75" />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(8,10,18,0.7) 0%, transparent 60%)" }} />
             </div>
           )}
 
-          {/* Photo post */}
+          {/* ── Photo post ── */}
           {isPhoto ? (
-            <div className="p-5 space-y-3">
+            <div className="p-4 space-y-3">
               <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(200,215,235,0.35)" }}>
                 📸 Photo Post — {info.images!.length} image{info.images!.length > 1 ? "s" : ""}
               </p>
@@ -262,7 +263,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                 <button
                   onClick={() => info.images!.forEach((u, i) => setTimeout(() => handlePhotoDownload(u, i), i * 400))}
                   disabled={photoDownloading !== null || isDemo}
-                  className="gradient-btn w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm disabled:opacity-50"
+                  className="gradient-btn w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-sm disabled:opacity-50"
                 >
                   <Download className="w-4 h-4" /> Save All {info.images!.length} Photos
                 </button>
@@ -292,8 +293,8 @@ export default function DownloaderBox({ highlightFormat }: Props) {
               </div>
             </div>
           ) : (
-            /* Format buttons */
-            <div className="p-4 space-y-2.5">
+            /* ── Wide download buttons ── */
+            <div className="p-4 space-y-3">
               {formats.map(({ format, label, sublabel, Icon, color }) => {
                 const isActive = activeDownload === format;
                 return (
@@ -301,28 +302,34 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                     key={format}
                     onClick={() => handleDownload(format)}
                     disabled={!!activeDownload || isDemo}
-                    className="w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl font-bold text-sm transition-all active:scale-[0.98] disabled:opacity-50"
+                    className="w-full flex items-center justify-between gap-4 px-5 py-4 rounded-2xl transition-all active:scale-[0.99] disabled:opacity-50"
                     style={{
-                      background: `${color}18`,
-                      border: `1.5px solid ${color}45`,
-                      color: color,
+                      background: `${color}14`,
+                      border: `2px solid ${color}50`,
                     }}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ background: `${color}22` }}>
+                    {/* Left: icon + labels */}
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ background: `${color}22`, border: `1.5px solid ${color}40` }}>
                         {isActive
-                          ? <Loader2 className="w-4 h-4 animate-spin" />
-                          : <Icon className="w-4 h-4" />}
+                          ? <Loader2 className="w-5 h-5 animate-spin" style={{ color }} />
+                          : <Icon className="w-5 h-5" style={{ color }} />}
                       </div>
                       <div className="text-left">
-                        <div className="font-bold text-sm leading-tight" style={{ color: "inherit" }}>
+                        <div className="font-black text-sm leading-tight" style={{ color }}>
                           {isActive ? "Downloading…" : label}
                         </div>
-                        <div className="text-[11px] font-medium opacity-60 mt-0.5">{sublabel}</div>
+                        <div className="text-[11px] font-medium mt-0.5" style={{ color: "rgba(200,215,235,0.45)" }}>
+                          {sublabel}
+                        </div>
                       </div>
                     </div>
-                    <Download className="w-4 h-4 flex-shrink-0 opacity-50" />
+                    {/* Right: download arrow */}
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: `${color}22` }}>
+                      <Download className="w-4 h-4" style={{ color }} />
+                    </div>
                   </button>
                 );
               })}
