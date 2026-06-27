@@ -147,8 +147,8 @@ export default function DownloaderBox({ highlightFormat }: Props) {
         ) : (
           <button
             onClick={handlePaste}
-            className="flex items-center gap-2 mr-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all whitespace-nowrap shrink-0 active:scale-95"
-            style={{ background: "#0d9488", color: "#ffffff", border: "2px solid #14b8a6" }}
+            className="flex items-center gap-2 mr-3 px-4 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap shrink-0 active:scale-95"
+            style={{ background: "rgba(0,229,229,0.22)", color: "#00e5e5", border: "2px solid rgba(0,229,229,0.55)", boxShadow: "0 0 12px rgba(0,229,229,0.18)" }}
           >
             <Clipboard className="w-4 h-4" />
             <span>Paste</span>
