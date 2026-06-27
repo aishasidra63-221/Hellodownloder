@@ -3,7 +3,7 @@ import { fetchVideoInfo, downloadVideo, downloadPhoto, VideoInfo, DownloadFormat
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
   Video, Music, Film, Copy, Download, Image,
-  AlertCircle, Clock, User, Eye, Heart, Loader2, X,
+  AlertCircle, Clock, User, Eye, Heart, Loader2, X, FlaskConical,
 } from "lucide-react";
 
 interface FormatOption {
@@ -20,6 +20,24 @@ const FORMAT_OPTIONS: FormatOption[] = [
   { format: "mp3",      label: "MP3 Audio",         sublabel: "192 kbps · Audio only",         Icon: Music, neonColor: "#00f2ea" },
   { format: "thumbnail",label: "Thumbnail",         sublabel: "Cover image · JPG",             Icon: Image, neonColor: "#ffe94b" },
 ];
+
+const DEMO_DATA: VideoInfo = {
+  success: true,
+  title: "This is how your result card will look 🎉 Title shows here like this",
+  author: "@creator_username",
+  duration: 47,
+  thumbnail: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80",
+  view_count: 2400000,
+  like_count: 184000,
+  comment_count: 3200,
+  share_count: 12000,
+  is_photo: false,
+  download_urls: {
+    mp4_1080: "",
+    mp4_720:  "",
+    mp3:      "",
+  },
+};
 
 function fmtNum(n?: number) {
   if (!n) return null;
@@ -47,6 +65,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   const [error, setError]                       = useState("");
   const [activeDownload, setActiveDownload]     = useState<DownloadFormat | null>(null);
   const [photoDownloading, setPhotoDownloading] = useState<number | null>(null);
+  const [isDemo, setIsDemo]                     = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const getToken = useCallback(async (action: string): Promise<string | undefined> => {
@@ -57,6 +76,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   const handleFetch = async () => {
     const trimmed = url.trim();
     if (!trimmed) return;
+    setIsDemo(false);
     setStep("loading-info");
     setError("");
     setInfo(null);
@@ -71,7 +91,16 @@ export default function DownloaderBox({ highlightFormat }: Props) {
     }
   };
 
+  const handleDemo = () => {
+    setIsDemo(true);
+    setUrl("https://www.tiktok.com/@demo/video/1234567890");
+    setInfo(DEMO_DATA);
+    setStep("info-ready");
+    setError("");
+  };
+
   const handleDownload = async (format: DownloadFormat) => {
+    if (isDemo) return;
     setActiveDownload(format);
     try {
       const token = await getToken("download");
@@ -90,6 +119,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   };
 
   const handlePhotoDownload = async (imgUrl: string, index: number) => {
+    if (isDemo) return;
     setPhotoDownloading(index);
     try { await downloadPhoto(imgUrl, index); }
     finally { setPhotoDownloading(null); }
@@ -99,7 +129,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
     try { setUrl(await navigator.clipboard.readText()); } catch {}
   };
 
-  const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); };
+  const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); setIsDemo(false); };
 
   const isPhoto = info?.is_photo && (info.images?.length ?? 0) > 0;
 
@@ -145,6 +175,22 @@ export default function DownloaderBox({ highlightFormat }: Props) {
         </button>
       </div>
 
+      {/* ── Demo button ── */}
+      {step === "idle" && (
+        <button
+          onClick={handleDemo}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all"
+          style={{
+            background: "rgba(0,242,234,0.06)",
+            border: "1px dashed rgba(0,242,234,0.25)",
+            color: "#00f2ea",
+          }}
+        >
+          <FlaskConical className="w-3.5 h-3.5" />
+          Preview Demo — dekho result card kaisa dikhega
+        </button>
+      )}
+
       {/* ── Error ── */}
       {step === "error" && (
         <div className="flex items-start gap-2.5 p-4 rounded-2xl text-sm text-[#ff6aaa] border border-[rgba(255,45,120,0.25)] bg-[rgba(255,45,120,0.08)]">
@@ -158,14 +204,21 @@ export default function DownloaderBox({ highlightFormat }: Props) {
         <div className="rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.08)] animate-in fade-in slide-in-from-bottom-3 duration-300"
           style={{ background: "rgba(12,8,28,0.95)", boxShadow: "0 0 40px rgba(255,45,120,0.1), 0 20px 60px rgba(0,0,0,0.5)" }}>
 
+          {/* Demo badge */}
+          {isDemo && (
+            <div className="flex items-center justify-center gap-1.5 py-2 text-[10px] font-black uppercase tracking-widest"
+              style={{ background: "rgba(0,242,234,0.1)", color: "#00f2ea", borderBottom: "1px solid rgba(0,242,234,0.15)" }}>
+              <FlaskConical className="w-3 h-3" />
+              DEMO MODE — Yeh sirf preview hai, download nahi hoga
+            </div>
+          )}
+
           {/* ── Thumbnail + info ── */}
           {info.thumbnail ? (
             <div className="relative h-44 sm:h-56 overflow-hidden">
               <img src={info.thumbnail} alt={info.title} className="w-full h-full object-cover opacity-70" />
-              {/* Gradient overlay */}
               <div className="absolute inset-0"
                 style={{ background: "linear-gradient(to top, rgba(8,4,20,0.97) 0%, rgba(8,4,20,0.5) 50%, transparent 100%)" }} />
-              {/* Neon top line */}
               <div className="absolute top-0 left-0 right-0 h-px"
                 style={{ background: "linear-gradient(90deg, #ff2d78, #9b5de5, #00f2ea)" }} />
 
@@ -174,7 +227,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                 <div className="flex items-center gap-3 flex-wrap">
                   <span className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full"
                     style={{ background: "rgba(255,45,120,0.2)", color: "#ff6aaa", border: "1px solid rgba(255,45,120,0.3)" }}>
-                    <User className="w-3 h-3" /> @{info.author}
+                    <User className="w-3 h-3" /> {info.author}
                   </span>
                   {info.duration > 0 && (
                     <span className="flex items-center gap-1 text-xs text-white/40">
@@ -197,7 +250,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
           ) : (
             <div className="p-5 border-b border-white/6">
               <p className="font-bold text-white">{info.title || "TikTok Video"}</p>
-              <p className="text-sm text-white/40 mt-1">@{info.author}</p>
+              <p className="text-sm text-white/40 mt-1">{info.author}</p>
             </div>
           )}
 
@@ -210,7 +263,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
               {info.images!.length > 1 && (
                 <button
                   onClick={() => info.images!.forEach((u, i) => setTimeout(() => handlePhotoDownload(u, i), i * 400))}
-                  disabled={photoDownloading !== null}
+                  disabled={photoDownloading !== null || isDemo}
                   className="gradient-btn w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm text-white disabled:opacity-50"
                 >
                   <Download className="w-4 h-4" />
@@ -229,7 +282,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                     </div>
                     <button
                       onClick={() => handlePhotoDownload(imgUrl, i)}
-                      disabled={photoDownloading !== null}
+                      disabled={photoDownloading !== null || isDemo}
                       className="flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#ff6aaa] hover:text-white transition-colors disabled:opacity-50"
                       style={{ borderTop: "1px solid rgba(255,45,120,0.15)" }}
                     >
@@ -252,15 +305,17 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                   <button
                     key={format}
                     onClick={() => handleDownload(format)}
-                    disabled={!!activeDownload}
-                    className="format-btn w-full flex items-center gap-4 p-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed group"
-                    style={isHighlighted ? {
-                      background: `${neonColor}18`,
-                      borderColor: `${neonColor}50`,
-                      boxShadow: `0 0 16px ${neonColor}20`,
-                    } : undefined}
+                    disabled={!!activeDownload || isDemo}
+                    className="format-btn w-full flex items-center gap-4 p-4 rounded-xl disabled:cursor-not-allowed group"
+                    style={{
+                      opacity: isDemo ? 1 : undefined,
+                      ...(isHighlighted ? {
+                        background: `${neonColor}18`,
+                        borderColor: `${neonColor}50`,
+                        boxShadow: `0 0 16px ${neonColor}20`,
+                      } : {}),
+                    }}
                   >
-                    {/* Icon bubble */}
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all"
                       style={{
                         background: `${neonColor}15`,
@@ -271,7 +326,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                         : <Icon className="w-4 h-4" style={{ color: neonColor }} />}
                     </div>
 
-                    {/* Labels */}
                     <div className="text-left flex-1">
                       <div className="font-bold text-sm text-white group-hover:text-white">
                         {isActive ? "Downloading…" : label}
@@ -279,7 +333,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                       <div className="text-xs text-white/30">{sublabel}</div>
                     </div>
 
-                    {/* Arrow */}
                     <Download className="w-4 h-4 text-white/20 group-hover:text-white/60 transition-colors flex-shrink-0" />
                   </button>
                 );
