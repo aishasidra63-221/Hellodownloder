@@ -100,10 +100,10 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
 
-      {/* Input row */}
+      {/* Input row — full width, no button inside */}
       <div className="input-box">
-        <div style={{ padding: "0 12px", color: "rgba(34,211,238,0.5)", flexShrink: 0 }}>
-          <LinkIcon size={16} />
+        <div style={{ padding: "0 14px", color: "rgba(34,211,238,0.5)", flexShrink: 0 }}>
+          <LinkIcon size={18} />
         </div>
         <input
           type="text"
@@ -114,30 +114,32 @@ export default function DownloaderBox({ highlightFormat }: Props) {
           placeholder="Paste TikTok link here..."
           style={{
             flex: 1, minWidth: 0, background: "transparent",
-            padding: "14px 8px", fontSize: 14, outline: "none",
+            padding: "18px 8px", fontSize: 15, outline: "none",
             color: "#f4f4f6",
           }}
         />
         {url ? (
-          <button onClick={reset} className="btn-ghost" style={{ margin: "0 6px", padding: "6px 12px", fontSize: 12 }}>
-            <X size={13} /> Clear
+          <button onClick={reset} className="btn-ghost" style={{ margin: "0 10px", padding: "7px 14px", fontSize: 13 }}>
+            <X size={14} /> Clear
           </button>
         ) : (
-          <button onClick={handlePaste} className="btn-ghost" style={{ margin: "0 6px", padding: "6px 12px", fontSize: 12 }}>
-            <Clipboard size={13} /> Paste
+          <button onClick={handlePaste} className="btn-ghost" style={{ margin: "0 10px", padding: "7px 14px", fontSize: 13 }}>
+            <Clipboard size={14} /> Paste
           </button>
         )}
-        <button
-          onClick={handleFetch}
-          disabled={!url.trim() || step === "loading-info"}
-          className="btn-primary"
-          style={{ borderRadius: "0 10px 10px 0", margin: 0 }}
-        >
-          {step === "loading-info"
-            ? <><Loader2 size={15} className="animate-spin" /> Fetching…</>
-            : <><Download size={15} /> Download</>}
-        </button>
       </div>
+
+      {/* Download button — full width below input */}
+      <button
+        onClick={handleFetch}
+        disabled={!url.trim() || step === "loading-info"}
+        className="btn-primary"
+        style={{ width: "100%", padding: "16px", borderRadius: 12, fontSize: 16, fontWeight: 700 }}
+      >
+        {step === "loading-info"
+          ? <><Loader2 size={18} className="animate-spin" /> Fetching…</>
+          : <><Download size={18} /> Download Now</>}
+      </button>
 
       {/* Demo button */}
       {step === "idle" && (
