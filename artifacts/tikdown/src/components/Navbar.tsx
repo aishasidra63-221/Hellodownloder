@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useTheme } from "@/App";
-import { Download, Menu, X, Home, Clock, Sun, Moon } from "lucide-react";
+import { Download, Menu, X, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -9,30 +9,29 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
-    { href: "/",        label: "Home",    Icon: Home  },
-    { href: "/history", label: "History", Icon: Clock },
+    { href: "/how-it-works", label: "How it works" },
+    { href: "/faq",          label: "FAQ"          },
+    { href: "/history",      label: "History"      },
   ];
 
   const isLight = theme === "light";
 
   return (
     <nav className="navbar-glass sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 h-16 flex items-center justify-between">
 
         {/* Logo */}
         <Link href="/">
           <div className="flex items-center gap-2.5 cursor-pointer select-none group">
-            {/* Logo mark */}
-            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
               style={{
-                background: "linear-gradient(135deg, #00c8c8 0%, #e91e8c 100%)",
-                boxShadow: "0 2px 12px rgba(0,200,200,0.35), 0 2px 12px rgba(233,30,140,0.2)",
+                background: "#dc2020",
+                boxShadow: "0 2px 10px rgba(220,32,32,0.4)",
               }}>
               <Download className="w-4 h-4 text-white" strokeWidth={2.5} />
             </div>
-            {/* Wordmark */}
-            <span className="logo-text text-xl font-black tracking-tight" style={{ color: isLight ? "#1a1a2e" : "#ffffff" }}>
-              LulDown
+            <span className="logo-text text-xl font-black tracking-tight" style={{ color: isLight ? "#111111" : "#ffffff" }}>
+              Lul<span style={{ color: "#dc2020" }}>Down</span>
             </span>
           </div>
         </Link>
@@ -40,13 +39,12 @@ export default function Navbar() {
         <div className="flex items-center gap-1">
           {/* Desktop nav links */}
           <div className="hidden sm:flex items-center gap-1">
-            {navLinks.map(({ href, label, Icon }) => (
+            {navLinks.map(({ href, label }) => (
               <Link key={href} href={href}>
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all duration-150"
+                <div className="px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all duration-150"
                   style={location === href
-                    ? { color: "#00e5e5" }
-                    : { color: isLight ? "rgba(26,26,46,0.5)" : "rgba(200,215,235,0.5)" }}>
-                  <Icon className="w-4 h-4" />
+                    ? { color: "#dc2020" }
+                    : { color: isLight ? "rgba(20,20,20,0.5)" : "rgba(200,200,200,0.5)" }}>
                   {label}
                 </div>
               </Link>
@@ -58,8 +56,8 @@ export default function Navbar() {
             onClick={toggle}
             className="w-9 h-9 rounded-xl flex items-center justify-center transition-all ml-1"
             style={{
-              background: isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)",
-              color: isLight ? "#4b5563" : "rgba(200,215,235,0.6)",
+              background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
+              color: isLight ? "#4b5563" : "rgba(200,200,200,0.6)",
               border: isLight ? "1px solid rgba(0,0,0,0.1)" : "1px solid rgba(255,255,255,0.08)",
             }}
             aria-label="Toggle theme"
@@ -72,8 +70,8 @@ export default function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             className="sm:hidden w-9 h-9 rounded-xl flex items-center justify-center transition-all ml-1"
             style={{
-              background: isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)",
-              color: isLight ? "#4b5563" : "rgba(200,215,235,0.6)",
+              background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
+              color: isLight ? "#4b5563" : "rgba(200,200,200,0.6)",
               border: isLight ? "1px solid rgba(0,0,0,0.1)" : "1px solid rgba(255,255,255,0.08)",
             }}
             aria-label="Menu"
@@ -88,19 +86,18 @@ export default function Navbar() {
         <div className="sm:hidden border-t px-4 py-3 space-y-1"
           style={{
             borderColor: isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.07)",
-            background: isLight ? "rgba(255,255,255,0.96)" : "rgba(10,13,22,0.97)",
+            background: isLight ? "rgba(255,255,255,0.97)" : "rgba(10,10,10,0.98)",
             backdropFilter: "blur(20px)",
           }}>
-          {navLinks.map(({ href, label, Icon }) => (
+          {navLinks.map(({ href, label }) => (
             <Link key={href} href={href}>
               <div
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-medium cursor-pointer transition-all"
+                className="px-3 py-3 rounded-xl text-sm font-medium cursor-pointer transition-all"
                 style={location === href
-                  ? { color: "#00e5e5", background: "rgba(0,229,229,0.08)" }
-                  : { color: isLight ? "#4b5563" : "rgba(200,215,235,0.55)" }}
+                  ? { color: "#dc2020", background: "rgba(220,32,32,0.08)" }
+                  : { color: isLight ? "#4b5563" : "rgba(200,200,200,0.55)" }}
               >
-                <Icon className="w-4 h-4" />
                 {label}
               </div>
             </Link>

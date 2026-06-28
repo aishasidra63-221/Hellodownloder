@@ -15,10 +15,10 @@ interface FormatOption {
 }
 
 const FORMAT_OPTIONS: FormatOption[] = [
-  { format: "mp4_1080", label: "HD 1080p — No Watermark",  sublabel: "Best Quality · Full HD",  Icon: Video, color: "#00e5e5" },
-  { format: "mp4_720",  label: "720p — No Watermark",       sublabel: "Standard HD · Smaller",   Icon: Film,  color: "#00e5e5" },
-  { format: "mp3",      label: "MP3 Download — 192kbps",    sublabel: "Audio Only · High Quality",Icon: Music, color: "#00e5e5" },
-  { format: "thumbnail",label: "Thumbnail Download",        sublabel: "Cover Image · JPG",        Icon: Image, color: "#00e5e5" },
+  { format: "mp4_1080", label: "HD 1080p — No Watermark",  sublabel: "Best Quality · Full HD",  Icon: Video, color: "#dc2020" },
+  { format: "mp4_720",  label: "720p — No Watermark",       sublabel: "Standard HD · Smaller",   Icon: Film,  color: "#dc2020" },
+  { format: "mp3",      label: "MP3 Download — 192kbps",    sublabel: "Audio Only · High Quality",Icon: Music, color: "#dc2020" },
+  { format: "thumbnail",label: "Thumbnail Download",        sublabel: "Cover Image · JPG",        Icon: Image, color: "#dc2020" },
 ];
 
 const DEMO_DATA: VideoInfo = {
@@ -151,7 +151,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             <button
               onClick={handlePaste}
               className="flex items-center gap-2 mr-3 px-4 py-2 rounded-xl text-sm font-black transition-all whitespace-nowrap shrink-0 active:scale-95"
-              style={{ background: "rgba(0,229,229,0.22)", color: "#00e5e5", border: "2px solid rgba(0,229,229,0.55)", boxShadow: "0 0 12px rgba(0,229,229,0.18)" }}
+              style={{ background: "rgba(220,32,32,0.15)", color: "#ff5555", border: "2px solid rgba(220,32,32,0.45)", boxShadow: "0 0 12px rgba(220,32,32,0.15)" }}
             >
               <Clipboard className="w-4 h-4" />
               <span>Paste</span>
@@ -201,7 +201,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             {/* ── Demo badge ── */}
             {isDemo && (
               <div className="flex items-center justify-center gap-1.5 py-2 text-[10px] font-black uppercase tracking-widest"
-                style={{ background: "rgba(0,229,229,0.08)", color: "#00e5e5", borderBottom: "1px solid rgba(0,229,229,0.12)" }}>
+                style={{ background: "rgba(220,32,32,0.08)", color: "#ff5555", borderBottom: "1px solid rgba(220,32,32,0.12)" }}>
                 <FlaskConical className="w-3 h-3" />
                 DEMO — Yeh sirf preview hai
               </div>
@@ -229,7 +229,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                 </div>
                 <div className="flex-1 min-w-0">
                   {info.author && (
-                    <p className="font-black text-sm" style={{ color: "#00e5e5" }}>{info.author}</p>
+                    <p className="font-black text-sm" style={{ color: "#ff5555" }}>{info.author}</p>
                   )}
                   {cleanTitle && (
                     <p className="text-xs leading-snug line-clamp-3 mt-1" style={{ color: "rgba(200,215,235,0.75)" }}>
@@ -281,7 +281,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                         onClick={() => handlePhotoDownload(imgUrl, i)}
                         disabled={photoDownloading !== null || isDemo}
                         className="flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold disabled:opacity-50"
-                        style={{ color: "#00e5e5", borderTop: "1px solid rgba(255,255,255,0.07)" }}
+                        style={{ color: "#ff5555", borderTop: "1px solid rgba(255,255,255,0.07)" }}
                       >
                         {photoDownloading === i
                           ? <><Loader2 className="w-3 h-3 animate-spin" /> Saving…</>

@@ -37,7 +37,7 @@ export default function Footer() {
 
           {/* Tools */}
           <div>
-            <h4 className="font-semibold text-[10px] text-[#ff6aaa] uppercase tracking-widest mb-4">Tools</h4>
+            <h4 className="font-semibold text-[10px] uppercase tracking-widest mb-4" style={{ color: "#ff5555" }}>Tools</h4>
             <ul className="space-y-2.5">
               {[
                 { href: "/",        label: "TikTok Downloader" },
@@ -47,7 +47,7 @@ export default function Footer() {
               ].map((l) => (
                 <li key={l.label}>
                   <Link href={l.href}>
-                    <span className="text-xs text-white/35 hover:text-[#ff6aaa] transition-colors cursor-pointer">{l.label}</span>
+                    <span className="text-xs text-white/35 hover:text-[#ff5555] transition-colors cursor-pointer">{l.label}</span>
                   </Link>
                 </li>
               ))}
