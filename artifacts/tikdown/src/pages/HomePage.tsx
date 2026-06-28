@@ -1,45 +1,6 @@
-import { useEffect } from "react";
-import { useLocation } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import DownloaderBox from "@/components/DownloaderBox";
-import { DownloadFormat } from "@/lib/api";
-import { Shield, Zap, MonitorSmartphone, Download, ChevronRight, Video, Music, Image, ArrowRight } from "lucide-react";
-
-const FORMAT_CARDS = [
-  {
-    id: "mp4_1080" as DownloadFormat,
-    Icon: Video,
-    emoji: "🎬",
-    title: "HD Video — No Watermark",
-    tagline: "Crystal clear 1080p",
-    desc: "Download in full 1080p quality with zero watermark. Looks exactly like the original — no branding, no blur.",
-    cta: "Download HD Video",
-    gradient: "linear-gradient(135deg, rgba(34,211,238,0.15) 0%, rgba(6,182,212,0.08) 100%)",
-    border: "rgba(34,211,238,0.25)",
-  },
-  {
-    id: "mp3" as DownloadFormat,
-    Icon: Music,
-    emoji: "🎵",
-    title: "MP3 Audio",
-    tagline: "192kbps pure audio",
-    desc: "Extract just the audio track in high-quality 192kbps MP3. Perfect for saving songs, podcasts and voiceovers.",
-    cta: "Download MP3",
-    gradient: "linear-gradient(135deg, rgba(167,139,250,0.15) 0%, rgba(139,92,246,0.08) 100%)",
-    border: "rgba(167,139,250,0.25)",
-  },
-  {
-    id: "thumbnail" as DownloadFormat,
-    Icon: Image,
-    emoji: "🖼️",
-    title: "Photo & Thumbnail",
-    tagline: "Full resolution images",
-    desc: "Save TikTok cover thumbnails and photo slideshow posts in original resolution — every image, one click.",
-    cta: "Download Photos",
-    gradient: "linear-gradient(135deg, rgba(52,211,153,0.15) 0%, rgba(16,185,129,0.08) 100%)",
-    border: "rgba(52,211,153,0.25)",
-  },
-];
+import { Shield, Zap, MonitorSmartphone, Download, ChevronRight } from "lucide-react";
 
 const FEATURES = [
   { Icon: Shield,            title: "No Watermark",     desc: "Download clean HD videos — no TikTok logo, no watermark."      },
@@ -55,49 +16,24 @@ const STEPS = [
 ];
 
 const FAQ = [
-  { q: "Is it really free?",          a: "Yes — no account, no paywall, no watermark on output."            },
-  { q: "What formats are supported?", a: "MP4 1080p, MP4 720p, MP3 192kbps, and photo album downloads."     },
-  { q: "Does it work on mobile?",     a: "Fully responsive — works on any browser, any device."              },
-  { q: "Is my data stored?",          a: "No. Download history is saved only in your browser's localStorage."},
+  { q: "Is it really free?",          a: "Yes — no account, no paywall, no watermark on output."             },
+  { q: "What formats are supported?", a: "MP4 1080p, MP4 720p, MP3 192kbps, and photo album downloads."      },
+  { q: "Does it work on mobile?",     a: "Fully responsive — works on any browser, any device."               },
+  { q: "Is my data stored?",          a: "No. Download history is saved only in your browser's localStorage." },
 ];
 
-function getFormat(search: string): DownloadFormat | undefined {
-  const p = new URLSearchParams(search.replace(/^\?/, ""));
-  const v = p.get("format");
-  return (["mp4_1080","mp4_720","mp3","thumbnail"].includes(v ?? "") ? v : undefined) as DownloadFormat | undefined;
-}
-
 export default function HomePage() {
-  const [, navigate] = useLocation();
-  const search = typeof window !== "undefined" ? window.location.search : "";
-  const highlightFormat = getFormat(search);
-
   useSEO({
     title: "TikTok Video Downloader — No Watermark | LulDown",
     description: "Download TikTok videos without watermark in 1080p, 720p or MP3. Free, fast, no login required. Works on all devices.",
   });
-
-  useEffect(() => {
-    if (highlightFormat) {
-      setTimeout(() => {
-        document.getElementById("downloader")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 120);
-    }
-  }, [highlightFormat]);
-
-  const handleFormatCard = (formatId: DownloadFormat) => {
-    navigate(`/?format=${formatId}`);
-    setTimeout(() => {
-      document.getElementById("downloader")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 60);
-  };
 
   return (
     <div style={{ position: "relative", zIndex: 1 }}>
       <div className="bg-mesh" />
 
       {/* ══ HERO ══════════════════════════════════════════ */}
-      <section style={{ padding: "72px 20px 0", textAlign: "center", maxWidth: 680, margin: "0 auto" }}>
+      <section style={{ padding: "72px 20px 56px", textAlign: "center", maxWidth: 680, margin: "0 auto" }}>
         <div style={{ marginBottom: 24 }}>
           <span className="pill-badge fade-up">
             <Zap size={12} fill="currentColor" />
@@ -117,70 +53,8 @@ export default function HomePage() {
           Paste any TikTok link and get clean HD video, audio, or photos — no account needed, no hidden fees.
         </p>
 
-        <div id="downloader" className="fade-up-3" style={{ maxWidth: 600, margin: "0 auto", scrollMarginTop: 80 }}>
-          <DownloaderBox highlightFormat={highlightFormat} />
-        </div>
-      </section>
-
-      {/* ══ FORMAT CARDS ══════════════════════════════════ */}
-      <section style={{ padding: "40px 20px 64px", maxWidth: 960, margin: "0 auto" }}>
-        <p style={{
-          textAlign: "center", fontSize: 13, color: "var(--text-muted)",
-          marginBottom: 20, fontWeight: 500,
-        }}>
-          Choose your format — click to get started instantly
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
-          {FORMAT_CARDS.map(({ id, Icon, emoji, title, tagline, desc, cta, gradient, border }) => (
-            <button
-              key={id}
-              onClick={() => handleFormatCard(id)}
-              style={{
-                display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0,
-                background: "var(--bg-card)", border: `1.5px solid ${border}`,
-                borderRadius: 18, padding: "22px 22px 18px",
-                cursor: "pointer", textAlign: "left",
-                transition: "transform 0.18s, box-shadow 0.18s",
-                position: "relative", overflow: "hidden",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 32px ${border}`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
-              }}
-            >
-              {/* Gradient bg overlay */}
-              <div style={{ position: "absolute", inset: 0, background: gradient, pointerEvents: "none" }} />
-
-              {/* Icon */}
-              <div style={{ fontSize: 28, marginBottom: 12, lineHeight: 1 }}>{emoji}</div>
-
-              {/* Title */}
-              <p style={{ fontWeight: 800, fontSize: 16, color: "var(--text-primary)", marginBottom: 3, lineHeight: 1.2 }}>
-                {title}
-              </p>
-              <p style={{ fontSize: 12, fontWeight: 600, color: "var(--cyan)", marginBottom: 10, opacity: 0.85 }}>
-                {tagline}
-              </p>
-
-              {/* Description */}
-              <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.55, marginBottom: 16, flex: 1 }}>
-                {desc}
-              </p>
-
-              {/* CTA row */}
-              <div style={{
-                display: "flex", alignItems: "center", gap: 6,
-                fontSize: 13, fontWeight: 700, color: "var(--cyan)",
-              }}>
-                <ArrowRight size={15} />
-                {cta}
-              </div>
-            </button>
-          ))}
+        <div className="fade-up-3" style={{ maxWidth: 600, margin: "0 auto" }}>
+          <DownloaderBox />
         </div>
       </section>
 
@@ -234,10 +108,10 @@ export default function HomePage() {
       {/* ══ FAQ ═══════════════════════════════════════════ */}
       <section style={{ padding: "56px 20px 72px", maxWidth: 720, margin: "0 auto" }}>
         <h2 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)", fontWeight: 800, color: "var(--text-primary)", marginBottom: 12 }}>
-          Frequently Asked Questions
+          Best TikTok Downloader — No Watermark, No Login
         </h2>
         <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.75, marginBottom: 28 }}>
-          Everything you need to know about LulDown — fast answers, no fluff.
+          Always fast, no limits, completely free forever.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
           {FAQ.map(({ q, a }) => (
