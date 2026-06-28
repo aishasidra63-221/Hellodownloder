@@ -3,7 +3,7 @@ import { fetchVideoInfo, downloadVideo, downloadPhoto, VideoInfo, DownloadFormat
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
   Video, Music, Film, Clipboard, Download, Image,
-  AlertCircle, Loader2, X, FlaskConical,
+  AlertCircle, Loader2, X, FlaskConical, Link as LinkIcon,
 } from "lucide-react";
 
 interface FormatOption {
@@ -11,14 +11,13 @@ interface FormatOption {
   label: string;
   sublabel: string;
   Icon: React.ElementType;
-  color: string;
 }
 
 const FORMAT_OPTIONS: FormatOption[] = [
-  { format: "mp4_1080", label: "HD 1080p — No Watermark",  sublabel: "Best Quality · Full HD",  Icon: Video, color: "#dc2020" },
-  { format: "mp4_720",  label: "720p — No Watermark",       sublabel: "Standard HD · Smaller",   Icon: Film,  color: "#dc2020" },
-  { format: "mp3",      label: "MP3 Download — 192kbps",    sublabel: "Audio Only · High Quality",Icon: Music, color: "#dc2020" },
-  { format: "thumbnail",label: "Thumbnail Download",        sublabel: "Cover Image · JPG",        Icon: Image, color: "#dc2020" },
+  { format: "mp4_1080", label: "HD 1080p — No Watermark",   sublabel: "Best Quality · Full HD",   Icon: Video },
+  { format: "mp4_720",  label: "720p — No Watermark",        sublabel: "Standard HD · Smaller",    Icon: Film  },
+  { format: "mp3",      label: "MP3 Download — 192kbps",     sublabel: "Audio Only · High Quality", Icon: Music },
+  { format: "thumbnail",label: "Thumbnail Download",         sublabel: "Cover Image · JPG",         Icon: Image },
 ];
 
 const DEMO_DATA: VideoInfo = {
@@ -35,12 +34,13 @@ const DEMO_DATA: VideoInfo = {
   download_urls: { mp4_1080: "", mp4_720: "", mp3: "" },
 };
 
-
 type Step = "idle" | "loading-info" | "info-ready" | "downloading" | "error";
 
 interface Props {
   highlightFormat?: DownloadFormat;
 }
+
+const PURPLE = "#8b5cf6";
 
 export default function DownloaderBox({ highlightFormat }: Props) {
   const [url, setUrl]                           = useState("");
@@ -116,61 +116,66 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); setIsDemo(false); };
 
   const isPhoto = info?.is_photo && (info.images?.length ?? 0) > 0;
-
   const formats = highlightFormat
     ? [...FORMAT_OPTIONS].sort((a) => (a.format === highlightFormat ? -1 : 1))
     : FORMAT_OPTIONS;
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full">
 
-      {/* ── Input + Download Now row ── */}
-      <div className="flex flex-col sm:flex-row items-stretch gap-2.5">
-
-        {/* Input box */}
-        <div className="downloader-input-wrap flex items-center rounded-2xl flex-1 min-w-0">
-          <input
-            type="text"
-            inputMode="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleFetch()}
-            placeholder="Paste TikTok link here..."
-            className="min-w-0 flex-1 bg-transparent pl-5 pr-2 py-3.5 text-base outline-none"
-          />
-          {url ? (
-            <button
-              onClick={reset}
-              className="flex items-center gap-2 mr-3 px-4 py-2 rounded-xl text-sm font-black transition-all whitespace-nowrap shrink-0 active:scale-95"
-              style={{ background: "rgba(233,30,140,0.22)", color: "#ff4da6", border: "2px solid rgba(233,30,140,0.55)", boxShadow: "0 0 12px rgba(233,30,140,0.18)" }}
-            >
-              <X className="w-4 h-4" />
-              <span>Clear</span>
-            </button>
-          ) : (
-            <button
-              onClick={handlePaste}
-              className="flex items-center gap-2 mr-3 px-4 py-2 rounded-xl text-sm font-black transition-all whitespace-nowrap shrink-0 active:scale-95"
-              style={{ background: "rgba(220,32,32,0.15)", color: "#ff5555", border: "2px solid rgba(220,32,32,0.45)", boxShadow: "0 0 12px rgba(220,32,32,0.15)" }}
-            >
-              <Clipboard className="w-4 h-4" />
-              <span>Paste</span>
-            </button>
-          )}
+      {/* ── Input row ── */}
+      <div className="downloader-input-wrap flex items-center rounded-xl overflow-hidden">
+        <div className="pl-4 pr-2 shrink-0" style={{ color: "rgba(139,92,246,0.6)" }}>
+          <LinkIcon className="w-4 h-4" />
         </div>
+        <input
+          type="text"
+          inputMode="url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleFetch()}
+          placeholder="Paste TikTok video link here..."
+          className="min-w-0 flex-1 bg-transparent pl-1 pr-2 py-3.5 text-sm outline-none"
+        />
 
-        {/* Download Now button — beside input on desktop */}
+        {url ? (
+          <button
+            onClick={reset}
+            className="flex items-center gap-1.5 mr-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0"
+            style={{ background: "rgba(139,92,246,0.12)", color: "#a78bfa", border: "1px solid rgba(139,92,246,0.3)" }}
+          >
+            <X className="w-3.5 h-3.5" />
+            Clear
+          </button>
+        ) : (
+          <button
+            onClick={handlePaste}
+            className="flex items-center gap-1.5 mr-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0"
+            style={{ background: "rgba(139,92,246,0.12)", color: "#a78bfa", border: "1px solid rgba(139,92,246,0.3)" }}
+          >
+            <Clipboard className="w-3.5 h-3.5" />
+            Paste
+          </button>
+        )}
+
         <button
           onClick={handleFetch}
           disabled={!url.trim() || step === "loading-info"}
-          className="gradient-btn sm:shrink-0 py-3.5 px-6 rounded-2xl text-base font-black flex items-center justify-center gap-2.5"
+          className="gradient-btn shrink-0 py-3.5 px-5 text-sm font-bold flex items-center gap-2"
         >
           {step === "loading-info"
-            ? <><Loader2 className="w-5 h-5 animate-spin" /> Fetching…</>
-            : <><Download className="w-5 h-5" /> Download Now</>}
+            ? <><Loader2 className="w-4 h-4 animate-spin" /> Fetching…</>
+            : <><Download className="w-4 h-4" /> Download</>}
         </button>
-
       </div>
+
+      {/* Example URL */}
+      {step === "idle" && (
+        <p className="text-xs text-center" style={{ color: "rgba(200,200,220,0.4)" }}>
+          Example:{" "}
+          <span style={{ color: PURPLE }}>https://www.tiktok.com/@user/video/1234567890</span>
+        </p>
+      )}
 
       {/* ── Demo button ── */}
       {step === "idle" && (
@@ -185,8 +190,8 @@ export default function DownloaderBox({ highlightFormat }: Props) {
 
       {/* ── Error ── */}
       {step === "error" && (
-        <div className="error-box flex items-start gap-2.5 p-4 rounded-2xl text-sm border">
-          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+        <div className="error-box flex items-start gap-2.5 p-4 rounded-xl text-sm border">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
           {error}
         </div>
       )}
@@ -198,53 +203,42 @@ export default function DownloaderBox({ highlightFormat }: Props) {
         return (
           <div className="result-card rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-300">
 
-            {/* ── Demo badge ── */}
             {isDemo && (
               <div className="flex items-center justify-center gap-1.5 py-2 text-[10px] font-black uppercase tracking-widest"
-                style={{ background: "rgba(220,32,32,0.08)", color: "#ff5555", borderBottom: "1px solid rgba(220,32,32,0.12)" }}>
+                style={{ background: "rgba(139,92,246,0.08)", color: "#a78bfa", borderBottom: "1px solid rgba(139,92,246,0.12)" }}>
                 <FlaskConical className="w-3 h-3" />
                 DEMO — Yeh sirf preview hai
               </div>
             )}
 
-            {/* ── Thumbnail image ── */}
             {info.thumbnail && (
               <div className="relative w-full overflow-hidden" style={{ maxHeight: "160px" }}>
-                <img
-                  src={info.thumbnail}
-                  alt={info.title}
-                  className="w-full object-cover"
-                  style={{ maxHeight: "160px" }}
-                />
+                <img src={info.thumbnail} alt={info.title} className="w-full object-cover" style={{ maxHeight: "160px" }} />
               </div>
             )}
 
-            {/* ── Creator info ── */}
             <div className="px-4 pt-3 pb-3 space-y-2.5">
-              {/* Avatar + username + title */}
               <div className="flex items-start gap-3">
-                <div className="w-11 h-11 rounded-full flex-shrink-0 flex items-center justify-center font-black text-base text-white"
-                  style={{ background: "linear-gradient(135deg, #00c8c8, #e91e8c)" }}>
+                <div className="w-10 h-10 rounded-full shrink-0 flex items-center justify-center font-black text-sm text-white"
+                  style={{ background: "linear-gradient(135deg, #8b5cf6, #6d28d9)" }}>
                   {info.author ? info.author.replace("@","").charAt(0).toUpperCase() : "T"}
                 </div>
                 <div className="flex-1 min-w-0">
                   {info.author && (
-                    <p className="font-black text-sm" style={{ color: "#ff5555" }}>{info.author}</p>
+                    <p className="font-bold text-sm" style={{ color: PURPLE }}>{info.author}</p>
                   )}
                   {cleanTitle && (
-                    <p className="text-xs leading-snug line-clamp-3 mt-1" style={{ color: "rgba(200,215,235,0.75)" }}>
+                    <p className="text-xs leading-snug line-clamp-3 mt-0.5" style={{ color: "rgba(200,215,235,0.7)" }}>
                       {cleanTitle}
                     </p>
                   )}
                 </div>
               </div>
-
-              {/* Tags */}
               {tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {tags.slice(0, 6).map((tag) => (
-                    <span key={tag} className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
-                      style={{ background: "rgba(168,85,247,0.18)", color: "#c084fc", border: "1px solid rgba(168,85,247,0.3)" }}>
+                    <span key={tag} className="text-[11px] font-bold px-2 py-0.5 rounded-full"
+                      style={{ background: "rgba(139,92,246,0.15)", color: "#c4b5fd", border: "1px solid rgba(139,92,246,0.25)" }}>
                       {tag}
                     </span>
                   ))}
@@ -252,7 +246,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
               )}
             </div>
 
-            {/* ── Photo post ── */}
             {isPhoto ? (
               <div className="p-4 space-y-3">
                 <p className="text-xs font-bold uppercase tracking-widest text-center" style={{ color: "rgba(200,215,235,0.35)" }}>
@@ -262,15 +255,15 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                   <button
                     onClick={() => info.images!.forEach((u, i) => setTimeout(() => handlePhotoDownload(u, i), i * 400))}
                     disabled={photoDownloading !== null || isDemo}
-                    className="gradient-btn w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-sm disabled:opacity-50"
+                    className="gradient-btn w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm disabled:opacity-50"
                   >
-                    <Download className="w-5 h-5" /> Save All {info.images!.length} Photos
+                    <Download className="w-4 h-4" /> Save All {info.images!.length} Photos
                   </button>
                 )}
                 <div className={`grid gap-3 ${info.images!.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
                   {info.images!.map((imgUrl, i) => (
                     <div key={i} className="rounded-xl overflow-hidden flex flex-col"
-                      style={{ border: "1px solid rgba(255,255,255,0.07)", background: "rgba(10,13,22,0.6)" }}>
+                      style={{ border: "1px solid rgba(139,92,246,0.15)", background: "rgba(13,15,26,0.6)" }}>
                       <div className="relative aspect-[3/4] overflow-hidden">
                         <img src={imgUrl} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
                         <div className="absolute top-2 right-2 bg-black/70 text-white text-xs rounded-md px-1.5 py-0.5 font-bold">
@@ -281,7 +274,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                         onClick={() => handlePhotoDownload(imgUrl, i)}
                         disabled={photoDownloading !== null || isDemo}
                         className="flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold disabled:opacity-50"
-                        style={{ color: "#ff5555", borderTop: "1px solid rgba(255,255,255,0.07)" }}
+                        style={{ color: PURPLE, borderTop: "1px solid rgba(139,92,246,0.12)" }}
                       >
                         {photoDownloading === i
                           ? <><Loader2 className="w-3 h-3 animate-spin" /> Saving…</>
@@ -292,9 +285,8 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                 </div>
               </div>
             ) : (
-              /* ── Big download buttons ── */
-              <div className="p-3 space-y-2.5">
-                {formats.map(({ format, label, Icon, color }) => {
+              <div className="p-3 space-y-2">
+                {formats.map(({ format, label, Icon }) => {
                   const isActive = activeDownload === format;
                   return (
                     <button
@@ -304,8 +296,8 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                       className="gradient-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm disabled:opacity-50"
                     >
                       {isActive
-                        ? <Loader2 className="w-4 h-4 animate-spin flex-shrink-0" />
-                        : <Download className="w-4 h-4 flex-shrink-0" />}
+                        ? <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                        : <Download className="w-4 h-4 shrink-0" />}
                       <span>{isActive ? "Downloading…" : label}</span>
                     </button>
                   );

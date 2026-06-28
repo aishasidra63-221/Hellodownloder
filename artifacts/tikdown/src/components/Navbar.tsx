@@ -1,102 +1,102 @@
 import { Link, useLocation } from "wouter";
 import { useTheme } from "@/App";
-import { Download, Menu, X, Sun, Moon } from "lucide-react";
+import { Download, Menu, X, Moon, Sun } from "lucide-react";
 import { useState } from "react";
+
+const NAV_LINKS = [
+  { href: "/",            label: "Home"       },
+  { href: "/how-it-works",label: "How to Use" },
+  { href: "/features",    label: "Features"   },
+  { href: "/faq",         label: "FAQ"        },
+  { href: "/blog",        label: "Blog"       },
+];
 
 export default function Navbar() {
   const { theme, toggle } = useTheme();
   const [location] = useLocation();
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const navLinks = [
-    { href: "/how-it-works", label: "How it works" },
-    { href: "/faq",          label: "FAQ"          },
-    { href: "/history",      label: "History"      },
-  ];
-
+  const [open, setOpen] = useState(false);
   const isLight = theme === "light";
 
   return (
     <nav className="navbar-glass sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between gap-4">
 
         {/* Logo */}
         <Link href="/">
-          <div className="flex items-center gap-2.5 cursor-pointer select-none group">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{
-                background: "#dc2020",
-                boxShadow: "0 2px 10px rgba(220,32,32,0.4)",
-              }}>
+          <div className="flex items-center gap-2 cursor-pointer select-none shrink-0">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)" }}>
               <Download className="w-4 h-4 text-white" strokeWidth={2.5} />
             </div>
-            <span className="logo-text text-xl font-black tracking-tight" style={{ color: isLight ? "#111111" : "#ffffff" }}>
-              Lul<span style={{ color: "#dc2020" }}>Down</span>
+            <span className="font-black text-lg tracking-tight" style={{ color: isLight ? "#0d0f1a" : "#ffffff" }}>
+              Lul<span style={{ color: "#8b5cf6" }}>Down</span>
             </span>
           </div>
         </Link>
 
-        <div className="flex items-center gap-1">
-          {/* Desktop nav links */}
-          <div className="hidden sm:flex items-center gap-1">
-            {navLinks.map(({ href, label }) => (
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
+          {NAV_LINKS.map(({ href, label }) => {
+            const active = location === href;
+            return (
               <Link key={href} href={href}>
-                <div className="px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all duration-150"
-                  style={location === href
-                    ? { color: "#dc2020" }
-                    : { color: isLight ? "rgba(20,20,20,0.5)" : "rgba(200,200,200,0.5)" }}>
+                <div className="relative px-4 py-2 text-sm font-medium cursor-pointer transition-colors duration-150"
+                  style={{ color: active ? "#ffffff" : (isLight ? "rgba(13,15,26,0.55)" : "rgba(200,200,220,0.55)") }}>
                   {label}
+                  {active && (
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-4 rounded-full" style={{ background: "#8b5cf6" }} />
+                  )}
                 </div>
               </Link>
-            ))}
-          </div>
+            );
+          })}
+        </div>
 
-          {/* Theme toggle */}
+        {/* Theme toggle + hamburger */}
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={toggle}
-            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all ml-1"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
             style={{
-              background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
-              color: isLight ? "#4b5563" : "rgba(200,200,200,0.6)",
+              background: isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.07)",
+              color: isLight ? "#4b5563" : "rgba(200,200,220,0.7)",
               border: isLight ? "1px solid rgba(0,0,0,0.1)" : "1px solid rgba(255,255,255,0.08)",
             }}
-            aria-label="Toggle theme"
           >
-            {isLight ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+            {isLight ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+            <span className="hidden sm:inline">{isLight ? "Dark" : "Light"}</span>
           </button>
 
-          {/* Hamburger (mobile) */}
           <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="sm:hidden w-9 h-9 rounded-xl flex items-center justify-center transition-all ml-1"
+            onClick={() => setOpen(!open)}
+            className="md:hidden w-9 h-9 rounded-lg flex items-center justify-center"
             style={{
-              background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
-              color: isLight ? "#4b5563" : "rgba(200,200,200,0.6)",
+              background: isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.07)",
+              color: isLight ? "#4b5563" : "rgba(200,200,220,0.7)",
               border: isLight ? "1px solid rgba(0,0,0,0.1)" : "1px solid rgba(255,255,255,0.08)",
             }}
-            aria-label="Menu"
           >
-            {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile dropdown */}
-      {mobileOpen && (
-        <div className="sm:hidden border-t px-4 py-3 space-y-1"
+      {/* Mobile menu */}
+      {open && (
+        <div className="md:hidden border-t px-4 py-3 space-y-1"
           style={{
-            borderColor: isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.07)",
-            background: isLight ? "rgba(255,255,255,0.97)" : "rgba(10,10,10,0.98)",
+            borderColor: isLight ? "rgba(0,0,0,0.07)" : "rgba(255,255,255,0.07)",
+            background: isLight ? "rgba(255,255,255,0.98)" : "rgba(13,15,26,0.98)",
             backdropFilter: "blur(20px)",
           }}>
-          {navLinks.map(({ href, label }) => (
+          {NAV_LINKS.map(({ href, label }) => (
             <Link key={href} href={href}>
               <div
-                onClick={() => setMobileOpen(false)}
+                onClick={() => setOpen(false)}
                 className="px-3 py-3 rounded-xl text-sm font-medium cursor-pointer transition-all"
                 style={location === href
-                  ? { color: "#dc2020", background: "rgba(220,32,32,0.08)" }
-                  : { color: isLight ? "#4b5563" : "rgba(200,200,200,0.55)" }}
+                  ? { color: "#8b5cf6", background: "rgba(139,92,246,0.08)" }
+                  : { color: isLight ? "#4b5563" : "rgba(200,200,220,0.55)" }}
               >
                 {label}
               </div>
