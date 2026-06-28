@@ -42,8 +42,8 @@ export default function HomePage() {
         </div>
 
         <h1 className="hero-title fade-up-2" style={{ marginBottom: 16 }}>
-          Download TikTok Videos{" "}
-          <span className="hero-accent">Without Watermark</span>
+          TikTok Video Downloader{" "}
+          <span className="hero-accent">No Watermark</span>
         </h1>
 
         <p className="fade-up-3" style={{
