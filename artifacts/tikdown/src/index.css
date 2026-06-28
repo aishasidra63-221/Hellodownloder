@@ -376,17 +376,30 @@
   position: relative;
   text-align: center;
   box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .step-num {
-  width: 36px; height: 36px;
+  width: 40px; height: 40px;
   border-radius: 50%;
   background: var(--cyan);
   color: #fff;
   font-weight: 800;
-  font-size: 15px;
+  font-size: 16px;
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 16px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
   box-shadow: var(--step-num-shadow);
+}
+.step-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .step-connector { display: none; }
 }
 
 /* ─── Result card ─────────────────────────── */

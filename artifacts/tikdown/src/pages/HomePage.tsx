@@ -98,16 +98,16 @@ export default function HomePage() {
           Three steps — takes less than 10 seconds.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
+        <div style={{ display: "flex", alignItems: "stretch", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
           {STEPS.map(({ n, title, desc }, i) => (
-            <div key={n} style={{ position: "relative", display: "flex", alignItems: "stretch" }}>
+            <div key={n} style={{ display: "flex", alignItems: "center", gap: 8, flex: "1 1 200px", maxWidth: 280 }}>
               <div className="step-card" style={{ flex: 1 }}>
                 <div className="step-num">{n}</div>
                 <h3 style={{ fontWeight: 700, fontSize: 15, color: "var(--text-primary)", marginBottom: 8 }}>{title}</h3>
                 <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.55 }}>{desc}</p>
               </div>
               {i < STEPS.length - 1 && (
-                <div style={{ position: "absolute", right: -18, top: "50%", transform: "translateY(-50%)", color: "var(--cyan)", opacity: 0.4, zIndex: 1 }}>
+                <div className="step-connector" style={{ color: "var(--cyan)", opacity: 0.4, padding: "0 4px" }}>
                   <ChevronRight size={20} />
                 </div>
               )}
