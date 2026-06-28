@@ -1,125 +1,156 @@
 import { useSEO } from "@/hooks/use-seo";
 import DownloaderBox from "@/components/DownloaderBox";
-import { ChevronRight, ClipboardCopy, ClipboardPaste, Download } from "lucide-react";
+import { Shield, Zap, MonitorSmartphone, Download, ChevronRight } from "lucide-react";
 
-const HOME_JSONLD = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "name": "Luldown",
-      "url": "https://luldown.com",
-      "description": "Free TikTok video downloader without watermark.",
-    },
-  ],
-};
-
-const STEPS = [
-  { num: "1", label: "Copy link from TikTok",   Icon: ClipboardCopy,  },
-  { num: "2", label: "Paste the link above",     Icon: ClipboardPaste, },
-  { num: "3", label: "Click download and enjoy", Icon: Download,       },
+const FEATURES = [
+  {
+    Icon: Shield,
+    title: "No Watermark",
+    desc: "Download clean HD videos — no TikTok logo, no watermark.",
+  },
+  {
+    Icon: Zap,
+    title: "Lightning Fast",
+    desc: "Direct CDN links mean instant downloads at full speed.",
+  },
+  {
+    Icon: MonitorSmartphone,
+    title: "All Devices",
+    desc: "Works perfectly on iPhone, Android, PC and tablet.",
+  },
+  {
+    Icon: Download,
+    title: "Multiple Formats",
+    desc: "1080p, 720p, MP3 audio, or photo albums — your choice.",
+  },
 ];
 
-const SEO_ITEMS = [
-  { title: "1080p Without Watermark", body: "Full HD quality, no TikTok branding or logo." },
-  { title: "720p Download",            body: "Smaller file, same clean output for mobile." },
-  { title: "MP3 Audio 192kbps",        body: "Extract TikTok audio as high-quality MP3." },
-  { title: "All Devices",              body: "iPhone, Android, PC — no app needed." },
+const STEPS = [
+  { n: "1", title: "Copy the link", desc: "Open TikTok, tap Share → Copy link on any video." },
+  { n: "2", title: "Paste it above", desc: "Paste the link into the input box at the top of this page." },
+  { n: "3", title: "Download", desc: "Pick your format and the file downloads instantly." },
 ];
 
 export default function HomePage() {
   useSEO({
-    title: "TikTok Video Downloader No Watermark",
-    description: "Download TikTok videos without watermark in HD quality. Free, fast, unlimited downloads. No login required. Works on All Devices.",
-    jsonLd: HOME_JSONLD,
+    title: "TikTok Video Downloader — No Watermark | LulDown",
+    description: "Download TikTok videos without watermark in 1080p, 720p or MP3. Free, fast, no login required. Works on all devices.",
   });
 
   return (
-    <div className="relative">
-      <div className="hero-mesh" />
+    <div style={{ position: "relative", zIndex: 1 }}>
+      <div className="bg-mesh" />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-12 pb-20">
+      {/* ══ HERO ══════════════════════════════════════════ */}
+      <section style={{ padding: "72px 20px 56px", textAlign: "center", maxWidth: 680, margin: "0 auto" }}>
 
-        {/* ── Hero ── */}
-        <div className="text-center mb-8">
-          <h1
-            className="hero-title font-black leading-tight mb-4"
-            style={{
-              fontSize: "clamp(2.2rem, 6vw, 3.8rem)",
-              letterSpacing: "-0.02em",
-              fontFamily: "'Space Grotesk', sans-serif",
-            }}
-          >
-            Download TikTok<br />
-            <span style={{ color: "#dc2020" }}>Without Watermark</span>
-          </h1>
-          <p className="hero-subtitle text-sm sm:text-base font-medium max-w-xl mx-auto" style={{ fontFamily: "'Outfit', sans-serif" }}>
-            Paste any TikTok video link and download HD video, watermarked version, or MP3 audio — instantly, for free.
-          </p>
+        {/* Badge */}
+        <div style={{ marginBottom: 24 }}>
+          <span className="pill-badge fade-up">
+            <Zap size={12} fill="currentColor" />
+            Free · No Watermark · Instant Download
+          </span>
         </div>
 
-        {/* ── Downloader ── */}
-        <DownloaderBox />
+        {/* Heading */}
+        <h1 className="hero-title fade-up-2" style={{ marginBottom: 16 }}>
+          Download TikTok Videos{" "}
+          <span className="hero-accent">Without Watermark</span>
+        </h1>
 
-        {/* ── How to Download section ── */}
-        <div className="mt-14">
-          <div className="text-center mb-8">
-            <h2 className="how-it-works-title font-black text-2xl sm:text-3xl mb-1"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              How to Download TikTok Videos
-            </h2>
-            <p className="step-label text-sm">3 steps — takes less than 5 seconds</p>
-          </div>
+        {/* Subtitle */}
+        <p className="fade-up-3" style={{
+          fontSize: 16, color: "rgba(180,185,210,0.65)", marginBottom: 36,
+          lineHeight: 1.65, maxWidth: 480, margin: "0 auto 36px",
+        }}>
+          Paste any TikTok link and get clean HD video, audio, or photos — no account needed, no hidden fees.
+        </p>
 
-          {/* Steps */}
-          <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-6 sm:gap-4">
-            {STEPS.map(({ num, label, Icon }, i) => (
-              <div key={num} className="flex flex-col items-center text-center flex-1 max-w-[180px]">
-                <div className="relative mb-3">
-                  <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center"
-                    style={{ background: "rgba(220,32,32,0.12)", border: "2px solid rgba(220,32,32,0.35)" }}
-                  >
-                    <Icon className="w-6 h-6" style={{ color: "#dc2020" }} strokeWidth={1.8} />
-                  </div>
-                  <div
-                    className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[10px] font-black text-white flex items-center justify-center"
-                    style={{ background: "#dc2020" }}
-                  >
-                    {num}
-                  </div>
+        {/* Downloader */}
+        <div className="fade-up-3" style={{ maxWidth: 600, margin: "0 auto" }}>
+          <DownloaderBox />
+        </div>
+      </section>
+
+      {/* ══ FEATURES ══════════════════════════════════════ */}
+      <section style={{ padding: "0 20px 72px", maxWidth: 960, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+          {FEATURES.map(({ Icon, title, desc }) => (
+            <div key={title} className="feature-card">
+              <div className="feature-icon">
+                <Icon size={20} />
+              </div>
+              <h3 style={{ fontWeight: 700, fontSize: 15, color: "#f4f4f6", marginBottom: 6 }}>{title}</h3>
+              <p style={{ fontSize: 13, color: "rgba(180,185,210,0.55)", lineHeight: 1.55 }}>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="section-divider" style={{ maxWidth: 960, margin: "0 auto" }} />
+
+      {/* ══ HOW IT WORKS ══════════════════════════════════ */}
+      <section style={{ padding: "64px 20px", maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
+        <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#22d3ee", marginBottom: 10 }}>
+          Simple Process
+        </p>
+        <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2rem)", fontWeight: 800, color: "#f4f4f6", marginBottom: 8 }}>
+          How It Works
+        </h2>
+        <p style={{ fontSize: 14, color: "rgba(180,185,210,0.5)", marginBottom: 48 }}>
+          Three steps — takes less than 10 seconds.
+        </p>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
+          {STEPS.map(({ n, title, desc }, i) => (
+            <div key={n} style={{ position: "relative", display: "flex", alignItems: "stretch", gap: 0 }}>
+              <div className="step-card" style={{ flex: 1 }}>
+                <div className="step-num">{n}</div>
+                <h3 style={{ fontWeight: 700, fontSize: 15, color: "#f4f4f6", marginBottom: 8 }}>{title}</h3>
+                <p style={{ fontSize: 13, color: "rgba(180,185,210,0.55)", lineHeight: 1.55 }}>{desc}</p>
+              </div>
+              {i < STEPS.length - 1 && (
+                <div style={{
+                  display: "flex", alignItems: "center", padding: "0 4px",
+                  color: "rgba(34,211,238,0.3)", fontSize: 20, flexShrink: 0,
+                  position: "absolute", right: -18, top: "50%", transform: "translateY(-50%)",
+                  zIndex: 1,
+                }}>
+                  <ChevronRight size={20} />
                 </div>
-                <p className="text-sm font-medium step-label leading-snug">{label}</p>
-                {i < STEPS.length - 1 && (
-                  <div className="hidden sm:block absolute mt-7 text-xl step-arrow opacity-20" style={{ transform: "translateX(120px)" }}>→</div>
-                )}
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* ── SEO section ── */}
-        <div className="mt-14 pt-8">
-          <div className="neon-divider mb-8" />
-          <h2 className="text-lg font-black mb-2 seo-heading">Best TikTok Downloader — No Watermark</h2>
-          <p className="seo-text leading-relaxed mb-6 text-sm">
-            Luldown lets you download TikTok videos in 1080p or 720p without watermark, or save as 192kbps MP3.
-            Completely free, no account needed, works on any device.
-          </p>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {SEO_ITEMS.map(({ title, body }) => (
-              <div key={title}>
-                <h3 className="font-semibold text-xs mb-0.5 flex items-center gap-1.5 seo-subheading">
-                  <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#dc2020" }} />
-                  {title}
-                </h3>
-                <p className="pl-5 text-xs leading-relaxed seo-text">{body}</p>
-              </div>
-            ))}
-          </div>
+      <div className="section-divider" style={{ maxWidth: 960, margin: "0 auto" }} />
+
+      {/* ══ SEO TEXT ══════════════════════════════════════ */}
+      <section style={{ padding: "56px 20px 72px", maxWidth: 720, margin: "0 auto" }}>
+        <h2 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)", fontWeight: 800, color: "#f4f4f6", marginBottom: 12 }}>
+          Best TikTok Downloader — No Watermark, No Login
+        </h2>
+        <p style={{ fontSize: 14, color: "rgba(180,185,210,0.48)", lineHeight: 1.75, marginBottom: 24 }}>
+          LulDown uses direct CDN links so your browser downloads the file straight from TikTok's servers — zero bandwidth from our side. That means it's always fast, regardless of traffic. No sign-up required, no limits on how many videos you can download, and completely free forever.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
+          {[
+            { q: "Is it really free?", a: "Yes — no account, no paywall, no watermark on output." },
+            { q: "What formats are supported?", a: "MP4 1080p, MP4 720p, MP3 192kbps, and photo album downloads." },
+            { q: "Does it work on mobile?", a: "Fully responsive — works on any browser, any device." },
+            { q: "Is my data stored?", a: "No. Download history is saved only in your browser's localStorage." },
+          ].map(({ q, a }) => (
+            <div key={q} style={{
+              padding: "16px 18px", borderRadius: 12,
+              background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)",
+            }}>
+              <p style={{ fontWeight: 700, fontSize: 13, color: "#f4f4f6", marginBottom: 6 }}>{q}</p>
+              <p style={{ fontSize: 12, color: "rgba(180,185,210,0.5)", lineHeight: 1.5 }}>{a}</p>
+            </div>
+          ))}
         </div>
-
-      </div>
+      </section>
     </div>
   );
 }
