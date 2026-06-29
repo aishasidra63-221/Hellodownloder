@@ -33,7 +33,7 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd artifacts/tiktok-api && PORT=8000 WORKERS=1 python3 main.py"
+args = "cd artifacts/tiktok-api && pip install --user -r requirements.txt -q && PORT=8000 WORKERS=1 python3 main.py"
 waitForPort = 8000
 
 [[workflows.workflow]]
@@ -59,6 +59,10 @@ timeoutMs = 120000
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 8000
+externalPort = 8000
 
 [nix]
 channel = "stable-25_05"

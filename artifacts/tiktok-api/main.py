@@ -40,11 +40,22 @@ async def _keep_alive(port: int):
         await asyncio.sleep(14 * 60)  # 14 minutes
 
 
+async def _delayed_startup():
+    """Delay heavy background tasks so the port opens before network saturation."""
+    await asyncio.sleep(5)
+    try:
+        await asyncio.gather(
+            build_proxy_pool(),
+            init_redis(),
+        )
+    except Exception:
+        logger.exception("Background startup task failed; server continues running")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     port = int(os.environ.get("PORT", 8000))
-    asyncio.create_task(build_proxy_pool())
-    asyncio.create_task(init_redis())
+    asyncio.create_task(_delayed_startup())
     asyncio.create_task(schedule_midnight_update())
     asyncio.create_task(_keep_alive(port))
     yield
