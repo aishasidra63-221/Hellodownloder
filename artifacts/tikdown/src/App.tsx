@@ -1,18 +1,20 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext, lazy, Suspense } from "react";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HomePage from "@/pages/HomePage";
-import HistoryPage from "@/pages/HistoryPage";
-import PrivacyPage from "@/pages/PrivacyPage";
-import FAQPage from "@/pages/FAQPage";
-import TermsPage from "@/pages/TermsPage";
-import DisclaimerPage from "@/pages/DisclaimerPage";
-import BlogIndexPage from "@/pages/BlogIndexPage";
-import BlogPostPage from "@/pages/BlogPostPage";
-import ContactPage from "@/pages/ContactPage";
+
+// Lazy load non-critical pages for faster initial load
+const HistoryPage    = lazy(() => import("@/pages/HistoryPage"));
+const PrivacyPage    = lazy(() => import("@/pages/PrivacyPage"));
+const FAQPage        = lazy(() => import("@/pages/FAQPage"));
+const TermsPage      = lazy(() => import("@/pages/TermsPage"));
+const DisclaimerPage = lazy(() => import("@/pages/DisclaimerPage"));
+const BlogIndexPage  = lazy(() => import("@/pages/BlogIndexPage"));
+const BlogPostPage   = lazy(() => import("@/pages/BlogPostPage"));
+const ContactPage    = lazy(() => import("@/pages/ContactPage"));
 
 declare const __RECAPTCHA_SITE_KEY__: string;
 
@@ -60,17 +62,29 @@ function App() {
     return "dark";
   });
 
+  // Sync class on mount only (initial load already handled by inline script)
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    localStorage.setItem("luldown-theme", theme);
-  }, [theme]);
+    if (theme === "dark") root.classList.add("dark");
+    else root.classList.remove("dark");
+  }, []);
 
-  const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  const toggle = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    const root = document.documentElement;
+
+    // Disable all transitions instantly so there's zero flash
+    root.classList.add("no-transition");
+
+    if (newTheme === "dark") root.classList.add("dark");
+    else root.classList.remove("dark");
+
+    localStorage.setItem("luldown-theme", newTheme);
+    setTheme(newTheme);
+
+    // Re-enable transitions after the paint settles
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("no-transition")));
+  };
 
   const siteKey = __RECAPTCHA_SITE_KEY__;
 
@@ -81,7 +95,9 @@ function App() {
           <div className="min-h-screen flex flex-col text-foreground">
             <Navbar />
             <main className="flex-1">
-              <Router />
+              <Suspense fallback={null}>
+                <Router />
+              </Suspense>
             </main>
             <Footer />
           </div>

@@ -505,6 +505,14 @@
 /* ─── Legacy bg-mesh (for other pages) ───── */
 .bg-mesh { display: none; }
 
+/* ─── No-transition during theme switch ──── */
+.no-transition *,
+.no-transition *::before,
+.no-transition *::after {
+  transition: none !important;
+  animation-duration: 0s !important;
+}
+
 /* ─── Desktop wide sections ──────────────── */
 @media (min-width: 900px) {
   .section-wide {
