@@ -1,53 +1,59 @@
 import { useSEO } from "@/hooks/use-seo";
 import DownloaderBox from "@/components/DownloaderBox";
-import { Shield, Zap, MonitorSmartphone, Download, ChevronRight } from "lucide-react";
+import { FaTiktok } from "react-icons/fa";
+import { FiGift, FiUser, FiShield, FiHeadphones, FiLock } from "react-icons/fi";
+import { MdHd } from "react-icons/md";
+import { RiShieldCheckLine } from "react-icons/ri";
+import { BsLightningChargeFill, BsClipboard, BsDownload, BsCheck2Circle } from "react-icons/bs";
 
 const FEATURES = [
   {
-    Icon: Shield,
-    title: "No Watermark",
-    desc: "Download crystal-clear HD videos with zero TikTok branding — exactly as the creator made it.",
-    accentA: "#0891b2", accentB: "#06b6d4",
-    iconColor: "#0891b2",
-    tag: "Clean Output",
+    label: "No Watermark",
+    sub: "Clean videos",
+    color: "#4f6ef7",
+    bg: "rgba(79,110,247,0.12)",
+    icon: <RiShieldCheckLine size={24} color="#4f6ef7" />,
   },
   {
-    Icon: Zap,
-    title: "Lightning Fast",
-    desc: "Get your file in seconds. Direct server links skip the queue — no waiting, no compression.",
-    accentA: "#d97706", accentB: "#f59e0b",
-    iconColor: "#d97706",
-    tag: "Instant",
+    label: "HD Quality",
+    sub: "High Quality",
+    color: "#e63f7a",
+    bg: "rgba(230,63,122,0.12)",
+    icon: <MdHd size={26} color="#e63f7a" />,
   },
   {
-    Icon: MonitorSmartphone,
-    title: "All Devices",
-    desc: "iPhone, Android, PC, tablet — works perfectly on any screen, any browser, anywhere.",
-    accentA: "#7c3aed", accentB: "#a78bfa",
-    iconColor: "#7c3aed",
-    tag: "Universal",
+    label: "Fast Download",
+    sub: "In seconds",
+    color: "#8b5cf6",
+    bg: "rgba(139,92,246,0.12)",
+    icon: <BsLightningChargeFill size={20} color="#8b5cf6" />,
   },
   {
-    Icon: Download,
-    title: "Multiple Formats",
-    desc: "Choose 1080p, 720p, or MP3 audio. Photo slideshows saved as full-res images too.",
-    accentA: "#059669", accentB: "#34d399",
-    iconColor: "#059669",
-    tag: "Flexible",
+    label: "All Devices",
+    sub: "Android, iOS, PC",
+    color: "#10b981",
+    bg: "rgba(16,185,129,0.12)",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="3" width="13" height="10" rx="2" stroke="#10b981" strokeWidth="2"/>
+        <rect x="16" y="8" width="6" height="9" rx="1.5" stroke="#10b981" strokeWidth="2"/>
+        <path d="M2 19h13M8 19v2M8.5 21h5" stroke="#10b981" strokeWidth="2" strokeLinecap="round"/>
+      </svg>
+    ),
   },
 ];
 
 const STEPS = [
-  { n: "1", title: "Copy the link",  desc: "Open TikTok, tap Share → Copy link on any video." },
-  { n: "2", title: "Paste it above", desc: "Paste the link into the input box above."          },
-  { n: "3", title: "Download",       desc: "Pick your format and the file saves instantly."    },
+  { n: "1", title: "Copy link from TikTok", icon: <BsClipboard size={26} color="#4f6ef7" />, bg: "rgba(79,110,247,0.13)" },
+  { n: "2", title: "Paste the link above", icon: <BsClipboard size={26} color="#8b5cf6" />, bg: "rgba(139,92,246,0.13)" },
+  { n: "3", title: "Click download and enjoy", icon: <BsDownload size={26} color="#e63f7a" />, bg: "rgba(230,63,122,0.13)" },
 ];
 
-const FAQ = [
-  { q: "Is it really free?",          a: "Yes — no account, no paywall, no watermark on output."             },
-  { q: "What formats are supported?", a: "MP4 1080p, MP4 720p, MP3 192kbps, and photo album downloads."      },
-  { q: "Does it work on mobile?",     a: "Fully responsive — works on any browser, any device."               },
-  { q: "Is my data stored?",          a: "No. Download history is saved only in your browser's localStorage." },
+const FOOTER_ITEMS = [
+  { icon: <FiGift size={15} />, label: "100% Free" },
+  { icon: <FiUser size={15} />, label: "No Registration" },
+  { icon: <FiShield size={15} />, label: "Secure & Safe" },
+  { icon: <FiHeadphones size={15} />, label: "Fast Support" },
 ];
 
 export default function HomePage() {
@@ -57,123 +63,227 @@ export default function HomePage() {
   });
 
   return (
-    <div style={{ position: "relative", zIndex: 1 }}>
-      <div className="bg-mesh" />
+    <div style={{ position: "relative", minHeight: "100vh", background: "var(--page-bg)" }}>
 
-      {/* ══ HERO ══════════════════════════════════════════ */}
-      <section style={{ padding: "72px 20px 56px", textAlign: "center", maxWidth: 680, margin: "0 auto" }}>
-        <div style={{ marginBottom: 24 }}>
-          <span className="pill-badge fade-up">
-            <Zap size={12} fill="currentColor" />
-            Free · No Watermark · Instant Download
+      {/* ── HERO ─────────────────────────────────── */}
+      <section style={{ padding: "32px 20px 8px", textAlign: "center", maxWidth: 640, margin: "0 auto", position: "relative" }}>
+
+        {/* TikTok watermark */}
+        <div style={{
+          position: "absolute", top: 0, right: -20,
+          opacity: 0.07, pointerEvents: "none",
+        }}>
+          <FaTiktok size={160} style={{ color: "var(--tiktok-mark)" }} />
+        </div>
+
+        {/* Badge */}
+        <div style={{ marginBottom: 18 }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            padding: "5px 16px", borderRadius: 999,
+            border: "1.5px solid var(--badge-border)",
+            background: "var(--badge-bg)",
+            color: "var(--text-primary)",
+            fontSize: 12, fontWeight: 600,
+          }}>
+            100% Free <span style={{ color: "#4f6ef7", fontWeight: 800 }}>✦</span>
           </span>
         </div>
 
-        <h1 className="hero-title fade-up-2" style={{ marginBottom: 16 }}>
-          TikTok Video Downloader{" "}
-          <span className="hero-accent">No Watermark</span>
+        {/* Headline */}
+        <h1 style={{
+          fontSize: "clamp(1.9rem, 5.5vw, 2.8rem)",
+          fontWeight: 900, lineHeight: 1.15,
+          letterSpacing: "-0.02em",
+          color: "var(--text-primary)",
+          marginBottom: 14,
+        }}>
+          Download{" "}
+          <span style={{
+            background: "linear-gradient(90deg, #4f6ef7, #a855f7, #ec4899)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}>
+            TikTok
+          </span>{" "}
+          Videos<br />Without Watermark
         </h1>
 
-        <p className="fade-up-3" style={{
-          fontSize: 16, color: "var(--text-secondary)",
-          lineHeight: 1.65, maxWidth: 480, margin: "0 auto 36px",
+        <p style={{
+          fontSize: 15, color: "var(--text-muted)",
+          marginBottom: 28, fontWeight: 400, lineHeight: 1.5,
         }}>
-          Paste any TikTok link and get clean HD video, audio, or photos — no account needed, no hidden fees.
+          Fast. Free. High Quality.
         </p>
 
-        <div className="fade-up-3" style={{ maxWidth: 600, margin: "0 auto" }}>
+        {/* Downloader */}
+        <div style={{ maxWidth: 580, margin: "0 auto" }}>
           <DownloaderBox />
         </div>
       </section>
 
-      {/* ══ HOW IT WORKS ══════════════════════════════════ */}
-      <section style={{ padding: "0 20px 64px", maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
-        <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--cyan)", marginBottom: 10 }}>
-          Simple Process
-        </p>
-        <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2rem)", fontWeight: 800, color: "var(--text-primary)", marginBottom: 8 }}>
-          How It Works
-        </h2>
-        <p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 48 }}>
-          Three steps — takes less than 10 seconds.
-        </p>
-
-        <div style={{ display: "flex", alignItems: "stretch", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
-          {STEPS.map(({ n, title, desc }, i) => (
-            <div key={n} style={{ display: "flex", alignItems: "center", gap: 8, flex: "1 1 200px", maxWidth: 280 }}>
-              <div className="step-card" style={{ flex: 1 }}>
-                <div className="step-num">{n}</div>
-                <h3 style={{ fontWeight: 700, fontSize: 15, color: "var(--text-primary)", marginBottom: 8 }}>{title}</h3>
-                <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.55 }}>{desc}</p>
+      {/* ── FEATURES ──────────────────────────────── */}
+      <section style={{ padding: "28px 16px 0", maxWidth: 640, margin: "0 auto" }}>
+        <div style={{
+          display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10,
+          background: "var(--card-bg)", borderRadius: 18,
+          border: "1px solid var(--card-border)",
+          padding: "20px 8px",
+        }}>
+          {FEATURES.map(({ label, sub, color, bg, icon }) => (
+            <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+              <div style={{
+                width: 52, height: 52, borderRadius: "50%",
+                background: bg,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                {icon}
               </div>
-              {i < STEPS.length - 1 && (
-                <div className="step-connector" style={{ color: "var(--cyan)", opacity: 0.4, padding: "0 4px" }}>
-                  <ChevronRight size={20} />
-                </div>
-              )}
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontWeight: 700, fontSize: 11, color: "var(--text-primary)", lineHeight: 1.3, marginBottom: 2 }}>{label}</p>
+                <p style={{ fontSize: 10, color: "var(--text-muted)" }}>{sub}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      <div className="section-divider" style={{ maxWidth: 960, margin: "0 auto" }} />
+      {/* ── HOW IT WORKS ──────────────────────────── */}
+      <section style={{ padding: "28px 16px 0", maxWidth: 640, margin: "0 auto" }}>
+        <div style={{
+          background: "var(--card-bg)", borderRadius: 18,
+          border: "1px solid var(--card-border)",
+          padding: "24px 20px",
+        }}>
+          <h2 style={{
+            textAlign: "center", fontWeight: 800, fontSize: 17,
+            color: "var(--text-primary)", marginBottom: 24,
+          }}>
+            How it works?
+          </h2>
 
-      {/* ══ FEATURES ══════════════════════════════════════ */}
-      <section style={{ padding: "64px 20px 72px", maxWidth: 960, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 18 }}>
-          {FEATURES.map(({ Icon, title, desc, accentA, accentB, iconColor, tag }) => (
-            <div
-              key={title}
-              className="feature-card"
-              style={{ "--card-accent-a": accentA, "--card-accent-b": accentB } as React.CSSProperties}
-            >
-              {/* Icon */}
-              <div className="feature-icon">
-                <div className="feature-icon-inner" />
-                <Icon size={22} style={{ color: iconColor }} strokeWidth={2} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0 }}>
+            {STEPS.map(({ n, title, icon, bg }, i) => (
+              <div key={n} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1, gap: 10, position: "relative" }}>
+                  {/* Step number badge */}
+                  <div style={{ position: "relative" }}>
+                    <div style={{
+                      width: 62, height: 62, borderRadius: "50%",
+                      background: bg,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      {icon}
+                    </div>
+                    <div style={{
+                      position: "absolute", bottom: 0, right: 0,
+                      width: 20, height: 20, borderRadius: "50%",
+                      background: i === 0 ? "#4f6ef7" : i === 1 ? "#8b5cf6" : "#e63f7a",
+                      color: "#fff", fontSize: 10, fontWeight: 800,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      border: "2px solid var(--page-bg)",
+                    }}>
+                      {n}
+                    </div>
+                  </div>
+                  <p style={{
+                    fontSize: 11, fontWeight: 600, textAlign: "center",
+                    color: "var(--text-primary)", lineHeight: 1.3, maxWidth: 90,
+                  }}>
+                    {title}
+                  </p>
+                </div>
+
+                {/* Dotted connector */}
+                {i < STEPS.length - 1 && (
+                  <div style={{
+                    display: "flex", alignItems: "center", paddingBottom: 32, flexShrink: 0,
+                  }}>
+                    <div style={{
+                      width: 32,
+                      borderTop: "2px dotted var(--step-dot)",
+                    }} />
+                    <svg width="8" height="10" viewBox="0 0 8 10" fill="none" style={{ marginLeft: -2 }}>
+                      <path d="M1 1l6 4-6 4" stroke="var(--step-dot)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                )}
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              {/* Tag pill */}
-              <span style={{
-                display: "inline-block", marginBottom: 10,
-                fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase",
-                padding: "3px 8px", borderRadius: 999,
-                background: `${accentA}18`,
-                border: `1px solid ${accentA}35`,
-                color: accentA,
-              }}>
-                {tag}
-              </span>
-
-              <h3 style={{ fontWeight: 800, fontSize: 16, color: "var(--text-primary)", marginBottom: 8, lineHeight: 1.2 }}>
-                {title}
-              </h3>
-              <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                {desc}
+      {/* ── SAFE & SECURE ─────────────────────────── */}
+      <section style={{ padding: "16px 16px 0", maxWidth: 640, margin: "0 auto" }}>
+        <div style={{
+          background: "var(--card-bg)", borderRadius: 18,
+          border: "1px solid var(--card-border)",
+          padding: "20px 24px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{
+              width: 54, height: 54, borderRadius: "50%",
+              background: "rgba(16,185,129,0.12)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+            }}>
+              <FiLock size={24} color="#10b981" />
+            </div>
+            <div>
+              <p style={{ fontWeight: 800, fontSize: 15, color: "#10b981", marginBottom: 4 }}>
+                Safe &amp; Secure
+              </p>
+              <p style={{ fontSize: 12, color: "var(--text-muted)", lineHeight: 1.5 }}>
+                We don't store any videos.<br />Your data is 100% safe.
               </p>
             </div>
-          ))}
+          </div>
+
+          {/* Shield decoration */}
+          <div style={{ position: "relative", opacity: 0.85, flexShrink: 0 }}>
+            <div style={{
+              width: 56, height: 56, borderRadius: "50%",
+              background: "rgba(16,185,129,0.1)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <BsCheck2Circle size={28} color="#10b981" />
+            </div>
+            <span style={{ position: "absolute", top: -4, right: -4, fontSize: 12 }}>✦</span>
+            <span style={{ position: "absolute", bottom: -4, left: -4, fontSize: 10 }}>✦</span>
+          </div>
         </div>
       </section>
 
-      <div className="section-divider" style={{ maxWidth: 960, margin: "0 auto" }} />
-
-      {/* ══ FAQ ═══════════════════════════════════════════ */}
-      <section style={{ padding: "56px 20px 72px", maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)", fontWeight: 800, color: "var(--text-primary)", marginBottom: 12 }}>
-          Best TikTok Downloader — No Watermark, No Login
-        </h2>
-        <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.75, marginBottom: 28 }}>
-          Always fast, no limits, completely free forever.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
-          {FAQ.map(({ q, a }) => (
-            <div key={q} className="faq-card">
-              <p style={{ fontWeight: 700, fontSize: 13, color: "var(--text-primary)", marginBottom: 6 }}>{q}</p>
-              <p style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5 }}>{a}</p>
+      {/* ── FOOTER BAR ────────────────────────────── */}
+      <section style={{ padding: "16px 16px 32px", maxWidth: 640, margin: "0 auto" }}>
+        <div style={{
+          background: "var(--footer-bar-bg)", borderRadius: 18,
+          border: "1px solid var(--card-border)",
+          padding: "16px 12px",
+          display: "flex", alignItems: "center", justifyContent: "space-around",
+          flexWrap: "wrap", gap: 12,
+        }}>
+          {FOOTER_ITEMS.map(({ icon, label }, i) => (
+            <div key={label} style={{
+              display: "flex", alignItems: "center", gap: 6,
+              fontSize: 11, fontWeight: 600, color: "var(--text-secondary)",
+              paddingRight: i < FOOTER_ITEMS.length - 1 ? 12 : 0,
+              borderRight: i < FOOTER_ITEMS.length - 1 ? "1px solid var(--card-border)" : "none",
+            }}>
+              <span style={{ color: "var(--text-muted)" }}>{icon}</span>
+              {label}
             </div>
           ))}
         </div>
+        <p style={{
+          textAlign: "center", fontSize: 11, color: "var(--text-muted)",
+          marginTop: 16,
+        }}>
+          © {new Date().getFullYear()} LulDown.com – All rights reserved.
+        </p>
       </section>
     </div>
   );
