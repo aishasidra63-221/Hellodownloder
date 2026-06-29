@@ -115,7 +115,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             placeholder="Paste TikTok link here..."
             style={{
               flex: 1, minWidth: 0, background: "transparent",
-              padding: "18px 8px", fontSize: 15, outline: "none",
+              padding: "15px 8px", fontSize: 14.5, outline: "none",
               color: "var(--text-primary)",
             }}
           />

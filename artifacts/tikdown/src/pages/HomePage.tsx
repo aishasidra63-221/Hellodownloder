@@ -97,7 +97,7 @@ export default function HomePage() {
     <div style={{ position: "relative", background: "var(--page-bg)", overflowX: "hidden" }}>
 
       {/* ── HERO ─────────────────────────────────── */}
-      <section style={{ padding: "32px 20px 8px", textAlign: "center", maxWidth: 700, margin: "0 auto", position: "relative" }}>
+      <section style={{ padding: "72px 24px 24px", textAlign: "center", maxWidth: 620, margin: "0 auto", position: "relative" }}>
 
         {/* TikTok watermark — very faint background */}
         <div style={{
@@ -110,41 +110,41 @@ export default function HomePage() {
 
         {/* Headline */}
         <h1 style={{
-          fontSize: "clamp(1.9rem, 5.5vw, 2.8rem)",
-          fontWeight: 900, lineHeight: 1.15,
+          fontSize: "clamp(1.75rem, 4.8vw, 2.6rem)",
+          fontWeight: 900, lineHeight: 1.18,
           letterSpacing: "-0.02em",
           color: "var(--text-primary)",
-          marginBottom: 14,
+          marginBottom: 18,
           fontFamily: "'Inter', sans-serif",
         }}>
           TikTok Video Downloader<br />No Watermark
         </h1>
 
         <p style={{
-          fontSize: 15, color: "var(--text-muted)",
-          marginBottom: 28, fontWeight: 400, lineHeight: 1.5,
+          fontSize: 14.5, color: "var(--text-muted)",
+          marginBottom: 32, fontWeight: 400, lineHeight: 1.6,
         }}>
           Fast. Free. High Quality.
         </p>
 
         {/* Downloader */}
-        <div style={{ maxWidth: 660, margin: "0 auto" }}>
+        <div style={{ maxWidth: 580, margin: "0 auto" }}>
           <DownloaderBox />
         </div>
       </section>
 
       {/* ── FEATURES ──────────────────────────────── */}
-      <section style={{ padding: "28px 16px 0", maxWidth: 640, margin: "0 auto" }}>
+      <section style={{ padding: "36px 24px 0", maxWidth: 600, margin: "0 auto" }}>
         <div style={{
-          display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10,
+          display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8,
           background: "var(--card-bg)", borderRadius: 18,
           border: "1px solid var(--card-border)",
-          padding: "20px 8px",
+          padding: "22px 12px",
         }}>
           {FEATURES.map(({ label, sub, color, bg, icon }) => (
-            <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+            <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 9 }}>
               <div style={{
-                width: 52, height: 52, borderRadius: "50%",
+                width: 46, height: 46, borderRadius: "50%",
                 background: bg,
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
@@ -160,10 +160,10 @@ export default function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────── */}
-      <section style={{ padding: "16px 16px 0", maxWidth: 700, margin: "0 auto" }}>
+      <section style={{ padding: "36px 24px 0", maxWidth: 640, margin: "0 auto" }}>
         <h2 style={{
-          textAlign: "center", fontWeight: 800, fontSize: 18,
-          color: "var(--text-primary)", marginBottom: 14,
+          textAlign: "center", fontWeight: 800, fontSize: 17,
+          color: "var(--text-primary)", marginBottom: 18,
         }}>
           How it works?
         </h2>
@@ -174,7 +174,7 @@ export default function HomePage() {
               background: "var(--card-bg)",
               borderRadius: 16,
               border: "1px solid var(--card-border)",
-              padding: "28px 20px 24px",
+              padding: "32px 20px 28px",
               display: "flex", flexDirection: "column",
               alignItems: "center", textAlign: "center", gap: 14,
               flex: 1,
@@ -222,7 +222,7 @@ export default function HomePage() {
       </section>
 
       {/* ── SAFE & SECURE ─────────────────────────── */}
-      <section style={{ padding: "16px 16px 0", maxWidth: 640, margin: "0 auto" }}>
+      <section style={{ padding: "36px 24px 0", maxWidth: 600, margin: "0 auto" }}>
         <div style={{
           background: "var(--safe-card-bg)",
           borderRadius: 18,
@@ -285,7 +285,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER BAR ────────────────────────────── */}
-      <section style={{ padding: "16px 16px 8px", maxWidth: 640, margin: "0 auto" }}>
+      <section style={{ padding: "20px 24px 48px", maxWidth: 600, margin: "0 auto" }}>
         <div style={{
           background: "var(--card-bg)",
           borderRadius: 18,
