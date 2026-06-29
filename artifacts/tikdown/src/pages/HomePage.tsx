@@ -183,78 +183,61 @@ export default function HomePage() {
 
       {/* ── HOW IT WORKS ──────────────────────────── */}
       <section style={{ padding: "16px 16px 0", maxWidth: 640, margin: "0 auto" }}>
-        <div style={{
-          background: "var(--card-bg)", borderRadius: 18,
-          border: "1px solid var(--card-border)",
-          padding: "28px 24px 32px",
+        <h2 style={{
+          textAlign: "center", fontWeight: 800, fontSize: 18,
+          color: "var(--text-primary)", marginBottom: 14,
         }}>
-          <h2 style={{
-            textAlign: "center", fontWeight: 800, fontSize: 18,
-            color: "var(--text-primary)", marginBottom: 32,
-          }}>
-            How it works?
-          </h2>
+          How it works?
+        </h2>
 
-          <div className="steps-row">
-            {STEPS.map(({ n, title, icon, bg, color }, i) => (
-              <div key={n} style={{ display: "flex", alignItems: "flex-start", flex: 1 }}>
-
-                {/* Step column */}
-                <div className="step-col" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, flex: 1 }}>
-
-                  {/* Circle + badge */}
-                  <div style={{ position: "relative", flexShrink: 0 }}>
-                    <div style={{
-                      width: 76, height: 76, borderRadius: "50%",
-                      background: bg,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      {icon}
-                    </div>
-                    <div style={{
-                      position: "absolute", bottom: -2, right: -2,
-                      width: 22, height: 22, borderRadius: "50%",
-                      background: color,
-                      color: "#fff", fontSize: 11, fontWeight: 900,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      border: "2.5px solid var(--card-bg)",
-                      boxShadow: `0 2px 8px ${color}55`,
-                    }}>
-                      {n}
-                    </div>
-                  </div>
-
-                  {/* Label */}
-                  <p style={{
-                    fontSize: 13, fontWeight: 700, textAlign: "center",
-                    color: "var(--text-primary)", lineHeight: 1.4,
-                    maxWidth: 110,
-                  }}>
-                    {title}
-                  </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {STEPS.map(({ n, title, icon, bg, color }) => (
+            <div key={n} style={{
+              background: "var(--card-bg)",
+              borderRadius: 16,
+              border: "1px solid var(--card-border)",
+              padding: "18px 20px",
+              display: "flex", alignItems: "center", gap: 16,
+            }}>
+              {/* Icon circle */}
+              <div style={{ position: "relative", flexShrink: 0 }}>
+                <div style={{
+                  width: 64, height: 64, borderRadius: "50%",
+                  background: bg,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  {icon}
                 </div>
-
-                {/* Dotted arrow connector — hidden on mobile via CSS */}
-                {i < STEPS.length - 1 && (
-                  <div className="step-connector-h" style={{
-                    display: "flex", alignItems: "center",
-                    paddingTop: 27, flexShrink: 0, gap: 2,
-                  }}>
-                    {[0,1,2,3,4].map(d => (
-                      <div key={d} style={{
-                        width: 4, height: 4, borderRadius: "50%",
-                        background: "var(--step-dot)", opacity: 0.5,
-                        margin: "0 1.5px",
-                      }} />
-                    ))}
-                    <svg width="8" height="12" viewBox="0 0 8 12" fill="none" style={{ marginLeft: 2 }}>
-                      <path d="M1.5 1.5L6.5 6L1.5 10.5" stroke="var(--step-dot)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/>
-                    </svg>
-                  </div>
-                )}
+                <div style={{
+                  position: "absolute", bottom: -2, right: -2,
+                  width: 20, height: 20, borderRadius: "50%",
+                  background: color,
+                  color: "#fff", fontSize: 10, fontWeight: 900,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  border: "2px solid var(--card-bg)",
+                  boxShadow: `0 2px 8px ${color}55`,
+                }}>
+                  {n}
+                </div>
               </div>
-            ))}
-          </div>
+
+              {/* Text */}
+              <div>
+                <p style={{
+                  fontSize: 15, fontWeight: 700,
+                  color: "var(--text-primary)", lineHeight: 1.4,
+                  marginBottom: 2,
+                }}>
+                  {title}
+                </p>
+                <p style={{ fontSize: 12, color: "var(--text-muted)" }}>
+                  {n === "1" && "Open TikTok and copy the video link"}
+                  {n === "2" && "Paste the link into the box above"}
+                  {n === "3" && "Choose your format and download"}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
