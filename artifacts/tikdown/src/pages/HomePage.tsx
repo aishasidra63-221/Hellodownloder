@@ -94,15 +94,16 @@ export default function HomePage() {
   });
 
   return (
-    <div style={{ position: "relative", minHeight: "100vh", background: "var(--page-bg)" }}>
+    <div style={{ position: "relative", minHeight: "100vh", background: "var(--page-bg)", overflowX: "hidden" }}>
 
       {/* ── HERO ─────────────────────────────────── */}
       <section style={{ padding: "32px 20px 8px", textAlign: "center", maxWidth: 640, margin: "0 auto", position: "relative" }}>
 
-        {/* TikTok watermark */}
+        {/* TikTok watermark — clipped inside the section */}
         <div style={{
-          position: "absolute", top: 0, right: -20,
-          opacity: 0.07, pointerEvents: "none",
+          position: "absolute", top: 0, right: 0,
+          opacity: 0.07, pointerEvents: "none", overflow: "hidden",
+          width: 160, height: 200,
         }}>
           <FaTiktok size={160} style={{ color: "var(--tiktok-mark)" }} />
         </div>
