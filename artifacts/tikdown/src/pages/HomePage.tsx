@@ -99,15 +99,6 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────── */}
       <section style={{ padding: "32px 20px 8px", textAlign: "center", maxWidth: 700, margin: "0 auto", position: "relative" }}>
 
-        {/* TikTok watermark — very faint background */}
-        <div style={{
-          position: "absolute", top: 0, right: 0,
-          opacity: 0.03, pointerEvents: "none", overflow: "hidden",
-          width: 160, height: 200,
-        }}>
-          <FaTiktok size={160} style={{ color: "var(--tiktok-mark)" }} />
-        </div>
-
         {/* Badge */}
         <div style={{ marginBottom: 18 }}>
           <span style={{
