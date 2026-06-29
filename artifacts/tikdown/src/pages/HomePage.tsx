@@ -97,7 +97,7 @@ export default function HomePage() {
     <div style={{ position: "relative", minHeight: "100vh", background: "var(--page-bg)", overflowX: "hidden" }}>
 
       {/* ── HERO ─────────────────────────────────── */}
-      <section style={{ padding: "32px 20px 8px", textAlign: "center", maxWidth: 640, margin: "0 auto", position: "relative" }}>
+      <section style={{ padding: "32px 20px 8px", textAlign: "center", maxWidth: 700, margin: "0 auto", position: "relative" }}>
 
         {/* TikTok watermark — very faint background */}
         <div style={{
@@ -150,7 +150,7 @@ export default function HomePage() {
         </p>
 
         {/* Downloader */}
-        <div style={{ maxWidth: 580, margin: "0 auto" }}>
+        <div style={{ maxWidth: 660, margin: "0 auto" }}>
           <DownloaderBox />
         </div>
       </section>
