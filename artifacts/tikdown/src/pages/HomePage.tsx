@@ -97,7 +97,7 @@ export default function HomePage() {
     <div style={{ position: "relative", background: "var(--page-bg)", overflowX: "hidden" }}>
 
       {/* ── HERO ─────────────────────────────────── */}
-      <section style={{ padding: "72px 24px 24px", textAlign: "center", maxWidth: 620, margin: "0 auto", position: "relative" }}>
+      <section style={{ padding: "40px 24px 24px", textAlign: "center", maxWidth: 620, margin: "0 auto", position: "relative" }}>
 
         {/* TikTok watermark — very faint background */}
         <div style={{
