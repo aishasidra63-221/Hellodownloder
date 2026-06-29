@@ -280,7 +280,7 @@
 .input-box {
   display: flex; align-items: center;
   background: var(--input-bg);
-  border: 1.5px solid rgba(0,0,0,0.55);
+  border: 1.5px solid rgba(0,0,0,0.35);
   border-radius: 14px;
   box-shadow: var(--shadow-card);
   outline: none;
