@@ -115,7 +115,7 @@ export default function HomePage() {
           letterSpacing: "-0.02em",
           color: "var(--text-primary)",
           marginBottom: 18,
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Outfit', sans-serif",
         }}>
           TikTok Video Downloader<br />No Watermark
         </h1>
