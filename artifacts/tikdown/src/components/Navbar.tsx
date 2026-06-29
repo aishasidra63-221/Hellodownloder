@@ -24,11 +24,12 @@ export default function Navbar() {
         <Link href="/">
           <div style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" }}>
             <div style={{
-              width: 32, height: 32, borderRadius: 10, flexShrink: 0,
-              background: "linear-gradient(135deg, #4f6ef7 0%, #a855f7 100%)",
+              width: 40, height: 40, borderRadius: 12, flexShrink: 0,
+              background: "linear-gradient(90deg, #4f6ef7 0%, #a855f7 50%, #ec4899 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 2px 14px rgba(168,85,247,0.45)",
             }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
