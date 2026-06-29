@@ -128,7 +128,7 @@ export default function HomePage() {
         </p>
 
         {/* Downloader */}
-        <div style={{ maxWidth: 580, margin: "0 auto" }}>
+        <div style={{ maxWidth: 680, margin: "0 auto" }}>
           <DownloaderBox />
         </div>
       </section>
