@@ -193,6 +193,12 @@
     color: var(--text-primary);
     transition: background 0.25s ease, color 0.2s ease;
   }
+  input, textarea, select {
+    font-family: inherit;
+    font-weight: 400;
+    font-size: inherit;
+    -webkit-appearance: none;
+  }
   input, textarea, select, button, a {
     -webkit-tap-highlight-color: transparent;
     outline: none;
@@ -284,6 +290,10 @@
   border-radius: 14px;
   box-shadow: var(--shadow-card);
   outline: none;
+}
+.input-box input {
+  font-weight: 400 !important;
+  font-family: inherit !important;
 }
 .dark .input-box {
   border-color: rgba(255,255,255,0.38);
