@@ -36,3 +36,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           command: pages deploy artifacts/tikdown/dist/public --project-name=luldown
+          packageManager: npm
