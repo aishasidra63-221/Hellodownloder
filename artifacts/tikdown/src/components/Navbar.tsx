@@ -29,7 +29,12 @@ export default function Navbar() {
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "0 2px 14px rgba(168,85,247,0.45)",
             }}>
-              <BsDownload size={16} color="#fff" />
+              {/* Download arrow icon — custom clean SVG */}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3v13" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
+                <path d="M7 12l5 5 5-5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M5 20h14" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
+              </svg>
             </div>
             <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.02em", color: "var(--text-primary)" }}>
               Lul<span style={{ background: "linear-gradient(90deg,#4f6ef7,#a855f7,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Down</span>

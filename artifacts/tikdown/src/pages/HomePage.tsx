@@ -99,10 +99,10 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────── */}
       <section style={{ padding: "32px 20px 8px", textAlign: "center", maxWidth: 640, margin: "0 auto", position: "relative" }}>
 
-        {/* TikTok watermark — clipped inside the section */}
+        {/* TikTok watermark — very faint background */}
         <div style={{
           position: "absolute", top: 0, right: 0,
-          opacity: 0.07, pointerEvents: "none", overflow: "hidden",
+          opacity: 0.03, pointerEvents: "none", overflow: "hidden",
           width: 160, height: 200,
         }}>
           <FaTiktok size={160} style={{ color: "var(--tiktok-mark)" }} />
