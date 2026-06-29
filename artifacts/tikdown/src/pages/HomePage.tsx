@@ -111,8 +111,7 @@ export default function HomePage() {
         {/* Headline */}
         <h1 style={{
           fontSize: "clamp(1.75rem, 4.8vw, 2.6rem)",
-          fontWeight: 900, lineHeight: 1.18,
-          letterSpacing: "-0.02em",
+          fontWeight: 800, lineHeight: 1.18,
           color: "var(--text-primary)",
           marginBottom: 18,
         }}>
