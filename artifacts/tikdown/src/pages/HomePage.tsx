@@ -331,12 +331,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        <p style={{
-          textAlign: "center", fontSize: 11, color: "var(--text-muted)",
-          marginTop: 14, paddingBottom: 24,
-        }}>
-          © {new Date().getFullYear()} LulDown.com – All rights reserved.
-        </p>
       </section>
     </div>
   );
