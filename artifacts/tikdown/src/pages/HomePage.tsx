@@ -5,6 +5,76 @@ import { FiGift, FiUser, FiShield, FiHeadphones, FiLock } from "react-icons/fi";
 import { MdHd } from "react-icons/md";
 import { RiShieldCheckLine } from "react-icons/ri";
 import { BsLightningChargeFill, BsClipboard, BsDownload, BsCheck2Circle } from "react-icons/bs";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+
+const HOME_FAQS = [
+  {
+    q: "Is Luldown free to use?",
+    a: "Yes, 100% free. No subscription, no account, no hidden fees. You can download unlimited videos at no cost.",
+  },
+  {
+    q: "What formats are available?",
+    a: "MP4 1080p (HD, no watermark), MP4 720p (standard, no watermark), and MP3 192kbps (audio only). Photo slideshows show all images directly.",
+  },
+  {
+    q: "Why is the video without a watermark?",
+    a: "TikTok stores two versions of every video — one with a watermark (shown in the app) and one clean original file. Luldown fetches the clean version directly.",
+  },
+  {
+    q: "Is my data safe?",
+    a: "Your download history is stored only in your browser — it never leaves your device. We don't collect or store any personal data on our servers.",
+  },
+  {
+    q: "Does it work on mobile?",
+    a: "Yes. Luldown is fully responsive and works on iPhone, Android, tablets, and all desktop browsers. No app installation needed.",
+  },
+  {
+    q: "Why does the download open in a new tab?",
+    a: "This is a browser security restriction for cross-origin files. On desktop, right-click and choose 'Save As'. On mobile, long-press and tap 'Save'.",
+  },
+];
+
+function HomeFAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{
+      background: "var(--card-bg)",
+      border: "1px solid var(--card-border)",
+      borderRadius: 12,
+      overflow: "hidden",
+      transition: "border-color 0.15s",
+    }}>
+      <button
+        onClick={() => setOpen(!open)}
+        style={{
+          width: "100%", display: "flex", alignItems: "center",
+          justifyContent: "space-between", gap: 12,
+          padding: "14px 16px", textAlign: "left",
+          background: "transparent", border: "none", cursor: "pointer",
+        }}
+      >
+        <span style={{ fontWeight: 600, fontSize: 13.5, color: "var(--text-primary)", lineHeight: 1.4 }}>{q}</span>
+        <ChevronDown
+          size={16}
+          style={{
+            color: "var(--text-muted)", flexShrink: 0,
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 0.2s ease",
+          }}
+        />
+      </button>
+      {open && (
+        <div style={{
+          padding: "0 16px 14px",
+          fontSize: 13, color: "var(--text-muted)", lineHeight: 1.6,
+        }}>
+          {a}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const FEATURES = [
   {
@@ -279,6 +349,21 @@ export default function HomePage() {
               </svg>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ───────────────────────────────────── */}
+      <section className="section-wide" style={{ padding: "36px 24px 0", maxWidth: 600, margin: "0 auto" }}>
+        <h2 style={{
+          textAlign: "center", fontWeight: 800, fontSize: 17,
+          color: "var(--text-primary)", marginBottom: 14,
+        }}>
+          Frequently Asked Questions
+        </h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {HOME_FAQS.map((item) => (
+            <HomeFAQItem key={item.q} {...item} />
+          ))}
         </div>
       </section>
 
