@@ -44,9 +44,40 @@ const FEATURES = [
 ];
 
 const STEPS = [
-  { n: "1", title: "Copy link from TikTok", icon: <BsClipboard size={26} color="#4f6ef7" />, bg: "rgba(79,110,247,0.13)" },
-  { n: "2", title: "Paste the link above", icon: <BsClipboard size={26} color="#8b5cf6" />, bg: "rgba(139,92,246,0.13)" },
-  { n: "3", title: "Click download and enjoy", icon: <BsDownload size={26} color="#e63f7a" />, bg: "rgba(230,63,122,0.13)" },
+  {
+    n: "1", title: "Copy link from TikTok",
+    color: "#4f6ef7", badgeColor: "#4f6ef7",
+    bg: "rgba(79,110,247,0.13)",
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
+  {
+    n: "2", title: "Paste the link above",
+    color: "#8b5cf6", badgeColor: "#8b5cf6",
+    bg: "rgba(139,92,246,0.13)",
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+        <rect x="8" y="2" width="8" height="4" rx="1.5" stroke="#8b5cf6" strokeWidth="2"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M9 12h6M9 16h4" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    n: "3", title: "Click download and enjoy",
+    color: "#e63f7a", badgeColor: "#e63f7a",
+    bg: "rgba(230,63,122,0.13)",
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="9" stroke="#e63f7a" strokeWidth="2"/>
+        <path d="M12 8v6M9 11l3 3 3-3" stroke="#e63f7a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
 ];
 
 const FOOTER_ITEMS = [
@@ -150,62 +181,76 @@ export default function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────── */}
-      <section style={{ padding: "28px 16px 0", maxWidth: 640, margin: "0 auto" }}>
+      <section style={{ padding: "16px 16px 0", maxWidth: 640, margin: "0 auto" }}>
         <div style={{
           background: "var(--card-bg)", borderRadius: 18,
           border: "1px solid var(--card-border)",
-          padding: "24px 20px",
+          padding: "28px 24px 32px",
         }}>
           <h2 style={{
-            textAlign: "center", fontWeight: 800, fontSize: 17,
-            color: "var(--text-primary)", marginBottom: 24,
+            textAlign: "center", fontWeight: 800, fontSize: 18,
+            color: "var(--text-primary)", marginBottom: 32,
           }}>
             How it works?
           </h2>
 
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0 }}>
-            {STEPS.map(({ n, title, icon, bg }, i) => (
-              <div key={n} style={{ display: "flex", alignItems: "center", flex: 1 }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1, gap: 10, position: "relative" }}>
-                  {/* Step number badge */}
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
+            {STEPS.map(({ n, title, icon, bg, color }, i) => (
+              <div key={n} style={{ display: "flex", alignItems: "flex-start", flex: 1 }}>
+
+                {/* Step column */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, flex: 1 }}>
+
+                  {/* Circle + badge */}
                   <div style={{ position: "relative" }}>
                     <div style={{
-                      width: 62, height: 62, borderRadius: "50%",
+                      width: 76, height: 76, borderRadius: "50%",
                       background: bg,
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}>
                       {icon}
                     </div>
+                    {/* Number badge */}
                     <div style={{
-                      position: "absolute", bottom: 0, right: 0,
-                      width: 20, height: 20, borderRadius: "50%",
-                      background: i === 0 ? "#4f6ef7" : i === 1 ? "#8b5cf6" : "#e63f7a",
-                      color: "#fff", fontSize: 10, fontWeight: 800,
+                      position: "absolute", bottom: -2, right: -2,
+                      width: 22, height: 22, borderRadius: "50%",
+                      background: color,
+                      color: "#fff", fontSize: 11, fontWeight: 900,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      border: "2px solid var(--page-bg)",
+                      border: "2.5px solid var(--card-bg)",
+                      boxShadow: `0 2px 8px ${color}55`,
                     }}>
                       {n}
                     </div>
                   </div>
+
+                  {/* Label */}
                   <p style={{
-                    fontSize: 11, fontWeight: 600, textAlign: "center",
-                    color: "var(--text-primary)", lineHeight: 1.3, maxWidth: 90,
+                    fontSize: 12, fontWeight: 700, textAlign: "center",
+                    color: "var(--text-primary)", lineHeight: 1.4,
+                    maxWidth: 100,
                   }}>
                     {title}
                   </p>
                 </div>
 
-                {/* Dotted connector */}
+                {/* Dotted arrow connector */}
                 {i < STEPS.length - 1 && (
                   <div style={{
-                    display: "flex", alignItems: "center", paddingBottom: 32, flexShrink: 0,
+                    display: "flex", alignItems: "center",
+                    paddingTop: 27, flexShrink: 0, gap: 2,
                   }}>
-                    <div style={{
-                      width: 32,
-                      borderTop: "2px dotted var(--step-dot)",
-                    }} />
-                    <svg width="8" height="10" viewBox="0 0 8 10" fill="none" style={{ marginLeft: -2 }}>
-                      <path d="M1 1l6 4-6 4" stroke="var(--step-dot)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    {/* Dots */}
+                    {[0,1,2,3,4].map(d => (
+                      <div key={d} style={{
+                        width: 4, height: 4, borderRadius: "50%",
+                        background: "var(--step-dot)", opacity: 0.5,
+                        margin: "0 1.5px",
+                      }} />
+                    ))}
+                    {/* Arrow head */}
+                    <svg width="8" height="12" viewBox="0 0 8 12" fill="none" style={{ marginLeft: 2 }}>
+                      <path d="M1.5 1.5L6.5 6L1.5 10.5" stroke="var(--step-dot)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/>
                     </svg>
                   </div>
                 )}
