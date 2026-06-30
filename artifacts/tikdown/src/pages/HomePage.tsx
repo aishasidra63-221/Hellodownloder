@@ -74,27 +74,15 @@ const FEATURES = [
     desc:  "Download as many TikTok videos as you want — no limits.",
     icon: (
       <IconCircle color="#c084fc" bg="rgba(192,132,252,0.1)" border="rgba(192,132,252,0.45)">
-        {/* Infinity ∞ */}
-        <svg width="30" height="18" viewBox="0 0 60 32" fill="none">
-          <path
-            d="M30 16C30 16 22 4 14 4C6.27 4 0 9.37 0 16C0 22.63 6.27 28 14 28C22 28 30 16 30 16Z"
-            fill="url(#inf1)"
-          />
-          <path
-            d="M30 16C30 16 38 28 46 28C53.73 28 60 22.63 60 16C60 9.37 53.73 4 46 4C38 4 30 16 30 16Z"
-            fill="url(#inf2)"
-          />
-          <defs>
-            <linearGradient id="inf1" x1="0" y1="16" x2="30" y2="16" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#a855f7"/>
-              <stop offset="1" stopColor="#ec4899"/>
-            </linearGradient>
-            <linearGradient id="inf2" x1="30" y1="16" x2="60" y2="16" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#ec4899"/>
-              <stop offset="1" stopColor="#a855f7"/>
-            </linearGradient>
-          </defs>
-        </svg>
+        {/* ∞ Unicode with gradient — most accurate render */}
+        <span style={{
+          fontSize: 30, fontWeight: 900, lineHeight: 1,
+          background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          userSelect: "none",
+        }}>∞</span>
       </IconCircle>
     ),
   },
@@ -103,14 +91,10 @@ const FEATURES = [
     desc:  "Clean videos without the TikTok logo or watermark.",
     icon: (
       <IconCircle color="#ef4444" bg="rgba(239,68,68,0.1)" border="rgba(239,68,68,0.4)">
-        {/* Prohibition circle with drop inside */}
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <circle cx="14" cy="14" r="11" stroke="#ef4444" strokeWidth="2.2"/>
-          {/* Water drop */}
-          <path d="M14 7.5 C14 7.5 9.5 12.5 9.5 15.5 C9.5 18.04 11.52 20 14 20 C16.48 20 18.5 18.04 18.5 15.5 C18.5 12.5 14 7.5 14 7.5Z"
-            fill="rgba(239,68,68,0.2)" stroke="#ef4444" strokeWidth="1.5" strokeLinejoin="round"/>
-          {/* Diagonal slash */}
-          <line x1="5.5" y1="5.5" x2="22.5" y2="22.5" stroke="#ef4444" strokeWidth="2.2" strokeLinecap="round"/>
+        {/* Prohibition / no symbol — outer ring + diagonal slash */}
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="#ef4444" strokeWidth="2"/>
+          <line x1="5.64" y1="5.64" x2="18.36" y2="18.36" stroke="#ef4444" strokeWidth="2" strokeLinecap="round"/>
         </svg>
       </IconCircle>
     ),
@@ -120,11 +104,11 @@ const FEATURES = [
     desc:  "Save in HD video or extract audio as MP3 instantly.",
     icon: (
       <IconCircle color="#6366f1" bg="rgba(99,102,241,0.1)" border="rgba(99,102,241,0.4)">
-        {/* Music note */}
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <path d="M9 17V5l12-2v12" stroke="#818cf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="6" cy="17" r="3" fill="rgba(99,102,241,0.2)" stroke="#818cf8" strokeWidth="2"/>
-          <circle cx="18" cy="15" r="3" fill="rgba(99,102,241,0.2)" stroke="#818cf8" strokeWidth="2"/>
+        {/* Single music note */}
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18V5l12-2v13" stroke="#818cf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="6" cy="18" r="3" fill="rgba(129,140,248,0.25)" stroke="#818cf8" strokeWidth="2"/>
+          <circle cx="18" cy="16" r="3" fill="rgba(129,140,248,0.25)" stroke="#818cf8" strokeWidth="2"/>
         </svg>
       </IconCircle>
     ),
