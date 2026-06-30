@@ -14,8 +14,8 @@ export default function Navbar() {
   return (
     <header style={{
       position: "sticky", top: 0, zIndex: 50,
-      background: "#13112b",
-      borderBottom: "1px solid rgba(255,255,255,0.07)",
+      background: "#ffffff",
+      borderBottom: "1px solid rgba(0,0,0,0.08)",
     }}>
       <div style={{
         width: "100%", padding: "0 24px", height: 60,
@@ -37,7 +37,7 @@ export default function Navbar() {
                 <line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
             </div>
-            <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.02em", color: "#ffffff" }}>
+            <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.02em", color: "#111827" }}>
               Lul<span style={{
                 background: "linear-gradient(90deg,#4f6ef7,#7c3aed)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
@@ -55,8 +55,8 @@ export default function Navbar() {
                 <div style={{
                   padding: "7px 14px", borderRadius: 8, fontSize: 14, fontWeight: 500,
                   cursor: "pointer", transition: "color 0.15s, background 0.15s",
-                  color: active ? "#4f6ef7" : "rgba(255,255,255,0.65)",
-                  background: active ? "rgba(79,110,247,0.12)" : "transparent",
+                  color: active ? "#4f6ef7" : "#4b5563",
+                  background: active ? "rgba(79,110,247,0.08)" : "transparent",
                 }}>
                   {label}
                 </div>
@@ -72,8 +72,8 @@ export default function Navbar() {
             style={{
               width: 38, height: 38, borderRadius: 10,
               display: "flex", alignItems: "center", justifyContent: "center",
-              background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
-              color: "rgba(255,255,255,0.8)", cursor: "pointer",
+              background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.1)",
+              color: "#4b5563", cursor: "pointer",
             }}
             aria-label="Menu"
           >
@@ -85,17 +85,17 @@ export default function Navbar() {
       {/* Mobile dropdown */}
       {open && (
         <div style={{
-          borderTop: "1px solid rgba(255,255,255,0.07)",
+          borderTop: "1px solid rgba(0,0,0,0.08)",
           padding: "12px 16px",
           display: "flex", flexDirection: "column", gap: 4,
-          background: "#13112b",
+          background: "#ffffff",
         }}>
           {LINKS.map(({ href, label }) => (
             <Link key={href} href={href}>
               <div onClick={() => setOpen(false)} style={{
                 padding: "12px 14px", borderRadius: 10, fontSize: 14, fontWeight: 500,
                 cursor: "pointer",
-                color: loc === href ? "#4f6ef7" : "rgba(255,255,255,0.65)",
+                color: loc === href ? "#4f6ef7" : "#4b5563",
                 background: loc === href ? "rgba(79,110,247,0.1)" : "transparent",
               }}>
                 {label}
