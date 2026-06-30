@@ -18,12 +18,11 @@ export default function Navbar() {
       borderBottom: "1px solid rgba(0,0,0,0.08)",
     }}>
       <div style={{
-        width: "100%", padding: "0 24px", height: 48,
+        width: "100%", padding: "0 16px", height: 48,
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        maxWidth: 1100, margin: "0 auto", paddingLeft: 16,
       }}>
 
-        {/* Logo */}
+        {/* Logo — left corner */}
         <Link href="/">
           <div style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" }}>
             <div style={{
@@ -46,43 +45,22 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="nav-desktop" style={{ alignItems: "center", gap: 4 }}>
-          {LINKS.map(({ href, label }) => {
-            const active = loc === href;
-            return (
-              <Link key={href} href={href}>
-                <div style={{
-                  padding: "7px 14px", borderRadius: 8, fontSize: 14, fontWeight: 500,
-                  cursor: "pointer", transition: "color 0.15s, background 0.15s",
-                  color: active ? "#4f6ef7" : "#4b5563",
-                  background: active ? "rgba(79,110,247,0.08)" : "transparent",
-                }}>
-                  {label}
-                </div>
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Mobile hamburger */}
-        <div className="nav-mobile">
-          <button
-            onClick={() => setOpen(!open)}
-            style={{
-              width: 38, height: 38, borderRadius: 10,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.1)",
-              color: "#4b5563", cursor: "pointer",
-            }}
-            aria-label="Menu"
-          >
-            {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
-        </div>
+        {/* Hamburger — right corner (always visible) */}
+        <button
+          onClick={() => setOpen(!open)}
+          style={{
+            width: 38, height: 38, borderRadius: 10,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.1)",
+            color: "#4b5563", cursor: "pointer",
+          }}
+          aria-label="Menu"
+        >
+          {open ? <X size={18} /> : <Menu size={18} />}
+        </button>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Dropdown menu */}
       {open && (
         <div style={{
           borderTop: "1px solid rgba(0,0,0,0.08)",
