@@ -14,7 +14,6 @@ const TermsPage      = lazy(() => import("@/pages/TermsPage"));
 const DisclaimerPage = lazy(() => import("@/pages/DisclaimerPage"));
 const BlogIndexPage  = lazy(() => import("@/pages/BlogIndexPage"));
 const BlogPostPage   = lazy(() => import("@/pages/BlogPostPage"));
-const ContactPage    = lazy(() => import("@/pages/ContactPage"));
 
 declare const __RECAPTCHA_SITE_KEY__: string;
 
@@ -41,7 +40,6 @@ function Router() {
       <Route path="/faq" component={FAQPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/disclaimer" component={DisclaimerPage} />
-      <Route path="/contact" component={ContactPage} />
       <Route path="/blog" component={BlogIndexPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
       <Route component={NotFound} />

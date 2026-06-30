@@ -12,9 +12,8 @@ const COLS = [
   {
     heading: "Help",
     links: [
-      { href: "/faq",     label: "FAQ"     },
-      { href: "/blog",    label: "Blog"    },
-      { href: "/contact", label: "Contact" },
+      { href: "/faq",  label: "FAQ"  },
+      { href: "/blog", label: "Blog" },
     ],
   },
   {

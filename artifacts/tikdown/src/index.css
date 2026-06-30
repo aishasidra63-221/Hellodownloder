@@ -266,41 +266,40 @@
 /* ─── Input box ──────────────────────────── */
 .input-box {
   display: flex; align-items: center;
-  background: rgba(255,255,255,0.72);
-  border: 2px solid rgba(255,255,255,0.5);
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.96);
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.15);
   outline: none;
-  min-height: 58px;
-  backdrop-filter: blur(12px);
+  min-height: 60px;
 }
 .input-box input {
   font-weight: 400 !important;
   font-family: inherit !important;
-  color: #111827 !important;
+  color: #1e1b3a !important;
   font-size: 15px !important;
 }
 .input-box input::placeholder {
-  color: #9ca3af !important;
+  color: #a0a8be !important;
 }
 .dark .input-box {
-  border-color: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.96);
 }
 .input-box:focus-within {
   outline: none;
-  border-color: #4f6ef7;
-  box-shadow: 0 4px 20px rgba(79,110,247,0.25);
+  box-shadow: 0 8px 32px rgba(79,110,247,0.3), 0 2px 8px rgba(0,0,0,0.15);
 }
 
 /* Paste / Clear button inside input box */
 .input-box .btn-ghost {
-  background: #ffffff !important;
-  border-color: rgba(79,110,247,0.35) !important;
+  background: #f0f0ff !important;
+  border-color: rgba(79,110,247,0.25) !important;
   color: #4f6ef7 !important;
   border-width: 1.5px !important;
+  border-radius: 10px !important;
 }
 .input-box .btn-ghost:hover {
-  background: rgba(79,110,247,0.06) !important;
+  background: rgba(79,110,247,0.1) !important;
   border-color: #4f6ef7 !important;
   color: #4f6ef7 !important;
 }
