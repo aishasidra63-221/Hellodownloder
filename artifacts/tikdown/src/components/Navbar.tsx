@@ -47,7 +47,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 4 }} className="nav-desktop">
+        <nav className="nav-desktop" style={{ alignItems: "center", gap: 4 }}>
           {LINKS.map(({ href, label }) => {
             const active = loc === href;
             return (

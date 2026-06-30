@@ -560,3 +560,55 @@
     gap: 36px !important;
   }
 }
+
+/* ═══════════════════════════════════════════
+   BLOG / SEO PAGE TYPOGRAPHY & COMPONENTS
+   ═══════════════════════════════════════════ */
+
+/* Hero title — used in blog headers */
+.hero-title {
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+/* Body text */
+.seo-text {
+  color: #4b5563;
+  line-height: 1.75;
+}
+
+/* Section headings */
+.seo-heading {
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+/* Intro / subheading */
+.seo-subheading {
+  color: #374151;
+}
+
+/* Badge pill on blog index */
+.hero-badge {
+  background: rgba(79,110,247,0.08);
+  border: 1px solid rgba(79,110,247,0.2);
+  color: #4f6ef7;
+}
+
+/* Blog post card */
+.how-it-works-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.how-it-works-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+}
+
+/* Neon divider line */
+.neon-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(79,110,247,0.4) 30%, rgba(168,85,247,0.4) 70%, transparent);
+}
