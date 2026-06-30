@@ -4,8 +4,8 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 /* ─── Colors ──────────────────────────────────────────── */
-const DARK_BG   = "#13112b";
-const DARK_BG2  = "#0f0d24";
+const DARK_BG   = "#1f1c3d";
+const DARK_BG2  = "#1a1730";
 const WHITE     = "#ffffff";
 const BLUE      = "#4f6ef7";
 const GRAY_TEXT = "#6b7280";
