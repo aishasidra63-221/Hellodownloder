@@ -122,7 +122,7 @@ const STEPS = [
     title: "Find a TikTok Video",
     desc: "Open the TikTok app and find the video you want to save. Play it to confirm it's the right one.",
     stepIcon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
       </svg>
     ),
@@ -132,7 +132,7 @@ const STEPS = [
     title: "Copy the Link",
     desc: "Tap Share → Copy Link. The TikTok URL is now in your clipboard ready to paste.",
     stepIcon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
       </svg>
@@ -143,7 +143,7 @@ const STEPS = [
     title: "Paste & Download",
     desc: "Come to LulDown, paste the link in the box above and click Download. Your video saves in seconds.",
     stepIcon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
         <line x1="12" y1="15" x2="12" y2="3"/>
@@ -238,9 +238,9 @@ export default function HomePage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
             {STEPS.map(({ n, title, desc, stepIcon }) => (
               <div key={n} style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
-                <div style={{ position: "relative", flexShrink: 0, width: 48, height: 48 }}>
+                <div style={{ position: "relative", flexShrink: 0, width: 68, height: 68 }}>
                   <div style={{
-                    width: 44, height: 44, borderRadius: "50%",
+                    width: 62, height: 62, borderRadius: "50%",
                     background: "rgba(255,255,255,0.07)",
                     border: "1.5px solid rgba(255,255,255,0.12)",
                     display: "flex", alignItems: "center", justifyContent: "center",
@@ -248,11 +248,11 @@ export default function HomePage() {
                     {stepIcon}
                   </div>
                   <div style={{
-                    position: "absolute", top: -4, right: -4,
-                    width: 20, height: 20, borderRadius: "50%",
+                    position: "absolute", top: -2, right: -2,
+                    width: 22, height: 22, borderRadius: "50%",
                     background: BLUE,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontWeight: 800, fontSize: 10, color: WHITE,
+                    fontWeight: 800, fontSize: 11, color: WHITE,
                     boxShadow: `0 3px 10px rgba(79,110,247,0.5)`,
                     border: `2px solid ${DARK_BG2}`,
                   }}>
