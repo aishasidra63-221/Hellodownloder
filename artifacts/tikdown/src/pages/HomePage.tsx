@@ -163,7 +163,7 @@ export default function HomePage() {
 
       {/* ══════════ HERO ══════════ */}
       <section style={{
-        background: `linear-gradient(160deg, #0d0b1f 0%, #13103a 60%, #0f0d28 100%)`,
+        background: `linear-gradient(160deg, #1e1a3f 0%, #2a2260 60%, #1a1840 100%)`,
         position: "relative", overflow: "hidden",
         padding: "52px 24px 52px", textAlign: "center",
       }}>
