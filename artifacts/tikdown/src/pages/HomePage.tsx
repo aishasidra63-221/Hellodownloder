@@ -172,11 +172,11 @@ export default function HomePage() {
 
         {/* TikTok musical-note watermark — top right */}
         <div style={{
-          position: "absolute", top: "-10px", right: "-20px",
-          opacity: 0.07, pointerEvents: "none", userSelect: "none",
+          position: "absolute", top: "-10px", right: "-10px",
+          opacity: 0.035, pointerEvents: "none", userSelect: "none",
           transform: "rotate(-5deg)",
         }}>
-          <svg width="260" height="300" viewBox="0 0 90 100" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <svg width="180" height="210" viewBox="0 0 90 100" fill="white" xmlns="http://www.w3.org/2000/svg">
             <path d="M62.5 0C63.8 13.2 71.6 21 85 22v14.5c-8.1 0.8-15.2-1.8-22.5-6.3V60c0 19.6-14.8 34-34.3 33.5C9.8 93 0 80.5 0 65.5 0 49.5 12 37 28.2 37c2.8 0 5.5 0.4 8 1.1V53c-2.3-0.8-4.8-1.2-7.3-1.2C18.5 51.8 12 58.2 12 66s6.5 14 14.7 14c8.5 0 14.8-6 14.8-14V0h21Z"/>
           </svg>
         </div>
