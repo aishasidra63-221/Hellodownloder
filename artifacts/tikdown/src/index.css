@@ -606,3 +606,19 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(79,110,247,0.4) 30%, rgba(168,85,247,0.4) 70%, transparent);
 }
+
+/* Footer responsive grid */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 32px 24px;
+}
+@media (max-width: 600px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 16px;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}

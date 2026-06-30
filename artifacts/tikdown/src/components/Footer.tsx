@@ -34,15 +34,10 @@ export default function Footer() {
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "48px 24px 28px" }}>
 
         {/* Top grid: brand + 3 link columns */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr 1fr 1fr",
-          gap: "32px 24px",
-          marginBottom: 40,
-        }} className="footer-grid">
+        <div style={{ marginBottom: 40 }} className="footer-grid">
 
           {/* Brand */}
-          <div>
+          <div className="footer-brand">
             <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 16 }}>
               <div style={{
                 width: 34, height: 34, borderRadius: 10, flexShrink: 0,
