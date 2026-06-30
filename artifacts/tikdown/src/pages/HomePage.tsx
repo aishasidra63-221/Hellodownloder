@@ -194,18 +194,8 @@ export default function HomePage() {
             <DownloaderBox />
           </div>
 
-          {/* Advertisement placeholder */}
-          <div style={{
-            marginTop: 28,
-            padding: "14px 20px",
-            border: "1px solid rgba(255,255,255,0.08)",
-            borderRadius: 10,
-            background: "rgba(255,255,255,0.03)",
-            color: "rgba(255,255,255,0.25)",
-            fontSize: 12, letterSpacing: "0.08em",
-          }}>
-
-          </div>
+          {/* Ad slot space preserved */}
+          <div style={{ marginTop: 28, height: 52 }} />
         </div>
       </section>
 
