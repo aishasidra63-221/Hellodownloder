@@ -250,17 +250,28 @@
 /* ─── Input action row (URL + button) ───── */
 .input-action-row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
   width: 100%;
+  align-items: stretch;
 }
 .dl-btn {
-  width: 100%;
-  padding: 15px;
+  width: auto;
+  flex-shrink: 0;
+  padding: 15px 24px;
   border-radius: 14px;
   font-size: 15.5px;
   font-weight: 700;
   letter-spacing: 0.01em;
+}
+
+@media (max-width: 640px) {
+  .input-action-row {
+    flex-direction: column;
+  }
+  .dl-btn {
+    width: 100%;
+  }
 }
 
 /* ─── Input box ──────────────────────────── */
