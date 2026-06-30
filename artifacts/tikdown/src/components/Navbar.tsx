@@ -20,7 +20,7 @@ export default function Navbar() {
       <div style={{
         width: "100%", padding: "0 24px", height: 60,
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        maxWidth: 1100, margin: "0 auto",
+        maxWidth: 1100, margin: "0 auto", paddingLeft: 16,
       }}>
 
         {/* Logo */}
@@ -28,7 +28,7 @@ export default function Navbar() {
           <div style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-              background: "linear-gradient(135deg, #4f6ef7 0%, #7c3aed 100%)",
+              background: "linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -39,7 +39,7 @@ export default function Navbar() {
             </div>
             <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.02em", color: "#111827" }}>
               Lul<span style={{
-                background: "linear-gradient(90deg,#4f6ef7,#7c3aed)",
+                background: "linear-gradient(90deg, #7c3aed, #06b6d4)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
               }}>Down</span>
             </span>
