@@ -83,9 +83,20 @@ def get_client_ip(request: Request) -> str:
     return request.client.host if request.client else "unknown"
 
 
+_ALLOWED_TIKTOK_HOSTS = {
+    "tiktok.com", "www.tiktok.com", "vm.tiktok.com",
+    "vt.tiktok.com", "m.tiktok.com",
+}
+
 def validate_tiktok_url(url: str) -> str:
+    from urllib.parse import urlparse
     url = url.strip()
-    if "tiktok.com" not in url:
+    try:
+        parsed = urlparse(url)
+        host = parsed.netloc.lower().split(":")[0]
+        if parsed.scheme not in ("https", "http") or host not in _ALLOWED_TIKTOK_HOSTS:
+            raise ValueError
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid TikTok URL. Please copy the link from TikTok app.")
     return url
 

@@ -16,7 +16,7 @@ TikTok video/audio downloader that gives users direct CDN links (no server bandw
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
+- pnpm workspaces, Node.js 20, TypeScript 5.9
 - Frontend: React 19 + Vite + Tailwind CSS 4 + Radix UI
 - Backend: Cloudflare Worker (`cloudflare-worker/worker.js`) — production
 - Backend (dev): Python FastAPI (`artifacts/tiktok-api/`) — local dev proxy

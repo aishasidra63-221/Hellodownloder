@@ -37,7 +37,7 @@ export interface HistoryItem {
   downloaded_at: number;
 }
 
-export type DownloadFormat = "mp4_720" | "mp4_1080" | "mp3";
+export type DownloadFormat = "mp4_720" | "mp4_1080" | "mp3" | "thumbnail";
 
 // ─── HMAC Token cache ─────────────────────────────────────────────────────────
 // Token is fetched once on first use and cached for 14 min (1 min buffer before
@@ -157,9 +157,10 @@ export async function fetchVideoInfo(
 }
 
 const FORMAT_FILENAME: Record<DownloadFormat, string> = {
-  mp4_1080: "luldown_1080p.mp4",
-  mp4_720:  "luldown_720p.mp4",
-  mp3:      "luldown_audio.mp3",
+  mp4_1080:  "luldown_1080p.mp4",
+  mp4_720:   "luldown_720p.mp4",
+  mp3:       "luldown_audio.mp3",
+  thumbnail: "luldown_thumbnail.jpg",
 };
 
 export async function downloadVideo(
@@ -168,8 +169,24 @@ export async function downloadVideo(
   videoMeta?: { title?: string; author?: string; thumbnail?: string; download_urls?: DownloadUrls },
   recaptchaToken?: string,
 ): Promise<void> {
+  // Thumbnail — download the cover image directly, no API call needed
+  if (format === "thumbnail") {
+    const thumbUrl = videoMeta?.thumbnail;
+    if (!thumbUrl) throw new Error("No thumbnail available for this video");
+    _addHistoryEntry({
+      url,
+      title:        videoMeta?.title  || "TikTok Video",
+      author:       videoMeta?.author || "Unknown",
+      thumbnail:    thumbUrl,
+      format,
+      downloaded_at: Math.floor(Date.now() / 1000),
+    });
+    await _cdnDownload(thumbUrl, FORMAT_FILENAME.thumbnail);
+    return;
+  }
+
   // Fast path — use the CDN URL already returned by /api/info (no second API call)
-  const cachedCdnUrl = videoMeta?.download_urls?.[format];
+  const cachedCdnUrl = videoMeta?.download_urls?.[format as Exclude<DownloadFormat, "thumbnail">];
 
   let cdnUrl: string;
   let filename: string;
