@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <header style={{
       position: "sticky", top: 0, zIndex: 50,
-      background: "#ffffff",
+      background: "#F7F6FB",
       borderBottom: "1px solid rgba(0,0,0,0.08)",
     }}>
       <div style={{
