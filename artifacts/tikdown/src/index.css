@@ -607,6 +607,21 @@
   background: linear-gradient(90deg, transparent, rgba(79,110,247,0.4) 30%, rgba(168,85,247,0.4) 70%, transparent);
 }
 
+/* 4-column features grid (LangPage) */
+.features-grid-4 {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+@media (max-width: 700px) {
+  .features-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 380px) {
+  .features-grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* Footer responsive grid */
 .footer-grid {
   display: grid;

@@ -6,7 +6,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HomePage from "@/pages/HomePage";
 
-// Lazy load non-critical pages for faster initial load
 const HistoryPage    = lazy(() => import("@/pages/HistoryPage"));
 const PrivacyPage    = lazy(() => import("@/pages/PrivacyPage"));
 const FAQPage        = lazy(() => import("@/pages/FAQPage"));
@@ -14,6 +13,12 @@ const TermsPage      = lazy(() => import("@/pages/TermsPage"));
 const DisclaimerPage = lazy(() => import("@/pages/DisclaimerPage"));
 const BlogIndexPage  = lazy(() => import("@/pages/BlogIndexPage"));
 const BlogPostPage   = lazy(() => import("@/pages/BlogPostPage"));
+const Mp3Page        = lazy(() => import("@/pages/Mp3Page"));
+const StoryPage      = lazy(() => import("@/pages/StoryPage"));
+const ThumbnailPage  = lazy(() => import("@/pages/ThumbnailPage"));
+const ViewerPage     = lazy(() => import("@/pages/ViewerPage"));
+const SsstikAltPage  = lazy(() => import("@/pages/SsstikAltPage"));
+const LangHomePage   = lazy(() => import("@/pages/LangHomePage"));
 
 declare const __RECAPTCHA_SITE_KEY__: string;
 
@@ -34,21 +39,38 @@ function NotFound() {
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={HomePage} />
-      <Route path="/history" component={HistoryPage} />
-      <Route path="/privacy" component={PrivacyPage} />
-      <Route path="/faq" component={FAQPage} />
-      <Route path="/terms" component={TermsPage} />
+      {/* ── English pages ── */}
+      <Route path="/"                   component={HomePage} />
+      <Route path="/mp3"                component={Mp3Page} />
+      <Route path="/story"              component={StoryPage} />
+      <Route path="/thumbnail"          component={ThumbnailPage} />
+      <Route path="/viewer"             component={ViewerPage} />
+      <Route path="/ssstik-alternative" component={SsstikAltPage} />
+
+      {/* ── Utility pages ── */}
+      <Route path="/history"    component={HistoryPage} />
+      <Route path="/privacy"    component={PrivacyPage} />
+      <Route path="/faq"        component={FAQPage} />
+      <Route path="/terms"      component={TermsPage} />
       <Route path="/disclaimer" component={DisclaimerPage} />
-      <Route path="/blog" component={BlogIndexPage} />
+      <Route path="/blog"       component={BlogIndexPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
+
+      {/* ── Language-prefixed tool pages ── */}
+      <Route path="/:lang/mp3"       component={Mp3Page} />
+      <Route path="/:lang/story"     component={StoryPage} />
+      <Route path="/:lang/thumbnail" component={ThumbnailPage} />
+      <Route path="/:lang/viewer"    component={ViewerPage} />
+
+      {/* ── Language home pages (must be last to avoid swallowing other routes) ── */}
+      <Route path="/:lang" component={LangHomePage} />
+
       <Route component={NotFound} />
     </Switch>
   );
 }
 
 function App() {
-  // Fixed dark theme — no toggle
   useEffect(() => {
     document.documentElement.classList.add("dark");
     localStorage.setItem("luldown-theme", "dark");

@@ -1,15 +1,28 @@
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { LANG_META, ALL_LANGS, Lang, getLangFromPath, getPageKeyFromSlug, buildPageUrl } from "@/i18n/langMeta";
 
-const LINKS = [
+const NAV_LINKS = [
   { href: "/faq",     label: "FAQ"     },
   { href: "/history", label: "History" },
+  { href: "/mp3",     label: "MP3"     },
+  { href: "/story",   label: "Story"   },
+  { href: "/thumbnail", label: "Thumbnail" },
 ];
 
 export default function Navbar() {
-  const [loc] = useLocation();
+  const [loc, navigate] = useLocation();
   const [open, setOpen] = useState(false);
+
+  const { lang, pageSlug } = getLangFromPath(loc);
+  const pageKey = getPageKeyFromSlug(pageSlug);
+
+  const switchLang = (targetLang: Lang) => {
+    const url = buildPageUrl(targetLang, pageKey) || "/";
+    navigate(url);
+    setOpen(false);
+  };
 
   return (
     <header style={{
@@ -22,7 +35,7 @@ export default function Navbar() {
         display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
 
-        {/* Logo — left corner */}
+        {/* Logo */}
         <Link href="/">
           <div style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" }}>
             <div style={{
@@ -45,7 +58,7 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Hamburger — right corner (always visible) */}
+        {/* Hamburger */}
         <button
           onClick={() => setOpen(!open)}
           style={{
@@ -60,18 +73,19 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Dropdown menu */}
+      {/* Dropdown */}
       {open && (
         <div style={{
           borderTop: "1px solid rgba(0,0,0,0.08)",
-          padding: "12px 16px",
+          padding: "12px 16px 16px",
           display: "flex", flexDirection: "column", gap: 4,
           background: "#ffffff",
         }}>
-          {LINKS.map(({ href, label }) => (
+          {/* Nav links */}
+          {NAV_LINKS.map(({ href, label }) => (
             <Link key={href} href={href}>
               <div onClick={() => setOpen(false)} style={{
-                padding: "12px 14px", borderRadius: 10, fontSize: 14, fontWeight: 500,
+                padding: "11px 14px", borderRadius: 10, fontSize: 14, fontWeight: 500,
                 cursor: "pointer",
                 color: loc === href ? "#4f6ef7" : "#4b5563",
                 background: loc === href ? "rgba(79,110,247,0.1)" : "transparent",
@@ -80,6 +94,29 @@ export default function Navbar() {
               </div>
             </Link>
           ))}
+
+          {/* Language switcher */}
+          <div style={{ marginTop: 8, paddingTop: 12, borderTop: "1px solid rgba(0,0,0,0.07)" }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", marginBottom: 8, paddingLeft: 14, letterSpacing: "0.06em", textTransform: "uppercase" }}>Language</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, paddingLeft: 4 }}>
+              {ALL_LANGS.map(l => (
+                <button
+                  key={l}
+                  onClick={() => switchLang(l)}
+                  style={{
+                    padding: "5px 12px", borderRadius: 18, fontSize: 12, fontWeight: 700,
+                    cursor: "pointer", border: "1px solid",
+                    background: l === lang ? "#4f6ef7" : "transparent",
+                    color: l === lang ? "#ffffff" : "#6b7280",
+                    borderColor: l === lang ? "#4f6ef7" : "rgba(0,0,0,0.15)",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  {LANG_META[l].label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </header>
