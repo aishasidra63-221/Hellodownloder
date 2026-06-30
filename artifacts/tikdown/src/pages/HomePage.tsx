@@ -74,15 +74,23 @@ const FEATURES = [
     desc:  "Download as many TikTok videos as you want — no limits.",
     icon: (
       <IconCircle color="#c084fc" bg="rgba(192,132,252,0.1)" border="rgba(192,132,252,0.45)">
-        {/* ∞ Unicode with gradient — most accurate render */}
-        <span style={{
-          fontSize: 42, fontWeight: 900, lineHeight: 1,
-          background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          userSelect: "none",
-        }}>∞</span>
+        {/* Infinity — stroke SVG with gradient */}
+        <svg width="48" height="30" viewBox="0 0 48 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="infGrad" x1="0" y1="0" x2="48" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#a855f7"/>
+              <stop offset="100%" stopColor="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <path
+            d="M24 15 C24 15 20 6 13 6 C8 6 3 10 3 15 C3 20 8 24 13 24 C20 24 24 15 24 15 C24 15 28 6 35 6 C40 6 45 10 45 15 C45 20 40 24 35 24 C28 24 24 15 24 15 Z"
+            stroke="url(#infGrad)"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+        </svg>
       </IconCircle>
     ),
   },
