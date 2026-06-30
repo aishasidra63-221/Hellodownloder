@@ -266,42 +266,44 @@
 /* ─── Input box ──────────────────────────── */
 .input-box {
   display: flex; align-items: center;
-  background: rgba(255,255,255,0.96);
-  border: none;
+  background: #e8e4f6;
+  border: 1.5px solid rgba(124,58,237,0.15);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: none;
   outline: none;
   min-height: 60px;
 }
 .input-box input {
   font-weight: 400 !important;
   font-family: inherit !important;
-  color: #1e1b3a !important;
+  color: #2d2460 !important;
   font-size: 15px !important;
 }
 .input-box input::placeholder {
-  color: #a0a8be !important;
+  color: #9b93c4 !important;
 }
 .dark .input-box {
-  background: rgba(255,255,255,0.96);
+  background: #e8e4f6;
 }
 .input-box:focus-within {
   outline: none;
-  box-shadow: 0 8px 32px rgba(79,110,247,0.3), 0 2px 8px rgba(0,0,0,0.15);
+  border-color: rgba(124,58,237,0.4);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
 }
 
 /* Paste / Clear button inside input box */
 .input-box .btn-ghost {
-  background: #f0f0ff !important;
-  border-color: rgba(79,110,247,0.25) !important;
-  color: #4f6ef7 !important;
+  background: #ffffff !important;
+  border-color: rgba(124,58,237,0.2) !important;
+  color: #5b4fcf !important;
   border-width: 1.5px !important;
   border-radius: 10px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
 }
 .input-box .btn-ghost:hover {
-  background: rgba(79,110,247,0.1) !important;
-  border-color: #4f6ef7 !important;
-  color: #4f6ef7 !important;
+  background: #f5f3ff !important;
+  border-color: #7c3aed !important;
+  color: #7c3aed !important;
 }
 
 /* ─── Steps grid ─────────────────────────── */
