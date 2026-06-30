@@ -11,7 +11,7 @@ TikTok video/audio downloader that gives users direct CDN links (no server bandw
 
 ## Workflows (Replit)
 
-- **Start application** — React frontend on port 5000 (webview)
+- **artifacts/tikdown: web** — React frontend (webview, port assigned by Replit)
 - **TikTok API** — Python FastAPI on port 8000 (console, local dev only)
 
 ## Stack
