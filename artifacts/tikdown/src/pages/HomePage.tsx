@@ -147,17 +147,16 @@ export default function HomePage() {
           HERO — dark navy
       ══════════════════════════════════════════ */}
       <section style={{
-        background: DARK_BG,
+        background: "linear-gradient(135deg, #7c3aed 0%, #4f6ef7 55%, #06b6d4 100%)",
         position: "relative",
         overflow: "hidden",
         padding: "52px 24px 52px",
         textAlign: "center",
       }}>
-        {/* Subtle purple glow blob */}
+        {/* Subtle overlay for depth */}
         <div style={{
-          position: "absolute", top: "-30%", left: "50%", transform: "translateX(-50%)",
-          width: 600, height: 400,
-          background: "radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.18) 0%, transparent 70%)",
+          position: "absolute", inset: 0,
+          background: "radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.18) 0%, transparent 70%)",
           pointerEvents: "none",
         }} />
 
@@ -175,10 +174,10 @@ export default function HomePage() {
           <h1 style={{
             fontSize: "clamp(1.8rem, 5.5vw, 2.8rem)",
             fontWeight: 800, lineHeight: 1.18,
-            background: "linear-gradient(90deg, #4f6ef7 0%, #7c3aed 100%)",
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            color: "#ffffff",
             marginBottom: 20,
             letterSpacing: "-0.02em",
+            textShadow: "0 2px 20px rgba(0,0,0,0.15)",
           }}>
             Without Watermark
           </h1>
