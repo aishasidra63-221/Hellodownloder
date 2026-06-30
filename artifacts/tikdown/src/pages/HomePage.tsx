@@ -155,7 +155,7 @@ export default function HomePage() {
           HERO — dark space
       ══════════════════════════════════════════ */}
       <section style={{
-        background: `linear-gradient(160deg, #0d0b1f 0%, #13103a 60%, #0f0d28 100%)`,
+        background: `linear-gradient(160deg, #16103a 0%, #1e1650 55%, #17123e 100%)`,
         position: "relative",
         overflow: "hidden",
         padding: "52px 24px 52px",
