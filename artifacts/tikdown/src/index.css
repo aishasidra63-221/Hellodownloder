@@ -319,7 +319,7 @@
 /* ─── Primary CTA button — gradient ─────── */
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  background: linear-gradient(90deg, #4f6ef7 0%, #a855f7 50%, #ec4899 100%);
+  background: linear-gradient(90deg, #7c3aed 0%, #4f6ef7 50%, #06b6d4 100%);
   color: #fff !important;
   font-weight: 700;
   border: none;

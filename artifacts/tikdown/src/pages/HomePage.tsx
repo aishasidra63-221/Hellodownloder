@@ -51,36 +51,82 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 }
 
 /* ─── Features (3 items, NO cards) ────────────────────── */
+/* ── Icon circle helper ───────────────────── */
+function IconCircle({ color, bg, border, children }: {
+  color: string; bg: string; border: string; children: React.ReactNode
+}) {
+  return (
+    <div style={{
+      width: 58, height: 58, borderRadius: "50%",
+      background: bg,
+      border: `2px solid ${border}`,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      flexShrink: 0,
+    }}>
+      {children}
+    </div>
+  );
+}
+
 const FEATURES = [
   {
-    label: "Unlimited",
-    desc:  "Download as many TikTok videos as you want — no daily limits.",
+    label: "Unlimited Download",
+    desc:  "Download as many TikTok videos as you want — no limits.",
     icon: (
-      <span style={{ fontSize: 38, color: "#c084fc", lineHeight: 1, display: "block", fontWeight: 400 }}>∞</span>
+      <IconCircle color="#c084fc" bg="rgba(192,132,252,0.1)" border="rgba(192,132,252,0.45)">
+        {/* Infinity ∞ */}
+        <svg width="30" height="18" viewBox="0 0 60 32" fill="none">
+          <path
+            d="M30 16C30 16 22 4 14 4C6.27 4 0 9.37 0 16C0 22.63 6.27 28 14 28C22 28 30 16 30 16Z"
+            fill="url(#inf1)"
+          />
+          <path
+            d="M30 16C30 16 38 28 46 28C53.73 28 60 22.63 60 16C60 9.37 53.73 4 46 4C38 4 30 16 30 16Z"
+            fill="url(#inf2)"
+          />
+          <defs>
+            <linearGradient id="inf1" x1="0" y1="16" x2="30" y2="16" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#a855f7"/>
+              <stop offset="1" stopColor="#ec4899"/>
+            </linearGradient>
+            <linearGradient id="inf2" x1="30" y1="16" x2="60" y2="16" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#ec4899"/>
+              <stop offset="1" stopColor="#a855f7"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </IconCircle>
     ),
   },
   {
     label: "No Watermark",
-    desc:  "Get clean videos without the TikTok logo or watermark.",
+    desc:  "Clean videos without the TikTok logo or watermark.",
     icon: (
-      /* Drop with cross/slash */
-      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-        <path d="M18 4 C18 4 6 16 6 23 C6 29.63 11.37 34 18 34 C24.63 34 30 29.63 30 23 C30 16 18 4 18 4Z"
-          fill="rgba(239,68,68,0.12)" stroke="#ef4444" strokeWidth="2" strokeLinejoin="round"/>
-        <line x1="11" y1="11" x2="26" y2="26" stroke="#ef4444" strokeWidth="2.2" strokeLinecap="round"/>
-      </svg>
+      <IconCircle color="#ef4444" bg="rgba(239,68,68,0.1)" border="rgba(239,68,68,0.4)">
+        {/* Prohibition circle with drop inside */}
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="11" stroke="#ef4444" strokeWidth="2.2"/>
+          {/* Water drop */}
+          <path d="M14 7.5 C14 7.5 9.5 12.5 9.5 15.5 C9.5 18.04 11.52 20 14 20 C16.48 20 18.5 18.04 18.5 15.5 C18.5 12.5 14 7.5 14 7.5Z"
+            fill="rgba(239,68,68,0.2)" stroke="#ef4444" strokeWidth="1.5" strokeLinejoin="round"/>
+          {/* Diagonal slash */}
+          <line x1="5.5" y1="5.5" x2="22.5" y2="22.5" stroke="#ef4444" strokeWidth="2.2" strokeLinecap="round"/>
+        </svg>
+      </IconCircle>
     ),
   },
   {
     label: "MP4 & MP3",
     desc:  "Save in HD video or extract audio as MP3 instantly.",
     icon: (
-      /* Music note */
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-        <path d="M9 18V5l12-2v13" stroke="#9ca3af" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="6" cy="18" r="3" fill="rgba(156,163,175,0.15)" stroke="#9ca3af" strokeWidth="1.8"/>
-        <circle cx="18" cy="16" r="3" fill="rgba(156,163,175,0.15)" stroke="#9ca3af" strokeWidth="1.8"/>
-      </svg>
+      <IconCircle color="#6366f1" bg="rgba(99,102,241,0.1)" border="rgba(99,102,241,0.4)">
+        {/* Music note */}
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <path d="M9 17V5l12-2v12" stroke="#818cf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="6" cy="17" r="3" fill="rgba(99,102,241,0.2)" stroke="#818cf8" strokeWidth="2"/>
+          <circle cx="18" cy="15" r="3" fill="rgba(99,102,241,0.2)" stroke="#818cf8" strokeWidth="2"/>
+        </svg>
+      </IconCircle>
     ),
   },
 ];
@@ -193,10 +239,10 @@ export default function HomePage() {
           className="features-grid"
         >
           {FEATURES.map(({ label, desc, icon }) => (
-            <div key={label} style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{ marginBottom: 14 }}>{icon}</div>
-              <h3 style={{ fontWeight: 700, fontSize: 15, color: DARK_TEXT, marginBottom: 8 }}>{label}</h3>
-              <p style={{ fontSize: 13.5, color: GRAY_TEXT, lineHeight: 1.65, maxWidth: 220 }}>{desc}</p>
+            <div key={label} style={{ textAlign: "left", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+              <div style={{ marginBottom: 16 }}>{icon}</div>
+              <h3 style={{ fontWeight: 700, fontSize: 17, color: DARK_TEXT, marginBottom: 8, lineHeight: 1.3 }}>{label}</h3>
+              <p style={{ fontSize: 13.5, color: GRAY_TEXT, lineHeight: 1.65 }}>{desc}</p>
             </div>
           ))}
         </div>
