@@ -285,21 +285,29 @@
 /* ─── Input box ──────────────────────────── */
 .input-box {
   display: flex; align-items: center;
-  background: var(--input-bg);
-  border: 1.5px solid rgba(0,0,0,0.35);
+  background: #ffffff;
+  border: 2px solid rgba(255,255,255,0.9);
   border-radius: 14px;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25), 0 1px 4px rgba(0,0,0,0.15);
   outline: none;
+  min-height: 58px;
 }
 .input-box input {
   font-weight: 400 !important;
   font-family: inherit !important;
+  color: #111827 !important;
+  font-size: 15px !important;
+}
+.input-box input::placeholder {
+  color: #9ca3af !important;
 }
 .dark .input-box {
-  border-color: rgba(255,255,255,0.38);
+  border-color: rgba(255,255,255,0.9);
 }
 .input-box:focus-within {
   outline: none;
+  border-color: #4f6ef7;
+  box-shadow: 0 4px 24px rgba(79,110,247,0.3), 0 1px 4px rgba(0,0,0,0.15);
 }
 
 /* ─── Steps grid ─────────────────────────── */
