@@ -3,7 +3,7 @@ import DownloaderBox from "@/components/DownloaderBox";
 import { useState } from "react";
 
 const DARK_BG2  = "#1a1730";
-const WHITE     = "#F7F6FB";
+const WHITE     = "#F8F8FC";
 const BLUE      = "#4f6ef7";
 const GRAY_TEXT = "#6b7280";
 const DARK_TEXT = "#111827";
