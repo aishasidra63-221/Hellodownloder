@@ -21,20 +21,35 @@ const HOME_FAQS = [
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ borderBottom: "1px solid rgba(0,0,0,0.08)", overflow: "hidden" }}>
+    <div style={{
+      background: "#ffffff",
+      borderRadius: 14,
+      border: "1px solid rgba(0,0,0,0.07)",
+      boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
+      marginBottom: 10,
+      overflow: "hidden",
+      transition: "box-shadow 0.2s",
+    }}>
       <button onClick={() => setOpen(!open)} style={{
         width: "100%", display: "flex", alignItems: "center",
         justifyContent: "space-between", gap: 12,
-        padding: "16px 0", textAlign: "left",
+        padding: "16px 20px", textAlign: "left",
         background: "transparent", border: "none", cursor: "pointer",
       }}>
         <span style={{ fontWeight: 600, fontSize: 14, color: DARK_TEXT, lineHeight: 1.4 }}>{q}</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GRAY_TEXT} strokeWidth="2.5" strokeLinecap="round" style={{ flexShrink: 0, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}>
-          <path d="M6 9l6 6 6-6"/>
-        </svg>
+        <div style={{
+          width: 24, height: 24, borderRadius: "50%", flexShrink: 0,
+          background: open ? BLUE : "rgba(0,0,0,0.06)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "background 0.2s",
+        }}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={open ? "#fff" : GRAY_TEXT} strokeWidth="2.8" strokeLinecap="round" style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}>
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </div>
       </button>
       {open && (
-        <div style={{ padding: "0 0 16px", fontSize: 13.5, color: GRAY_TEXT, lineHeight: 1.65 }}>
+        <div style={{ padding: "0 20px 16px", fontSize: 13.5, color: GRAY_TEXT, lineHeight: 1.7 }}>
           {a}
         </div>
       )}
