@@ -188,7 +188,7 @@ export default function HomePage() {
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", marginBottom: 40, fontWeight: 400, lineHeight: 1.6 }}>
             Fast. Free. High Quality. No Registration.
           </p>
-          <div style={{ maxWidth: 620, margin: "0 auto" }}>
+          <div style={{ maxWidth: 780, margin: "0 auto" }}>
             <DownloaderBox />
           </div>
           <div style={{ marginTop: 28, height: 52 }} />
