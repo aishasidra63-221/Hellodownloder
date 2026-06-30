@@ -223,10 +223,10 @@ export default function HomePage() {
           className="features-grid"
         >
           {FEATURES.map(({ label, desc, icon }) => (
-            <div key={label} style={{ textAlign: "left", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            <div key={label} style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
               <div style={{ marginBottom: 16 }}>{icon}</div>
               <h3 style={{ fontWeight: 700, fontSize: 17, color: DARK_TEXT, marginBottom: 8, lineHeight: 1.3 }}>{label}</h3>
-              <p style={{ fontSize: 13.5, color: GRAY_TEXT, lineHeight: 1.65 }}>{desc}</p>
+              <p style={{ fontSize: 13.5, color: GRAY_TEXT, lineHeight: 1.65, maxWidth: 200 }}>{desc}</p>
             </div>
           ))}
         </div>
