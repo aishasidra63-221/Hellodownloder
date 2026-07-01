@@ -1,5 +1,6 @@
 import { useSEO } from "@/hooks/use-seo";
 import { Mail, MessageSquare, Shield, Clock } from "lucide-react";
+import BackHomeButtonLight from "@/components/BackHomeButtonLight";
 
 export default function ContactPage() {
   useSEO({
@@ -9,6 +10,9 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12 space-y-8">
+      <div style={{ marginBottom: -16 }}>
+        <BackHomeButtonLight />
+      </div>
       <header className="space-y-3">
         <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
           <Mail className="w-6 h-6 text-primary" />

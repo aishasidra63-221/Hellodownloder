@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchHistory, clearHistory, HistoryItem } from "@/lib/api";
 import { Trash2, Download, Clock, Video, Music, Image, Film, Inbox, Loader2, User } from "lucide-react";
 import { Link } from "wouter";
+import BackHomeButtonLight from "@/components/BackHomeButtonLight";
 
 const FORMAT_META: Record<string, { Icon: React.ElementType; label: string; color: string }> = {
   mp4_nowm:  { Icon: Video, label: "MP4 No Watermark", color: "#4f6ef7" },
@@ -44,7 +45,11 @@ export default function HistoryPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f5f5f5" }}>
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 16px 64px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "24px 16px 64px" }}>
+
+        <div style={{ marginBottom: 20 }}>
+          <BackHomeButtonLight />
+        </div>
 
         {/* Header */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 28 }}>

@@ -1,5 +1,6 @@
 import { Shield, ChevronRight } from "lucide-react";
 import { useSEO } from "@/hooks/use-seo";
+import BackHomeButton from "@/components/BackHomeButton";
 
 const SECTIONS = [
   {
@@ -52,6 +53,9 @@ export default function PrivacyPage() {
         position: "relative",
         overflow: "hidden",
       }}>
+        <div style={{ position: "absolute", top: 16, left: 20, zIndex: 10 }}>
+          <BackHomeButton />
+        </div>
         <div style={{
           position: "absolute", top: "-20%", left: "50%", transform: "translateX(-50%)",
           width: 500, height: 300,

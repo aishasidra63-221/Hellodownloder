@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { BLOGS } from "@/data/blogs";
 import { Clock, Calendar, ChevronRight, BookOpen } from "lucide-react";
+import BackHomeButton from "@/components/BackHomeButton";
 
 export default function BlogIndexPage() {
   useSEO({
@@ -20,6 +21,9 @@ export default function BlogIndexPage() {
         position: "relative",
         overflow: "hidden",
       }}>
+        <div style={{ position: "absolute", top: 16, left: 20, zIndex: 10 }}>
+          <BackHomeButton />
+        </div>
         <div style={{
           position: "absolute", top: "-20%", left: "50%", transform: "translateX(-50%)",
           width: 500, height: 300,
