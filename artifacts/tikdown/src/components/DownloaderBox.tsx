@@ -243,8 +243,8 @@ export default function DownloaderBox({ highlightFormat }: Props) {
 
             {/* ── Author + Title + Tags ── */}
             <div style={{ padding:"14px 16px 16px" }}>
-              {/* Avatar + username + title column */}
-              <div style={{ display:"flex", alignItems:"flex-start", gap:11 }}>
+              {/* Avatar + username — same row */}
+              <div style={{ display:"flex", alignItems:"center", gap:11, marginBottom:10 }}>
                 <div style={{
                   width:54, height:54, borderRadius:"50%", flexShrink:0,
                   background:"linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)",
@@ -254,30 +254,30 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                 }}>
                   {avatarLetter}
                 </div>
-                <div style={{ flex:1, minWidth:0 }}>
-                  <p style={{ margin:"0 0 4px", fontWeight:700, fontSize:14.5, color:"#ffffff" }}>
-                    {info.author}
-                  </p>
-                  {cleanTitle && (
-                    <p style={{
-                      margin:0, fontSize:13, fontWeight:600,
-                      color:"rgba(255,255,255,0.75)", lineHeight:1.55,
-                    }}>
-                      {cleanTitle}
-                      {tags.length > 0 && (
-                        <>
-                          {" "}
-                          {tags.slice(0, 6).map(tag => (
-                            <span key={tag} style={{ color:"#ffffff", fontWeight:600 }}>
-                              {tag}{" "}
-                            </span>
-                          ))}
-                        </>
-                      )}
-                    </p>
-                  )}
-                </div>
+                <p style={{ margin:0, fontWeight:700, fontSize:15, color:"#ffffff" }}>
+                  {info.author}
+                </p>
               </div>
+
+              {/* Title + tags below */}
+              {cleanTitle && (
+                <p style={{
+                  margin:0, fontSize:13, fontWeight:600,
+                  color:"rgba(255,255,255,0.8)", lineHeight:1.6,
+                }}>
+                  {cleanTitle}
+                  {tags.length > 0 && (
+                    <>
+                      {" "}
+                      {tags.slice(0, 6).map(tag => (
+                        <span key={tag} style={{ color:"#ffffff", fontWeight:600 }}>
+                          {tag}{" "}
+                        </span>
+                      ))}
+                    </>
+                  )}
+                </p>
+              )}
             </div>
 
             {/* Divider */}
