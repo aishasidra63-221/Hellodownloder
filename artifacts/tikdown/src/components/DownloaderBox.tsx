@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from "react";
 import { fetchVideoInfo, downloadVideo, downloadPhoto, VideoInfo, DownloadFormat } from "@/lib/api";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
-  Music, Clipboard, Download, Image,
+  Music, Clipboard, Download, Image, Video,
   AlertCircle, Loader2, X, FlaskConical,
 } from "lucide-react";
 
@@ -24,9 +24,9 @@ const FMTS: FmtCfg[] = [
     sub: "No Watermark · Best Quality",
     leftBg: "#7c3aed",
     leftNode: (
-      <div style={{ textAlign:"center" }}>
-        <div style={{ fontSize:10, fontWeight:900, color:"#fff", lineHeight:1 }}>1080p</div>
-        <div style={{ fontSize:8, fontWeight:700, color:"rgba(255,255,255,0.75)", marginTop:2 }}>HD</div>
+      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
+        <Video size={17} color="#fff" strokeWidth={2.2} />
+        <span style={{ fontSize:9, fontWeight:800, color:"rgba(255,255,255,0.85)", lineHeight:1 }}>1080p</span>
       </div>
     ),
     btnBg: "#7c3aed",
@@ -38,9 +38,9 @@ const FMTS: FmtCfg[] = [
     sub: "No Watermark · Good Quality",
     leftBg: "#2563eb",
     leftNode: (
-      <div style={{ textAlign:"center" }}>
-        <div style={{ fontSize:10, fontWeight:900, color:"#fff", lineHeight:1 }}>720p</div>
-        <div style={{ fontSize:8, fontWeight:700, color:"rgba(255,255,255,0.75)", marginTop:2 }}>HD</div>
+      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
+        <Video size={17} color="#fff" strokeWidth={2.2} />
+        <span style={{ fontSize:9, fontWeight:800, color:"rgba(255,255,255,0.85)", lineHeight:1 }}>720p</span>
       </div>
     ),
     btnBg: "#2563eb",
