@@ -177,9 +177,9 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             </button>
           )}
         </div>
-        <button onClick={handleFetch} disabled={!url.trim() || step === "loading-info"} className="btn-primary dl-btn">
+        <button onClick={handleFetch} disabled={!url.trim() || step === "loading-info"} className="btn-primary dl-btn" style={step === "loading-info" ? { opacity:0.85, cursor:"wait", minWidth:160 } : { minWidth:160 }}>
           {step === "loading-info"
-            ? <><Loader2 size={18} className="animate-spin" /> Fetching…</>
+            ? <><Loader2 size={22} className="animate-spin" /> Loading…</>
             : <><Download size={18} /> Download Now</>}
         </button>
       </div>
