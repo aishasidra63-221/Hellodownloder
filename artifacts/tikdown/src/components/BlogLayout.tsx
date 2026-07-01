@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Clock, Calendar, ChevronRight, ArrowLeft, Download } from "lucide-react";
+import { Clock, Calendar, ChevronRight, ArrowLeft, Download, FileText } from "lucide-react";
 import type { BlogPost } from "@/data/blogs";
 
 interface Props {
@@ -12,107 +12,181 @@ export default function BlogLayout({ post }: Props) {
   });
 
   return (
-    <article className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <div style={{ background: "#f7f8fa", minHeight: "100vh" }}>
 
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs mb-8 opacity-50">
-        <Link href="/"><span className="hover:opacity-80 cursor-pointer">Home</span></Link>
-        <ChevronRight className="w-3 h-3" />
-        <Link href="/blog"><span className="hover:opacity-80 cursor-pointer">Blog</span></Link>
-        <ChevronRight className="w-3 h-3" />
-        <span className="truncate max-w-[200px]">{post.title}</span>
-      </nav>
-
-      {/* Header */}
-      <header className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-black leading-tight mb-4 hero-title">
+      {/* Hero Header */}
+      <div style={{
+        background: "linear-gradient(160deg, #0d0b1f 0%, #13103a 60%, #0f0d28 100%)",
+        padding: "48px 24px 52px",
+        textAlign: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", top: "-20%", left: "50%", transform: "translateX(-50%)",
+          width: 500, height: 300,
+          background: "radial-gradient(ellipse, rgba(120,40,220,0.2) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+        <div style={{
+          width: 52, height: 52, borderRadius: 16, margin: "0 auto 16px",
+          background: "rgba(79,110,247,0.15)",
+          border: "1px solid rgba(79,110,247,0.3)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          position: "relative",
+        }}>
+          <FileText size={24} color="#4f6ef7" />
+        </div>
+        <h1 style={{
+          fontSize: "clamp(1.3rem, 4vw, 2rem)", fontWeight: 800,
+          color: "#ffffff", marginBottom: 12, letterSpacing: "-0.02em",
+          position: "relative", maxWidth: 680, margin: "0 auto 12px",
+        }}>
           {post.title}
         </h1>
-        <div className="flex flex-wrap items-center gap-4 text-xs seo-text">
-          <span className="flex items-center gap-1.5">
-            <Calendar className="w-3.5 h-3.5" />
-            {dateFormatted}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, fontSize: 13, color: "rgba(255,255,255,0.45)", position: "relative" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <Calendar size={13} /> {dateFormatted}
           </span>
-          <span className="flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5" />
-            {post.readTime} min read
+          <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <Clock size={13} /> {post.readTime} min read
           </span>
         </div>
-      </header>
-
-      {/* Intro */}
-      <p className="text-base leading-relaxed mb-8 seo-subheading">{post.intro}</p>
-
-      {/* CTA Banner */}
-      <div className="rounded-2xl p-5 mb-10 flex flex-col sm:flex-row items-center gap-4 justify-between"
-        style={{ background: "linear-gradient(135deg, rgba(0,200,200,0.12) 0%, rgba(233,30,140,0.12) 100%)", border: "1px solid rgba(0,229,229,0.25)" }}>
-        <div>
-          <p className="font-black text-sm" style={{ color: "#00e5e5" }}>Try it now — 100% Free</p>
-          <p className="text-xs opacity-60 mt-0.5">No login, no app, no watermark</p>
-        </div>
-        <Link href="/">
-          <button className="gradient-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black whitespace-nowrap">
-            <Download className="w-4 h-4" />
-            Download TikTok
-          </button>
-        </Link>
       </div>
 
-      {/* Sections */}
-      <div className="space-y-8">
-        {post.sections.map((section, i) => (
-          <section key={i}>
-            <h2 className="text-lg font-black mb-3 seo-heading">{section.heading}</h2>
-            <div className="text-sm leading-relaxed seo-text space-y-3">
-              {section.content.split("\n\n").map((para, j) => (
-                <p key={j} style={{ whiteSpace: "pre-line" }}>{para}</p>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "36px 20px 60px" }}>
+
+        {/* Breadcrumb */}
+        <nav style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#6b7280", marginBottom: 24 }}>
+          <Link href="/"><span style={{ cursor: "pointer", color: "#4f6ef7" }}>Home</span></Link>
+          <ChevronRight size={12} />
+          <Link href="/blog"><span style={{ cursor: "pointer", color: "#4f6ef7" }}>Blog</span></Link>
+          <ChevronRight size={12} />
+          <span style={{ color: "#9ca3af", maxWidth: 260, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{post.title}</span>
+        </nav>
+
+        {/* Intro */}
+        <p style={{ fontSize: 14, color: "#4b5563", lineHeight: 1.75, marginBottom: 24, padding: "16px 20px", background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)" }}>
+          {post.intro}
+        </p>
+
+        {/* CTA Banner */}
+        <div style={{
+          background: "linear-gradient(160deg, #0d0b1f 0%, #13103a 100%)",
+          border: "1px solid rgba(79,110,247,0.25)",
+          borderRadius: 16, padding: "18px 22px", marginBottom: 28,
+          display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 14,
+        }}>
+          <div>
+            <p style={{ fontWeight: 800, fontSize: 14, color: "#ffffff", marginBottom: 3 }}>Try it now — 100% Free</p>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)" }}>No login, no app, no watermark</p>
+          </div>
+          <Link href="/">
+            <button style={{
+              background: "linear-gradient(135deg, #4f6ef7 0%, #7c3aed 100%)",
+              border: "none", borderRadius: 12, padding: "10px 20px",
+              color: "#fff", fontWeight: 800, fontSize: 13, cursor: "pointer",
+              display: "flex", alignItems: "center", gap: 8,
+            }}>
+              <Download size={15} />
+              Download TikTok
+            </button>
+          </Link>
+        </div>
+
+        {/* Sections */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {post.sections.map((section, i) => (
+            <div key={i} style={{
+              background: "#ffffff",
+              borderRadius: i === 0 ? "16px 16px 0 0" : i === post.sections.length - 1 && (!post.faq || post.faq.length === 0) ? "0 0 16px 16px" : 0,
+              borderTop: i === 0 ? "1px solid rgba(0,0,0,0.09)" : "none",
+              borderLeft: "1px solid rgba(0,0,0,0.09)",
+              borderRight: "1px solid rgba(0,0,0,0.09)",
+              borderBottom: "1px solid rgba(0,0,0,0.09)",
+              padding: "20px 22px",
+            }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                <ChevronRight size={16} color="#4f6ef7" style={{ marginTop: 3, flexShrink: 0 }} />
+                <div>
+                  <h2 style={{ fontWeight: 700, fontSize: 15, color: "#111827", marginBottom: 8 }}>{section.heading}</h2>
+                  <div style={{ fontSize: 13.5, color: "#4b5563", lineHeight: 1.7 }}>
+                    {section.content.split("\n\n").map((para, j) => (
+                      <p key={j} style={{ marginBottom: j < section.content.split("\n\n").length - 1 ? 10 : 0, whiteSpace: "pre-line" }}>{para}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* FAQ */}
+        {post.faq && post.faq.length > 0 && (
+          <div style={{ marginTop: 28 }}>
+            <h2 style={{ fontWeight: 800, fontSize: 16, color: "#111827", marginBottom: 14, paddingLeft: 4 }}>
+              Frequently Asked Questions
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+              {post.faq.map((item, i) => (
+                <div key={i} style={{
+                  background: "#ffffff",
+                  borderRadius: i === 0 ? "16px 16px 0 0" : i === post.faq!.length - 1 ? "0 0 16px 16px" : 0,
+                  borderTop: i === 0 ? "1px solid rgba(0,0,0,0.09)" : "none",
+                  borderLeft: "1px solid rgba(0,0,0,0.09)",
+                  borderRight: "1px solid rgba(0,0,0,0.09)",
+                  borderBottom: "1px solid rgba(0,0,0,0.09)",
+                  padding: "18px 22px",
+                }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <ChevronRight size={16} color="#4f6ef7" style={{ marginTop: 2, flexShrink: 0 }} />
+                    <div>
+                      <h3 style={{ fontWeight: 700, fontSize: 14, color: "#111827", marginBottom: 6 }}>{item.q}</h3>
+                      <p style={{ fontSize: 13.5, color: "#4b5563", lineHeight: 1.7 }}>{item.a}</p>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-          </section>
-        ))}
-      </div>
-
-      {/* FAQ */}
-      {post.faq && post.faq.length > 0 && (
-        <div className="mt-10 pt-8">
-          <div className="neon-divider mb-8" />
-          <h2 className="text-xl font-black mb-6 seo-heading">Frequently Asked Questions</h2>
-          <div className="space-y-5">
-            {post.faq.map((item, i) => (
-              <div key={i} className="rounded-xl p-4" style={{ background: "rgba(0,229,229,0.05)", border: "1px solid rgba(0,229,229,0.15)" }}>
-                <h3 className="font-bold text-sm mb-2" style={{ color: "#00e5e5" }}>{item.q}</h3>
-                <p className="text-sm leading-relaxed seo-text">{item.a}</p>
-              </div>
-            ))}
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Bottom CTA */}
-      <div className="mt-12 pt-8">
-        <div className="neon-divider mb-8" />
-        <div className="text-center space-y-4">
-          <p className="font-black text-lg seo-heading">Ready to download?</p>
-          <p className="text-sm seo-text">Paste your TikTok link and get a watermark-free video in seconds.</p>
+        {/* Bottom CTA */}
+        <div style={{
+          marginTop: 32,
+          background: "linear-gradient(160deg, #0d0b1f 0%, #13103a 100%)",
+          border: "1px solid rgba(79,110,247,0.25)",
+          borderRadius: 16, padding: "28px 22px",
+          textAlign: "center",
+        }}>
+          <p style={{ fontWeight: 800, fontSize: 16, color: "#ffffff", marginBottom: 6 }}>Ready to download?</p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 20 }}>
+            Paste your TikTok link and get a watermark-free video in seconds.
+          </p>
           <Link href="/">
-            <button className="gradient-btn flex items-center gap-2 px-8 py-3.5 rounded-2xl text-base font-black mx-auto">
-              <Download className="w-5 h-5" />
+            <button style={{
+              background: "linear-gradient(135deg, #4f6ef7 0%, #7c3aed 100%)",
+              border: "none", borderRadius: 14, padding: "13px 32px",
+              color: "#fff", fontWeight: 800, fontSize: 14, cursor: "pointer",
+              display: "inline-flex", alignItems: "center", gap: 10,
+            }}>
+              <Download size={17} />
               Go to Luldown — Free Download
             </button>
           </Link>
         </div>
-      </div>
 
-      {/* Back link */}
-      <div className="mt-10">
-        <Link href="/blog">
-          <span className="flex items-center gap-2 text-sm seo-text hover:opacity-80 cursor-pointer transition-opacity w-fit">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Blog
-          </span>
-        </Link>
-      </div>
+        {/* Back link */}
+        <div style={{ marginTop: 24 }}>
+          <Link href="/blog">
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#4f6ef7", cursor: "pointer", fontWeight: 600 }}>
+              <ArrowLeft size={15} />
+              Back to Blog
+            </span>
+          </Link>
+        </div>
 
-    </article>
+      </div>
+    </div>
   );
 }
