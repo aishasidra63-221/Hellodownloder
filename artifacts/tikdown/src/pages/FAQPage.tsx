@@ -153,10 +153,23 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+const FAQ_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": FAQS.flatMap(section =>
+    section.items.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": { "@type": "Answer", "text": item.a },
+    }))
+  ),
+};
+
 export default function FAQPage() {
   useSEO({
     title: "FAQ — Luldown TikTok Downloader",
     description: "Frequently asked questions about Luldown — how to download TikTok videos, supported formats, privacy, and more.",
+    jsonLd: FAQ_JSONLD,
   });
 
   return (

@@ -158,10 +158,21 @@ const STEPS = [
   },
 ];
 
+const HOME_FAQ_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": HOME_FAQS.slice(0, 6).map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": { "@type": "Answer", "text": item.a },
+  })),
+};
+
 export default function HomePage() {
   useSEO({
     title: "TikTok Video Downloader — No Watermark | LulDown",
     description: "Download TikTok videos without watermark in 1080p, 720p or MP3. Free, fast, no login required. Works on all devices.",
+    jsonLd: HOME_FAQ_JSONLD,
   });
 
   return (
