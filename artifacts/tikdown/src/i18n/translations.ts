@@ -48,6 +48,9 @@ export const T: Translations = {
         { q: "Is LulDown really free?",                    a: "Yes, 100% free. No subscription, no account, no hidden fees. Download unlimited TikTok videos at no cost, forever." },
         { q: "Why is the video without a watermark?",      a: "TikTok stores two versions of every video — one with a watermark and one original clean file. LulDown fetches the clean version directly from TikTok's CDN." },
         { q: "Does it work on iPhone and Android?",        a: "Yes. LulDown is fully responsive and works on all smartphones, tablets, and desktop browsers without any app installation." },
+        { q: "Do I need to install an app or extension?",  a: "No installation needed. LulDown works entirely in your browser — just paste the TikTok link and download. No apps, extensions, or plugins required." },
+        { q: "What download formats are available?",       a: "MP4 1080p (HD, no watermark), MP4 720p (standard, no watermark), and MP3 192kbps (audio only). Photo slideshows download as individual images." },
+        { q: "Do I need a TikTok account?",                a: "No account required. You can download any public TikTok video without logging in or creating a TikTok account." },
       ],
     },
     mp3: {
@@ -243,6 +246,9 @@ export const T: Translations = {
         { q: "کیا LulDown مفت ہے؟",                         a: "جی ہاں، 100% مفت۔ کوئی اکاؤنٹ، کوئی سبسکرپشن نہیں۔ آپ لامحدود ویڈیوز ڈاؤن لوڈ کر سکتے ہیں۔" },
         { q: "ویڈیو میں واٹر مارک کیوں نہیں ہوتا؟",        a: "ٹک ٹاک ہر ویڈیو کی دو کاپیاں رکھتا ہے — ایک واٹر مارک کے ساتھ اور ایک اصلی۔ LulDown اصلی کاپی حاصل کرتا ہے۔" },
         { q: "کیا موبائل پر کام کرتا ہے؟",                  a: "جی ہاں۔ iPhone، Android اور تمام براؤزرز پر بغیر کسی ایپ کے بالکل ٹھیک کام کرتا ہے۔" },
+        { q: "کیا کوئی ایپ یا ایکسٹینشن انسٹال کرنی ہوگی؟", a: "نہیں۔ LulDown براؤزر میں چلتا ہے — لنک پیسٹ کریں اور ڈاؤن لوڈ کریں۔ کوئی ایپ یا پلگ ان نہیں۔" },
+        { q: "کون سے فارمیٹ دستیاب ہیں؟",                   a: "MP4 1080p (واٹرمارک کے بغیر)، MP4 720p، اور MP3 192kbps۔ فوٹو سلائیڈشوز بھی ڈاؤن لوڈ کیے جا سکتے ہیں۔" },
+        { q: "کیا TikTok اکاؤنٹ ضروری ہے؟",                  a: "نہیں۔ آپ بغیر لاگ ان کے کوئی بھی پبلک TikTok ویڈیو ڈاؤن لوڈ کر سکتے ہیں۔" },
       ],
     },
     mp3: {
@@ -438,6 +444,9 @@ export const T: Translations = {
         { q: "क्या LulDown मुफ्त है?",                      a: "हाँ, 100% मुफ्त। कोई अकाउंट नहीं, कोई सब्सक्रिप्शन नहीं। असीमित वीडियो डाउनलोड करें।" },
         { q: "वीडियो में वॉटरमार्क क्यों नहीं होता?",      a: "TikTok हर वीडियो की दो कॉपी रखता है — वॉटरमार्क के साथ और बिना। LulDown मूल कॉपी लाता है।" },
         { q: "क्या मोबाइल पर काम करता है?",                 a: "हाँ। iPhone, Android और सभी ब्राउज़र पर बिना किसी ऐप के काम करता है।" },
+        { q: "क्या कोई ऐप या एक्सटेंशन इंस्टॉल करनी होगी?", a: "नहीं। LulDown सीधे ब्राउज़र में काम करता है — बस लिंक पेस्ट करें और डाउनलोड करें। कोई ऐप या प्लगइन नहीं चाहिए।" },
+        { q: "कौन से फॉर्मेट उपलब्ध हैं?",                  a: "MP4 1080p (HD, वॉटरमार्क के बिना), MP4 720p, और MP3 192kbps। फोटो स्लाइडशो भी डाउनलोड कर सकते हैं।" },
+        { q: "क्या TikTok अकाउंट चाहिए?",                   a: "नहीं। आप बिना लॉगिन के किसी भी पब्लिक TikTok वीडियो को डाउनलोड कर सकते हैं।" },
       ],
     },
     mp3: {
@@ -633,6 +642,9 @@ export const T: Translations = {
         { q: "LulDown কি বিনামূল্যে?",                    a: "হ্যাঁ, ১০০% বিনামূল্যে। কোনো অ্যাকাউন্ট বা সাবস্ক্রিপশন নেই। সীমাহীন ভিডিও ডাউনলোড করুন।" },
         { q: "ভিডিওতে ওয়াটারমার্ক কেন নেই?",            a: "TikTok প্রতিটি ভিডিওর দুটি কপি রাখে — ওয়াটারমার্ক সহ ও ছাড়া। LulDown মূল কপি নিয়ে আসে।" },
         { q: "মোবাইলে কি কাজ করে?",                       a: "হ্যাঁ। iPhone, Android এবং সব ব্রাউজারে কোনো অ্যাপ ছাড়াই কাজ করে।" },
+        { q: "কোনো অ্যাপ বা এক্সটেনশন ইনস্টল করতে হবে?", a: "না। LulDown আপনার ব্রাউজারে কাজ করে — শুধু লিঙ্ক পেস্ট করুন এবং ডাউনলোড করুন। কোনো অ্যাপ বা প্লাগইন লাগবে না।" },
+        { q: "কোন ফরম্যাটগুলো পাওয়া যায়?",               a: "MP4 1080p (HD, ওয়াটারমার্ক ছাড়া), MP4 720p, এবং MP3 192kbps। ফটো স্লাইডশোও ডাউনলোড করা যায়।" },
+        { q: "TikTok অ্যাকাউন্ট দরকার কি?",               a: "না। আপনি লগইন ছাড়াই যেকোনো পাবলিক TikTok ভিডিও ডাউনলোড করতে পারবেন।" },
       ],
     },
     mp3: {
@@ -828,6 +840,9 @@ export const T: Translations = {
         { q: "Apakah LulDown benar-benar gratis?",               a: "Ya, 100% gratis. Tidak ada akun, langganan, atau biaya tersembunyi. Download video TikTok tanpa batas." },
         { q: "Kenapa videonya tidak ada watermark?",              a: "TikTok menyimpan dua versi setiap video — satu dengan watermark dan satu asli. LulDown mengambil versi asli langsung dari CDN TikTok." },
         { q: "Apakah bisa digunakan di HP Android dan iPhone?",  a: "Ya. LulDown bekerja sempurna di semua smartphone, tablet, dan browser desktop tanpa instalasi aplikasi." },
+        { q: "Apakah perlu install aplikasi atau ekstensi?",     a: "Tidak. LulDown bekerja langsung di browser — tempel link dan download. Tidak perlu app, ekstensi, atau plugin." },
+        { q: "Format apa saja yang tersedia?",                   a: "MP4 1080p (HD, tanpa watermark), MP4 720p, dan MP3 192kbps. Foto dari slideshow juga bisa diunduh langsung." },
+        { q: "Apakah butuh akun TikTok?",                        a: "Tidak. Kamu bisa download video TikTok publik tanpa login atau membuat akun TikTok." },
       ],
     },
     mp3: {
@@ -1023,6 +1038,9 @@ export const T: Translations = {
         { q: "هل LulDown مجاني تماماً؟",                      a: "نعم، 100% مجاني. لا حساب، لا اشتراك، لا رسوم مخفية. تحميل فيديوهات غير محدودة بدون تكلفة." },
         { q: "لماذا الفيديو بدون علامة مائية؟",              a: "تيك توك يحفظ نسختين من كل فيديو — نسخة بعلامة مائية ونسخة أصلية نظيفة. LulDown يجلب النسخة الأصلية مباشرة." },
         { q: "هل يعمل على الهاتف المحمول؟",                  a: "نعم. LulDown يعمل على جميع الهواتف الذكية والأجهزة اللوحية ومتصفحات سطح المكتب بدون أي تطبيق." },
+        { q: "هل أحتاج إلى تثبيت تطبيق أو امتداد؟",         a: "لا. يعمل LulDown مباشرة في المتصفح — فقط الصق الرابط وحمّل. لا تطبيق ولا إضافات مطلوبة." },
+        { q: "ما هي صيغ التحميل المتاحة؟",                   a: "MP4 بدقة 1080p (HD، بدون علامة مائية)، MP4 بدقة 720p، وMP3 بجودة 192kbps. يمكن أيضاً تحميل صور عروض الشرائح." },
+        { q: "هل أحتاج إلى حساب تيك توك؟",                   a: "لا. يمكنك تحميل أي فيديو تيك توك عام دون تسجيل الدخول أو إنشاء حساب." },
       ],
     },
     mp3: {
@@ -1218,6 +1236,9 @@ export const T: Translations = {
         { q: "LulDown gerçekten ücretsiz mi?",               a: "Evet, %100 ücretsiz. Hesap, abonelik veya gizli ücret yok. Sınırsız TikTok videosu indir." },
         { q: "Video neden filigransız?",                     a: "TikTok her videonun iki versiyonunu saklar — filigranla ve orijinal temiz hali. LulDown orijinali getirir." },
         { q: "iPhone ve Android'de çalışıyor mu?",           a: "Evet. LulDown tüm akıllı telefonlarda, tabletlerde ve masaüstü tarayıcılarda uygulama gerekmeden çalışır." },
+        { q: "Uygulama veya uzantı yüklemem gerekiyor mu?",  a: "Hayır. LulDown tamamen tarayıcınızda çalışır — linki yapıştırın ve indirin. Uygulama veya plugin gerekmez." },
+        { q: "Hangi formatlar mevcut?",                      a: "MP4 1080p (HD, filigransız), MP4 720p ve MP3 192kbps. Fotoğraf slaytları da indirilebilir." },
+        { q: "TikTok hesabı gerekiyor mu?",                  a: "Hayır. Herhangi bir herkese açık TikTok videosunu giriş yapmadan indirebilirsiniz." },
       ],
     },
     mp3: {
@@ -1413,6 +1434,9 @@ export const T: Translations = {
         { q: "¿LulDown es realmente gratis?",                    a: "Sí, 100% gratis. Sin cuenta, sin suscripción, sin costos ocultos. Descarga videos TikTok ilimitados." },
         { q: "¿Por qué el video no tiene marca de agua?",       a: "TikTok almacena dos versiones de cada video — una con marca de agua y una original limpia. LulDown descarga la versión limpia." },
         { q: "¿Funciona en iPhone y Android?",                   a: "Sí. LulDown funciona en todos los smartphones, tablets y navegadores sin necesidad de instalar ninguna app." },
+        { q: "¿Necesito instalar una app o extensión?",          a: "No. LulDown funciona directamente en tu navegador — pega el enlace y descarga. No necesitas apps ni extensiones." },
+        { q: "¿Qué formatos están disponibles?",                 a: "MP4 1080p (HD, sin marca de agua), MP4 720p y MP3 192kbps. Las fotos de los slideshows también se pueden descargar." },
+        { q: "¿Necesito una cuenta de TikTok?",                  a: "No. Puedes descargar cualquier video público de TikTok sin iniciar sesión ni crear una cuenta." },
       ],
     },
     mp3: {
@@ -1608,6 +1632,9 @@ export const T: Translations = {
         { q: "LulDown é realmente grátis?",                       a: "Sim, 100% grátis. Sem conta, assinatura ou custos ocultos. Baixe vídeos TikTok ilimitados." },
         { q: "Por que o vídeo não tem marca d'água?",            a: "O TikTok armazena duas versões de cada vídeo — uma com marca e uma original limpa. LulDown baixa a versão limpa." },
         { q: "Funciona no iPhone e Android?",                     a: "Sim. LulDown funciona em todos os smartphones, tablets e navegadores sem precisar instalar app." },
+        { q: "Preciso instalar algum aplicativo ou extensão?",    a: "Não. LulDown funciona diretamente no seu navegador — cole o link e baixe. Sem apps, extensões ou plugins." },
+        { q: "Quais formatos estão disponíveis?",                  a: "MP4 1080p (HD, sem marca d'água), MP4 720p e MP3 192kbps. Fotos de slideshows também podem ser baixadas." },
+        { q: "Preciso de uma conta do TikTok?",                   a: "Não. Você pode baixar qualquer vídeo público do TikTok sem fazer login ou criar conta." },
       ],
     },
     mp3: {
@@ -1803,6 +1830,9 @@ export const T: Translations = {
         { q: "LulDown действительно бесплатный?",                a: "Да, 100% бесплатно. Без аккаунта, подписки или скрытых платежей. Скачивайте неограниченное количество видео." },
         { q: "Почему видео без водяного знака?",                 a: "TikTok хранит две версии каждого видео — с водяным знаком и оригинальную чистую. LulDown загружает оригинал напрямую." },
         { q: "Работает ли на iPhone и Android?",                 a: "Да. LulDown работает на всех смартфонах, планшетах и браузерах без установки приложений." },
+        { q: "Нужно ли устанавливать приложение или расширение?", a: "Нет. LulDown работает прямо в браузере — вставьте ссылку и скачайте. Никаких приложений или плагинов." },
+        { q: "Какие форматы доступны?",                          a: "MP4 1080p (HD, без водяного знака), MP4 720p и MP3 192kbps. Фото из галерей тоже можно скачать." },
+        { q: "Нужен ли аккаунт TikTok?",                         a: "Нет. Вы можете скачать любое публичное видео TikTok без входа в систему или создания аккаунта." },
       ],
     },
     mp3: {
@@ -1998,6 +2028,9 @@ export const T: Translations = {
         { q: "LulDown có thực sự miễn phí không?",         a: "Có, 100% miễn phí. Không đăng ký, không tài khoản, không phí ẩn. Tải video TikTok không giới hạn." },
         { q: "Tại sao video không có watermark?",          a: "TikTok lưu hai phiên bản — một có watermark và một file gốc sạch. LulDown lấy phiên bản sạch từ CDN của TikTok." },
         { q: "Có hoạt động trên iPhone và Android không?", a: "Có. LulDown hoạt động đầy đủ trên mọi điện thoại, máy tính bảng và trình duyệt máy tính." },
+        { q: "Có cần cài ứng dụng hay tiện ích không?",   a: "Không. LulDown hoạt động trực tiếp trên trình duyệt — dán link và tải. Không cần app, tiện ích hay plugin." },
+        { q: "Có những định dạng nào?",                    a: "MP4 1080p (HD, không watermark), MP4 720p và MP3 192kbps. Ảnh từ slideshow cũng có thể tải về." },
+        { q: "Có cần tài khoản TikTok không?",             a: "Không. Bạn có thể tải bất kỳ video TikTok công khai nào mà không cần đăng nhập hay tạo tài khoản." },
       ],
     },
     mp3: {
@@ -2193,6 +2226,9 @@ export const T: Translations = {
         { q: "LulDown est-il vraiment gratuit?",              a: "Oui, 100% gratuit. Pas d'abonnement, pas de compte, pas de frais cachés. Téléchargez des vidéos TikTok illimitées." },
         { q: "Pourquoi la vidéo n'a-t-elle pas de filigrane?", a: "TikTok stocke deux versions — une avec filigrane et une originale propre. LulDown récupère la version propre depuis le CDN." },
         { q: "Fonctionne-t-il sur iPhone et Android?",        a: "Oui. LulDown fonctionne sur tous les smartphones, tablettes et navigateurs sans installation d'application." },
+        { q: "Dois-je installer une app ou une extension?",   a: "Non. LulDown fonctionne directement dans le navigateur — collez le lien et téléchargez. Aucune app ni plugin requis." },
+        { q: "Quels formats sont disponibles?",               a: "MP4 1080p (HD, sans filigrane), MP4 720p et MP3 192kbps. Les photos des diaporamas peuvent aussi être téléchargées." },
+        { q: "Ai-je besoin d'un compte TikTok?",              a: "Non. Vous pouvez télécharger n'importe quelle vidéo TikTok publique sans vous connecter ni créer de compte." },
       ],
     },
     mp3: {
@@ -2388,6 +2424,9 @@ export const T: Translations = {
         { q: "Ist LulDown wirklich kostenlos?",               a: "Ja, 100% kostenlos. Kein Abonnement, kein Konto, keine versteckten Gebühren. Unbegrenzte TikTok Videos herunterladen." },
         { q: "Warum hat das Video kein Wasserzeichen?",       a: "TikTok speichert zwei Versionen — eine mit Wasserzeichen und eine originale saubere Datei. LulDown ruft die saubere Version ab." },
         { q: "Funktioniert es auf iPhone und Android?",       a: "Ja. LulDown funktioniert vollständig auf allen Smartphones, Tablets und Desktop-Browsern ohne App-Installation." },
+        { q: "Muss ich eine App oder Erweiterung installieren?", a: "Nein. LulDown funktioniert direkt im Browser — Link einfügen und herunterladen. Keine Apps oder Plugins nötig." },
+        { q: "Welche Formate sind verfügbar?",                a: "MP4 1080p (HD, ohne Wasserzeichen), MP4 720p und MP3 192kbps. Fotos aus Diashows können ebenfalls heruntergeladen werden." },
+        { q: "Brauche ich ein TikTok-Konto?",                 a: "Nein. Sie können jedes öffentliche TikTok-Video ohne Anmeldung oder Kontoerstellung herunterladen." },
       ],
     },
     mp3: {
@@ -2583,6 +2622,9 @@ export const T: Translations = {
         { q: "LulDownは本当に無料ですか？",            a: "はい、100%無料です。サブスクリプション不要、アカウント不要、隠れた料金なし。無制限にTikTok動画をダウンロードできます。" },
         { q: "なぜ動画に透かしがないのですか？",       a: "TikTokは2つのバージョンを保存しています — 透かしありと透かしなしのオリジナルです。LulDownはCDNからクリーンバージョンを取得します。" },
         { q: "iPhoneとAndroidで使えますか？",         a: "はい。LulDownはすべてのスマートフォン、タブレット、デスクトップブラウザでアプリのインストールなしに動作します。" },
+        { q: "アプリや拡張機能のインストールは必要ですか？", a: "いいえ。LulDownはブラウザで直接動作します — リンクをペーストしてダウンロードするだけ。アプリやプラグイン不要です。" },
+        { q: "利用できるフォーマットは何ですか？",     a: "MP4 1080p（HD、透かしなし）、MP4 720p、MP3 192kbps。フォトスライドショーの画像もダウンロードできます。" },
+        { q: "TikTokのアカウントが必要ですか？",       a: "いいえ。ログインやアカウント作成なしに、公開されているTikTok動画をダウンロードできます。" },
       ],
     },
     mp3: {
@@ -2778,6 +2820,9 @@ export const T: Translations = {
         { q: "LulDown은 정말 무료인가요?",           a: "네, 100% 무료입니다. 구독, 계정, 숨겨진 요금 없음. 무제한으로 TikTok 영상을 다운로드하세요." },
         { q: "왜 영상에 워터마크가 없나요?",         a: "TikTok은 두 가지 버전을 저장합니다 — 워터마크 있는 버전과 원본 깨끗한 파일. LulDown은 CDN에서 깨끗한 버전을 가져옵니다." },
         { q: "iPhone과 Android에서 작동하나요?",    a: "네. LulDown은 앱 설치 없이 모든 스마트폰, 태블릿, 데스크톱 브라우저에서 완전히 작동합니다." },
+        { q: "앱이나 확장 프로그램을 설치해야 하나요?", a: "아니요. LulDown은 브라우저에서 직접 작동합니다 — 링크를 붙여넣고 다운로드하면 됩니다. 앱이나 플러그인 불필요합니다." },
+        { q: "어떤 형식을 다운로드할 수 있나요?",   a: "MP4 1080p (HD, 워터마크 없음), MP4 720p, MP3 192kbps. 슬라이드쇼 사진도 다운로드 가능합니다." },
+        { q: "TikTok 계정이 필요한가요?",           a: "아니요. 로그인이나 계정 생성 없이 공개된 TikTok 영상을 다운로드할 수 있습니다." },
       ],
     },
     mp3: {
@@ -2973,6 +3018,9 @@ export const T: Translations = {
         { q: "LulDown ฟรีจริงๆ หรือเปล่า?",              a: "ใช่ ฟรี 100% ไม่มีการสมัครสมาชิก ไม่มีบัญชี ไม่มีค่าธรรมเนียมซ่อนเร้น ดาวน์โหลดวิดีโอ TikTok ได้ไม่จำกัด" },
         { q: "ทำไมวิดีโอถึงไม่มีลายน้ำ?",               a: "TikTok เก็บสองเวอร์ชัน — เวอร์ชันมีลายน้ำและไฟล์ต้นฉบับสะอาด LulDown ดึงเวอร์ชันสะอาดจาก CDN" },
         { q: "ใช้ได้บน iPhone และ Android ไหม?",         a: "ใช่ LulDown ทำงานได้อย่างสมบูรณ์บนสมาร์ทโฟน แท็บเล็ต และเบราว์เซอร์เดสก์ท็อปทุกชนิด" },
+        { q: "ต้องติดตั้งแอปหรือส่วนขยายไหม?",          a: "ไม่ต้อง LulDown ทำงานในเบราว์เซอร์โดยตรง — แค่วางลิงก์และดาวน์โหลด ไม่ต้องติดตั้งแอปหรือปลั๊กอิน" },
+        { q: "มีรูปแบบอะไรให้ดาวน์โหลดบ้าง?",           a: "MP4 1080p (HD ไม่มีลายน้ำ), MP4 720p และ MP3 192kbps นอกจากนี้ยังดาวน์โหลดรูปจาก slideshow ได้" },
+        { q: "ต้องมีบัญชี TikTok ไหม?",                  a: "ไม่จำเป็น คุณสามารถดาวน์โหลดวิดีโอ TikTok สาธารณะใดก็ได้โดยไม่ต้องล็อกอินหรือสร้างบัญชี" },
       ],
     },
     mp3: {
@@ -3168,6 +3216,9 @@ export const T: Translations = {
         { q: "LulDown è davvero gratuito?",                a: "Sì, 100% gratuito. Nessun abbonamento, nessun account, nessuna tariffa nascosta. Scarica video TikTok illimitati." },
         { q: "Perché il video non ha la filigrana?",       a: "TikTok memorizza due versioni — una con filigrana e una originale pulita. LulDown recupera la versione pulita dal CDN." },
         { q: "Funziona su iPhone e Android?",              a: "Sì. LulDown funziona completamente su tutti gli smartphone, tablet e browser desktop senza installazione di app." },
+        { q: "Devo installare un'app o un'estensione?",    a: "No. LulDown funziona direttamente nel browser — incolla il link e scarica. Nessuna app o plugin richiesto." },
+        { q: "Quali formati sono disponibili?",             a: "MP4 1080p (HD, senza filigrana), MP4 720p e MP3 192kbps. Le foto degli slideshow possono essere scaricate singolarmente." },
+        { q: "Ho bisogno di un account TikTok?",           a: "No. Puoi scaricare qualsiasi video TikTok pubblico senza accedere o creare un account." },
       ],
     },
     mp3: {
@@ -3363,6 +3414,9 @@ export const T: Translations = {
         { q: "Czy LulDown jest naprawdę darmowy?",           a: "Tak, 100% darmowy. Brak subskrypcji, brak konta, brak ukrytych opłat. Pobieraj nieograniczoną liczbę filmów TikTok." },
         { q: "Dlaczego wideo nie ma znaku wodnego?",         a: "TikTok przechowuje dwie wersje — jedną ze znakiem wodnym i oryginalny czysty plik. LulDown pobiera czystą wersję z CDN." },
         { q: "Czy działa na iPhone i Android?",              a: "Tak. LulDown działa w pełni na wszystkich smartfonach, tabletach i przeglądarkach desktopowych bez instalacji aplikacji." },
+        { q: "Czy muszę instalować aplikację lub rozszerzenie?", a: "Nie. LulDown działa bezpośrednio w przeglądarce — wklej link i pobierz. Żadnych aplikacji ani wtyczek." },
+        { q: "Jakie formaty są dostępne?",                   a: "MP4 1080p (HD, bez znaku wodnego), MP4 720p i MP3 192kbps. Zdjęcia ze slajdów można też pobierać osobno." },
+        { q: "Czy potrzebuję konta TikTok?",                 a: "Nie. Możesz pobierać dowolne publiczne filmy TikTok bez logowania i tworzenia konta." },
       ],
     },
     mp3: {
