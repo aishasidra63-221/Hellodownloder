@@ -1,0 +1,1 @@
+- [Multilingual SEO structure](multilingual-seo.md) — 10 langs × 5 pages = 50 lang pages + /ssstik-alternative; all routes, translations, hreflang, sitemap in place.
