@@ -277,7 +277,7 @@
 .input-box {
   display: flex; align-items: center;
   background: #ddd8f5;
-  border: 1.5px solid #ffffff;
+  border: 1.5px solid rgba(124,58,237,0.35);
   border-radius: 16px;
   box-shadow: none;
   outline: none;
@@ -297,7 +297,7 @@
 }
 .input-box:focus-within {
   outline: none;
-  border-color: #ffffff;
+  border-color: rgba(124,58,237,0.5);
   box-shadow: none;
 }
 

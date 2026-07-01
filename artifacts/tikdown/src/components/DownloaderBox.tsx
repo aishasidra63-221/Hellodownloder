@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { fetchVideoInfo, downloadVideo, downloadPhoto, VideoInfo, DownloadFormat } from "@/lib/api";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
@@ -33,6 +33,7 @@ interface Props { highlightFormat?: DownloadFormat; }
 export default function DownloaderBox({ highlightFormat }: Props) {
   const [url, setUrl] = useState("");
   const [step, setStep] = useState<Step>("idle");
+  const inputRef = useRef<HTMLInputElement>(null);
   const [info, setInfo] = useState<VideoInfo | null>(null);
   const [error, setError] = useState("");
   const [activeDownload, setActiveDownload] = useState<DownloadFormat | null>(null);
@@ -87,7 +88,13 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   };
 
   const handlePaste = async () => {
-    try { setUrl(await navigator.clipboard.readText()); } catch {}
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) setUrl(text);
+      else { inputRef.current?.focus(); }
+    } catch {
+      inputRef.current?.focus();
+    }
   };
 
   const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); setIsDemo(false); };
@@ -104,6 +111,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
       <div className="input-action-row">
         <div className="input-box" style={{ flex: 1 }}>
           <input
+            ref={inputRef}
             type="text"
             inputMode="url"
             value={url}
