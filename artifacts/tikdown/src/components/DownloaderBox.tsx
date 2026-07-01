@@ -166,12 +166,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             disabled={step === "loading-info"}
             style={{ flex:1, minWidth:0, background:"transparent", padding:"15px 8px 15px 16px", fontSize:14.5, outline:"none", color:"var(--text-primary)", fontWeight:400, fontFamily:"inherit" }}
           />
-          {step === "loading-info" ? (
-            <div style={{ margin:"0 14px", display:"flex", alignItems:"center", gap:7, color:"#7c3aed", fontSize:12, fontWeight:600, flexShrink:0 }}>
-              <Loader2 size={17} className="animate-spin" style={{ flexShrink:0 }} />
-              <span style={{ whiteSpace:"nowrap" }}>Fetching…</span>
-            </div>
-          ) : url ? (
+          {step === "loading-info" ? null : url ? (
             <button onClick={reset} className="btn-ghost" style={{ margin:"0 10px", padding:"7px 14px", fontSize:13 }}>
               <X size={14} /> Clear
             </button>
