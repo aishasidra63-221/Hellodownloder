@@ -231,7 +231,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
               <div style={{ position:"relative" }}>
                 <img
                   src={info.thumbnail} alt=""
-                  style={{ width:"100%", height:215, objectFit:"cover", display:"block" }}
+                  style={{ width:"100%", height:140, objectFit:"cover", display:"block" }}
                 />
                 {/* Bottom fade to card bg */}
                 <div style={{
