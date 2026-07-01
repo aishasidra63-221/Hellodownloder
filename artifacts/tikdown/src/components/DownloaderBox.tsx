@@ -361,9 +361,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                         <p style={{ margin:0, fontSize:13.5, fontWeight:700, color:"rgba(255,255,255,0.92)", lineHeight:1.3 }}>
                           {cfg.label}
                         </p>
-                        <p style={{ margin:"3px 0 0", fontSize:11, color:"rgba(255,255,255,0.4)", fontWeight:500, lineHeight:1 }}>
-                          {cfg.sub}
-                        </p>
                       </div>
 
                       {/* Download button */}
