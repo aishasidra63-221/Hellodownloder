@@ -327,53 +327,46 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                   const isActive = activeDownload === cfg.format;
                   const busy = !!activeDownload;
                   return (
-                    <div key={cfg.format} style={{
-                      display:"flex", alignItems:"center", gap:0,
-                      borderRadius:13, overflow:"hidden",
-                      background:"rgba(255,255,255,0.04)",
-                      border:"1px solid rgba(255,255,255,0.08)",
-                      transition:"background 0.2s",
-                    }}>
-                      {/* Left color block */}
+                    <button
+                      key={cfg.format}
+                      onClick={() => handleDownload(cfg.format)}
+                      disabled={busy || isDemo}
+                      style={{
+                        display:"flex", alignItems:"center", gap:0,
+                        borderRadius:13, overflow:"hidden",
+                        background: cfg.btnBg,
+                        border:"none", width:"100%", textAlign:"left",
+                        opacity: busy && !isActive ? 0.5 : 1,
+                        cursor: busy || isDemo ? "default" : "pointer",
+                        transition:"opacity 0.18s, filter 0.18s",
+                        filter: busy || isDemo ? "none" : "brightness(1)",
+                        boxShadow: `0 4px 16px ${cfg.glowColor}`,
+                      }}
+                    >
+                      {/* Left icon block — slightly darker shade */}
                       <div style={{
                         width:54, minWidth:54, alignSelf:"stretch",
-                        background:cfg.leftBg,
+                        background:"rgba(0,0,0,0.18)",
                         display:"flex", alignItems:"center", justifyContent:"center",
                         flexShrink:0,
                       }}>
-                        {cfg.leftNode}
+                        {isActive
+                          ? <Loader2 size={20} color="#fff" className="animate-spin" />
+                          : cfg.leftNode}
                       </div>
 
-                      {/* Middle text */}
-                      <div style={{ flex:1, padding:"11px 13px", minWidth:0 }}>
-                        <p style={{ margin:0, fontSize:13.5, fontWeight:700, color:"rgba(255,255,255,0.92)", lineHeight:1.3 }}>
-                          {cfg.label}
+                      {/* Label */}
+                      <div style={{ flex:1, padding:"14px 14px" }}>
+                        <p style={{ margin:0, fontSize:13.5, fontWeight:700, color:"#fff", lineHeight:1.3 }}>
+                          {isActive ? "Downloading…" : cfg.label}
                         </p>
                       </div>
 
-                      {/* Download button */}
-                      <div style={{ padding:"0 10px 0 0", flexShrink:0 }}>
-                        <button
-                          onClick={() => handleDownload(cfg.format)}
-                          disabled={busy || isDemo}
-                          style={{
-                            padding:"9px 18px", borderRadius:10, border:"none",
-                            background: isActive ? cfg.btnBg : cfg.btnBg,
-                            color:"#fff", fontSize:13, fontWeight:700,
-                            cursor: busy || isDemo ? "default" : "pointer",
-                            display:"flex", alignItems:"center", gap:6,
-                            opacity: busy && !isActive ? 0.45 : 1,
-                            transition:"all 0.18s",
-                            whiteSpace:"nowrap",
-                            boxShadow: busy || isDemo ? "none" : `0 3px 12px ${cfg.glowColor}`,
-                          }}
-                        >
-                          {isActive
-                            ? <><Loader2 size={13} className="animate-spin"/> Saving…</>
-                            : <><Download size={13}/> Download</>}
-                        </button>
+                      {/* Arrow indicator */}
+                      <div style={{ paddingRight:14, color:"rgba(255,255,255,0.6)", fontSize:18, fontWeight:300 }}>
+                        {isActive ? "" : "↓"}
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
