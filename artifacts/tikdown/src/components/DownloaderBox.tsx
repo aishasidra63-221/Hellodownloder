@@ -23,12 +23,7 @@ const FMTS: FmtCfg[] = [
     label: "Download 1080p",
     sub: "No Watermark · Best Quality",
     leftBg: "#7c3aed",
-    leftNode: (
-      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
-        <Video size={17} color="#fff" strokeWidth={2.2} />
-        <span style={{ fontSize:9, fontWeight:800, color:"rgba(255,255,255,0.85)", lineHeight:1 }}>1080p</span>
-      </div>
-    ),
+    leftNode: <Video size={20} color="#fff" strokeWidth={2.2} />,
     btnBg: "#7c3aed",
     glowColor: "rgba(124,58,237,0.35)",
   },
@@ -37,12 +32,7 @@ const FMTS: FmtCfg[] = [
     label: "Download 720p",
     sub: "No Watermark · Good Quality",
     leftBg: "#2563eb",
-    leftNode: (
-      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
-        <Video size={17} color="#fff" strokeWidth={2.2} />
-        <span style={{ fontSize:9, fontWeight:800, color:"rgba(255,255,255,0.85)", lineHeight:1 }}>720p</span>
-      </div>
-    ),
+    leftNode: <Video size={20} color="#fff" strokeWidth={2.2} />,
     btnBg: "#2563eb",
     glowColor: "rgba(37,99,235,0.35)",
   },
