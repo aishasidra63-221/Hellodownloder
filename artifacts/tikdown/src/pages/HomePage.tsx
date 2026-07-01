@@ -202,7 +202,18 @@ export default function HomePage() {
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", marginBottom: 40, fontWeight: 400, lineHeight: 1.6, transition: "none" }}>
             Fast. Free. High Quality. No Registration.
           </p>
-          <div style={{ maxWidth: 780, margin: "0 auto" }}>
+          <div style={{ maxWidth: 780, margin: "0 auto", position: "relative" }}>
+            {/* purple glow bloom behind the input box */}
+            <div style={{
+              position: "absolute",
+              top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "110%", height: 180,
+              background: "radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.28) 0%, rgba(109,40,217,0.12) 45%, transparent 72%)",
+              pointerEvents: "none",
+              borderRadius: "50%",
+              filter: "blur(8px)",
+            }} />
             <DownloaderBox />
           </div>
           <div style={{ marginTop: 28, height: 52 }} />
