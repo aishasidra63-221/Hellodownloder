@@ -371,9 +371,19 @@ function parseItemStruct(item) {
     safeGet(author, "nickname"),
   );
 
+  const authorAvatar = decodeUrl(firstStr(
+    safeGet(author, "avatarMedium"),
+    safeGet(author, "avatar_medium"),
+    safeGet(author, "avatarThumb"),
+    safeGet(author, "avatar_thumb"),
+    safeGet(author, "avatarLarger"),
+    safeGet(author, "avatar_larger"),
+  ));
+
   return {
     title:         item.desc || "TikTok Video",
     author:        authorName ? `@${authorName}` : "",
+    author_avatar: authorAvatar || "",
     duration:      firstNum(video.duration),
     thumbnail,
     view_count:    firstNum(stats.playCount,   stats.play_count),
@@ -585,6 +595,7 @@ export default {
         success:       true,
         title:         p.title,
         author:        p.author,
+        author_avatar: p.author_avatar,
         duration:      p.duration,
         thumbnail:     p.thumbnail,
         view_count:    p.view_count,

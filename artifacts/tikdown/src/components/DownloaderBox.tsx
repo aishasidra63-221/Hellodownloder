@@ -251,8 +251,16 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                   display:"flex", alignItems:"center", justifyContent:"center",
                   fontWeight:800, fontSize:22, color:"#fff",
                   boxShadow:"0 0 0 2.5px rgba(124,58,237,0.4), 0 4px 14px rgba(124,58,237,0.4)",
+                  overflow:"hidden", flexShrink:0,
                 }}>
-                  {avatarLetter}
+                  {info.author_avatar ? (
+                    <img
+                      src={info.author_avatar}
+                      alt=""
+                      style={{ width:"100%", height:"100%", objectFit:"cover" }}
+                      onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+                    />
+                  ) : avatarLetter}
                 </div>
                 <div style={{ flex:1, minWidth:0 }}>
                   <p style={{ margin:"0 0 6px", fontWeight:700, fontSize:15, color:"#ffffff" }}>

@@ -17,6 +17,7 @@ export interface VideoInfo {
   success: boolean;
   title: string;
   author: string;
+  author_avatar?: string;
   duration: number;
   thumbnail: string;
   view_count?:    number;
