@@ -20,7 +20,7 @@ interface FmtCfg {
 const FMTS: FmtCfg[] = [
   {
     format: "mp4_1080",
-    label: "Download 1080p",
+    label: "HD Download 1080p",
     sub: "No Watermark · Best Quality",
     leftBg: "#7c3aed",
     leftNode: <Video size={20} color="#fff" strokeWidth={2.2} />,
@@ -29,7 +29,7 @@ const FMTS: FmtCfg[] = [
   },
   {
     format: "mp4_720",
-    label: "Download 720p",
+    label: "HD Download 720p",
     sub: "No Watermark · Good Quality",
     leftBg: "#2563eb",
     leftNode: <Video size={20} color="#fff" strokeWidth={2.2} />,
