@@ -88,13 +88,25 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   };
 
   const handlePaste = async () => {
+    // Try modern clipboard API first
     try {
       const text = await navigator.clipboard.readText();
-      if (text) setUrl(text);
-      else { inputRef.current?.focus(); }
-    } catch {
-      inputRef.current?.focus();
-    }
+      if (text) { setUrl(text); return; }
+    } catch {}
+
+    // Fallback: temporary textarea + execCommand (works in restricted iframes)
+    const ta = document.createElement("textarea");
+    ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0";
+    document.body.appendChild(ta);
+    ta.focus();
+    try {
+      const ok = document.execCommand("paste");
+      if (ok && ta.value) { setUrl(ta.value); return; }
+    } catch {}
+    finally { document.body.removeChild(ta); }
+
+    // Last resort: focus input so user can Ctrl+V / long-press paste
+    inputRef.current?.focus();
   };
 
   const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); setIsDemo(false); };
