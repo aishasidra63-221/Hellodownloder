@@ -246,10 +246,10 @@ export default function DownloaderBox({ highlightFormat }: Props) {
               {/* Avatar + username + title column */}
               <div style={{ display:"flex", alignItems:"flex-start", gap:11 }}>
                 <div style={{
-                  width:44, height:44, borderRadius:"50%", flexShrink:0,
+                  width:54, height:54, borderRadius:"50%", flexShrink:0,
                   background:"linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)",
                   display:"flex", alignItems:"center", justifyContent:"center",
-                  fontWeight:800, fontSize:18, color:"#fff",
+                  fontWeight:800, fontSize:22, color:"#fff",
                   boxShadow:"0 0 0 2.5px rgba(124,58,237,0.4), 0 4px 14px rgba(124,58,237,0.4)",
                 }}>
                   {avatarLetter}
@@ -268,7 +268,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                         <>
                           {" "}
                           {tags.slice(0, 6).map(tag => (
-                            <span key={tag} style={{ color:"#a78bfa", fontWeight:600 }}>
+                            <span key={tag} style={{ color:"#ffffff", fontWeight:600 }}>
                               {tag}{" "}
                             </span>
                           ))}
