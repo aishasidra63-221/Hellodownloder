@@ -3,28 +3,36 @@ import { useSEO } from "@/hooks/use-seo";
 
 const SECTIONS = [
   {
-    title: "What We Collect",
-    content: "Luldown collects no personal information. We do not require registration, login, or email. The only data processed is the TikTok URL you submit — it is used solely to resolve the video download link and is never stored permanently.",
+    title: "Information We Do Not Collect",
+    content: "Luldown does not collect, store, or process any personal information. We do not require you to register an account, provide an email address, or log in. We do not collect your name, IP address, device identifiers, or any other personally identifiable information.",
   },
   {
-    title: "Cookies & Local Storage",
-    content: "We use browser localStorage only to store your download history locally on your device. This data never leaves your browser and can be cleared anytime from Settings. We do not use tracking cookies or advertising cookies.",
+    title: "How the Service Works",
+    content: "When you paste a TikTok URL, our service resolves the publicly available CDN link for that video. The URL is processed in real time and is never stored on our servers after your request is completed. Your browser then downloads the file directly from TikTok's CDN — Luldown does not download, store, or re-host any media files.",
+  },
+  {
+    title: "Download History (Browser Only)",
+    content: "Your download history is stored exclusively in your own browser's localStorage — it never leaves your device and is never transmitted to our servers. We have no access to your download history. You can clear it at any time by visiting the History page and clicking 'Clear History', or by clearing your browser's local storage.",
+  },
+  {
+    title: "Cookies",
+    content: "Luldown does not use advertising cookies, tracking cookies, or any third-party marketing cookies. The only browser storage we use is localStorage for your local download history, which is entirely optional and user-controlled.",
   },
   {
     title: "Google reCAPTCHA",
-    content: "We use Google reCAPTCHA v3 (invisible) to protect against automated bots. reCAPTCHA may collect device and behavioral data as per Google's Privacy Policy. No score or data is stored by Luldown.",
+    content: "We use Google reCAPTCHA v3 (invisible) to protect our service from automated bots and abuse. reCAPTCHA operates in the background and may collect certain device and behavioral signals as described in Google's Privacy Policy (policies.google.com/privacy). Luldown does not store or process any reCAPTCHA scores.",
   },
   {
-    title: "Third-Party CDN",
-    content: "Videos and media are served directly from TikTok's CDN to your browser. Luldown does not host, store, or cache any media files. We act only as a URL resolver — your browser downloads content directly from TikTok's servers.",
+    title: "Third-Party Services",
+    content: "Videos and media files are served directly from TikTok's content delivery network (CDN) to your browser. Luldown acts solely as a URL resolver. We do not use Google Analytics, Facebook Pixel, or any third-party advertising or analytics platforms.",
   },
   {
-    title: "Analytics",
-    content: "We do not use Google Analytics, Facebook Pixel, or any third-party analytics platform. No behavioral data is sold or shared with advertisers.",
+    title: "Children's Privacy",
+    content: "Luldown is not directed at children under the age of 13. We do not knowingly collect any information from children. If you are under 13, please do not use this service.",
   },
   {
-    title: "Contact",
-    content: "For privacy concerns, contact us at legal@luldown.com",
+    title: "Changes to This Policy",
+    content: "We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date. Continued use of the service after changes are posted constitutes your acceptance of the revised policy.",
   },
 ];
 
@@ -37,7 +45,6 @@ export default function PrivacyPage() {
   return (
     <div style={{ background: "#f7f8fa", minHeight: "100vh" }}>
 
-      {/* Hero strip */}
       <div style={{
         background: "linear-gradient(160deg, #0d0b1f 0%, #13103a 60%, #0f0d28 100%)",
         padding: "48px 24px 52px",
@@ -68,12 +75,14 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", position: "relative" }}>
-          Last updated: June 2025 · Effective immediately
+          Last updated: July 2025 · Effective immediately
         </p>
       </div>
 
-      {/* Content */}
-      <div style={{ maxWidth: 680, margin: "0 auto", padding: "36px 20px 60px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "36px 20px 60px" }}>
+        <p style={{ fontSize: 14, color: "#4b5563", lineHeight: 1.75, marginBottom: 28, padding: "16px 20px", background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)" }}>
+          At Luldown, we take your privacy seriously. This policy explains what information we collect (and do not collect), how we handle your data, and your rights as a user of luldown.com.
+        </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           {SECTIONS.map((s, i) => (
             <div key={s.title} style={{

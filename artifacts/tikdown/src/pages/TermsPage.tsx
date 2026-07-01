@@ -4,31 +4,39 @@ import { useSEO } from "@/hooks/use-seo";
 const SECTIONS = [
   {
     title: "Acceptance of Terms",
-    content: "By accessing or using Luldown (luldown.com), you agree to be bound by these Terms and Conditions. If you do not agree, please do not use this service.",
+    content: "By accessing or using Luldown (luldown.com), you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree with any part of these terms, you must not use this service. These terms apply to all visitors and users of the service.",
+  },
+  {
+    title: "Description of Service",
+    content: "Luldown is a free online tool that allows users to download publicly available TikTok videos, audio, and photos for personal use. The service resolves publicly accessible CDN URLs and passes them directly to your browser. Luldown does not host, store, or distribute any media content.",
   },
   {
     title: "Permitted Use",
-    content: "Luldown is provided for personal, non-commercial use only. You may download content solely for private viewing and personal archiving. Automated scraping, bulk downloading, or using the service via bots is strictly prohibited. You must not use Luldown to infringe upon the intellectual property rights of others.",
+    content: "You may use Luldown for personal, non-commercial purposes only — such as saving a video for offline viewing or keeping a backup of your own content. You must not use this service for automated scraping, bulk downloading, commercial redistribution, or any purpose that violates TikTok's Terms of Service or applicable copyright law.",
   },
   {
-    title: "Content & Copyright",
-    content: "All videos, audio, and images downloaded through Luldown remain the property of their respective creators and rights holders. Luldown does not host any media — it only resolves publicly available CDN URLs provided by TikTok's platform. You are solely responsible for how you use any downloaded content. Redistribution, resale, or public republishing of downloaded content without the creator's permission is prohibited.",
+    title: "Copyright & Intellectual Property",
+    content: "All videos, audio, and images downloaded through Luldown are the intellectual property of their respective creators and rights holders. Luldown does not claim ownership over any downloaded content. You are solely responsible for ensuring that your use of any downloaded content complies with copyright law. Unauthorized redistribution, resale, or public republishing of content without the creator's permission is strictly prohibited.",
   },
   {
     title: "No Affiliation with TikTok",
-    content: "Luldown is an independent service and is not affiliated with, endorsed by, or connected to TikTok or ByteDance Ltd. in any way. TikTok™ is a trademark of ByteDance Ltd.",
+    content: "Luldown is an independent service and is not affiliated with, endorsed by, sponsored by, or connected to TikTok, ByteDance Ltd., or any of their subsidiaries in any way. TikTok™ is a registered trademark of ByteDance Ltd. Use of TikTok's name on this website is solely for descriptive purposes.",
+  },
+  {
+    title: "No Guarantee of Service",
+    content: "Luldown is provided on an \"as is\" and \"as available\" basis. We do not guarantee that the service will be available at all times, uninterrupted, or error-free. Video availability depends on TikTok's CDN infrastructure, which may change without notice. We reserve the right to modify, suspend, or discontinue the service at any time without prior notice.",
   },
   {
     title: "Limitation of Liability",
-    content: "Luldown is provided \"as is\" without warranties of any kind. We are not responsible for any damages arising from the use or inability to use this service, including but not limited to data loss, service interruptions, or content unavailability. We reserve the right to modify or discontinue the service at any time without notice.",
+    content: "To the maximum extent permitted by applicable law, Luldown and its operators shall not be liable for any direct, indirect, incidental, special, or consequential damages arising from your use of or inability to use this service. This includes but is not limited to loss of data, service interruptions, or content unavailability.",
+  },
+  {
+    title: "User Responsibility",
+    content: "You are solely responsible for your use of this service and any content you download. By using Luldown, you represent that you have the right to download the content in question and that you will comply with all applicable local, national, and international laws and regulations.",
   },
   {
     title: "Changes to Terms",
-    content: "We reserve the right to update these Terms at any time. Continued use of Luldown after changes are posted constitutes your acceptance of the revised Terms.",
-  },
-  {
-    title: "Legal Contact",
-    content: "For legal inquiries: legal@luldown.com",
+    content: "We reserve the right to update these Terms and Conditions at any time. Changes will be posted on this page with an updated effective date. Your continued use of Luldown after any changes constitutes your acceptance of the new terms.",
   },
 ];
 
@@ -41,7 +49,6 @@ export default function TermsPage() {
   return (
     <div style={{ background: "#f7f8fa", minHeight: "100vh" }}>
 
-      {/* Hero strip */}
       <div style={{
         background: "linear-gradient(160deg, #0d0b1f 0%, #13103a 60%, #0f0d28 100%)",
         padding: "48px 24px 52px",
@@ -72,12 +79,14 @@ export default function TermsPage() {
           Terms &amp; Conditions
         </h1>
         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", position: "relative" }}>
-          Last updated: June 2025 · Please read carefully before use
+          Last updated: July 2025 · Please read carefully before use
         </p>
       </div>
 
-      {/* Content */}
-      <div style={{ maxWidth: 680, margin: "0 auto", padding: "36px 20px 60px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "36px 20px 60px" }}>
+        <p style={{ fontSize: 14, color: "#4b5563", lineHeight: 1.75, marginBottom: 28, padding: "16px 20px", background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)" }}>
+          Please read these Terms and Conditions carefully before using Luldown. By using this service, you confirm that you are at least 13 years of age and agree to comply with these terms.
+        </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           {SECTIONS.map((s, i) => (
             <div key={s.title} style={{
