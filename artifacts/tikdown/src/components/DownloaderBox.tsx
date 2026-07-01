@@ -107,7 +107,11 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   const handleDemo = () => {
     setIsDemo(true);
     setUrl("https://www.tiktok.com/@demo/video/1234567890");
-    setInfo(DEMO_DATA); setStep("info-ready"); setError("");
+    setInfo(null); setStep("loading-info"); setError("");
+    setTimeout(() => {
+      setInfo(DEMO_DATA);
+      setStep("info-ready");
+    }, 1800);
   };
 
   const handleDownload = async (format: DownloadFormat) => {
