@@ -3,7 +3,7 @@ import { fetchVideoInfo, downloadVideo, downloadPhoto, VideoInfo, DownloadFormat
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
   Music, Clipboard, Download, Image, Video,
-  AlertCircle, Loader2, X, FlaskConical,
+  AlertCircle, Loader2, X,
 } from "lucide-react";
 
 /* ── Download row configs ── */
@@ -56,20 +56,6 @@ const FMTS: FmtCfg[] = [
   },
 ];
 
-/* ── Demo data ── */
-const DEMO_DATA: VideoInfo = {
-  success: true,
-  title: "Beautiful Nature Scenery in 4K – Relaxing Video 🌿 #nature #4k #relaxing",
-  author: "@creator_username",
-  duration: 28,
-  thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=85",
-  view_count: 5400000,
-  like_count: 1200000,
-  comment_count: 3200,
-  share_count: 12000,
-  is_photo: false,
-  download_urls: { mp4_1080: "", mp4_720: "", mp3: "" },
-};
 
 type Step = "idle" | "loading-info" | "info-ready" | "error";
 interface Props { highlightFormat?: DownloadFormat; }
@@ -82,7 +68,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   const [error, setError] = useState("");
   const [activeDownload, setActiveDownload] = useState<DownloadFormat | null>(null);
   const [photoDownloading, setPhotoDownloading] = useState<number | null>(null);
-  const [isDemo, setIsDemo] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const getToken = useCallback(async (action: string) => {
@@ -93,7 +78,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   const handleFetch = async () => {
     const trimmed = url.trim();
     if (!trimmed) return;
-    setIsDemo(false); setStep("loading-info"); setError(""); setInfo(null);
+    setStep("loading-info"); setError(""); setInfo(null);
     try {
       const token = await getToken("fetch_info");
       setInfo(await fetchVideoInfo(trimmed, token));
@@ -104,18 +89,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
     }
   };
 
-  const handleDemo = () => {
-    setIsDemo(true);
-    setUrl("https://www.tiktok.com/@demo/video/1234567890");
-    setInfo(null); setStep("loading-info"); setError("");
-    setTimeout(() => {
-      setInfo(DEMO_DATA);
-      setStep("info-ready");
-    }, 1800);
-  };
-
   const handleDownload = async (format: DownloadFormat) => {
-    if (isDemo) return;
     setActiveDownload(format);
     try {
       const token = await getToken("download");
@@ -129,7 +103,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
   };
 
   const handlePhotoDownload = async (imgUrl: string, index: number) => {
-    if (isDemo) return;
     setPhotoDownloading(index);
     try { await downloadPhoto(imgUrl, index); }
     finally { setPhotoDownloading(null); }
@@ -145,7 +118,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
     inputRef.current?.focus();
   };
 
-  const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); setIsDemo(false); };
+  const reset = () => { setUrl(""); setStep("idle"); setInfo(null); setError(""); };
 
   const isPhoto = info?.is_photo && (info.images?.length ?? 0) > 0;
   const fmts = highlightFormat
@@ -189,13 +162,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
         </button>
       </div>
 
-      {/* Demo button */}
-      {step === "idle" && (
-        <button onClick={handleDemo} className="demo-btn">
-          <FlaskConical size={13} /> Preview demo — see result card
-        </button>
-      )}
-
       {/* Error */}
       {step === "error" && (
         <div className="error-box">
@@ -218,18 +184,6 @@ export default function DownloaderBox({ highlightFormat }: Props) {
             border:"1px solid rgba(255,255,255,0.08)",
             boxShadow:"0 20px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(124,58,237,0.15)",
           }}>
-
-            {/* Demo banner */}
-            {isDemo && (
-              <div style={{
-                display:"flex", alignItems:"center", justifyContent:"center", gap:6,
-                padding:"7px 0", fontSize:10.5, fontWeight:700, letterSpacing:"0.1em",
-                textTransform:"uppercase", color:"#a78bfa",
-                background:"rgba(124,58,237,0.15)", borderBottom:"1px solid rgba(124,58,237,0.2)",
-              }}>
-                <FlaskConical size={11} /> Demo preview
-              </div>
-            )}
 
             {/* ── Thumbnail ── */}
             {info.thumbnail && (
@@ -306,7 +260,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                 {info.images!.length > 1 && (
                   <button
                     onClick={() => info.images!.forEach((u,i) => setTimeout(() => handlePhotoDownload(u,i), i*400))}
-                    disabled={photoDownloading !== null || isDemo}
+                    disabled={photoDownloading !== null}
                     style={{
                       width:"100%", padding:12, borderRadius:12, marginBottom:10, fontSize:14,
                       border:"none", background:"linear-gradient(135deg,#7c3aed,#6d28d9)",
@@ -327,7 +281,7 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                       </div>
                       <button
                         onClick={() => handlePhotoDownload(imgUrl, i)}
-                        disabled={photoDownloading !== null || isDemo}
+                        disabled={photoDownloading !== null}
                         style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"center", gap:5, padding:"9px 0", fontSize:12, fontWeight:600, color:"#a78bfa", background:"transparent", border:"none", borderTop:"1px solid rgba(255,255,255,0.08)", cursor:"pointer" }}>
                         {photoDownloading === i ? <><Loader2 size={12} className="animate-spin"/> Saving…</> : <><Download size={12}/> Save</>}
                       </button>
@@ -344,16 +298,16 @@ export default function DownloaderBox({ highlightFormat }: Props) {
                     <button
                       key={cfg.format}
                       onClick={() => handleDownload(cfg.format)}
-                      disabled={busy || isDemo}
+                      disabled={busy}
                       style={{
                         display:"flex", alignItems:"center", gap:0,
                         borderRadius:13, overflow:"hidden",
                         background: cfg.btnBg,
                         border:"none", width:"100%", textAlign:"left",
                         opacity: busy && !isActive ? 0.5 : 1,
-                        cursor: busy || isDemo ? "default" : "pointer",
+                        cursor: busy ? "default" : "pointer",
                         transition:"opacity 0.18s, filter 0.18s",
-                        filter: busy || isDemo ? "none" : "brightness(1)",
+                        filter: busy ? "none" : "brightness(1)",
                         boxShadow: `0 4px 16px ${cfg.glowColor}`,
                       }}
                     >
